@@ -1,5 +1,5 @@
 # Dropt Client Readme
-## Create account and get token
+## 1. Create account and get token
 ### Go to [Dropt Website](https://140.113.24.232) and create an account by "New Customer"
 
 ![](https://i.imgur.com/OSLZaLE.png)
@@ -15,7 +15,7 @@ The string on the "My tokens" page is your dropt client token.
 
 ![](https://i.imgur.com/QQvqHlc.png)
 
-## Run the Experiment
+## 2. Run the Experiment
 1. put the "dropt" package into your working directory
 ```
 .
@@ -92,7 +92,7 @@ for i in range(project_trial):
 3. Start training, and user can see the result on [dropt website](https://140.113.24.232)
 
 
-## Client Code Sample
+## 3. Client Code Sample
 
 ### Training code and dropt client, please download from:
 https://git.dataarch.myds.me/cysun/dropt_client_sample
@@ -114,7 +114,7 @@ python3 dropt_client.py -token [USER_TOKEN] -proj-name [PROJ_NAME] -trial [TRAIL
 > Please remember to fill the user token!
 > [color=RED]
 
-## Result Analysis
+## 4. Result Analysis
 
 When the training is done, the results and the analysis will be shown on the project list.
 
