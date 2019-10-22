@@ -1,5 +1,6 @@
 import dropt
 import time
+import random
 import argparse as arg
 from subprocess import check_output
 
@@ -55,6 +56,11 @@ def train(params):
     "-a", params["alpha"],
     "-l", params["learn_rate"]
     ])
+    
+    # Or return random number for sample (delete the check_ouput)
+    # best_acc = random.uniform(0.5, 0.9)
+    # return best_acc
+    
     return str(out, encoding = "utf-8")[0:5]
 
 
