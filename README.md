@@ -113,6 +113,7 @@ python3 dropt_client.py -token [USER_TOKEN] -proj-name [PROJ_NAME] -trial [TRAIL
 ```
 * Please remember to fill the user token!
 * To execute the train.py in this sample, you may need to install pandas, numpy, xgboost and sklearn (pip install [...])
+* Or you can change the return result part in dropt_client.py to generate random values (see the comments)
 
 
 ## 4. Result Analysis
