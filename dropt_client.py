@@ -30,7 +30,7 @@ project = conn.projects().create(
      {'name': 'learn_rate', 'type': 'float', 'min': 0.1, 'max': 1.0}
      # {'name': 'tcrang', 'type': 'choice', 'value': 'aaa,bbb,ccc,ddd,eee'},
    ],
-   tuner='auto', # or 'TPE,'
+   # tuner='auto', # or 'TPE,'
    # Define the validation times for your project (optimization loops)
    trial=args.trial,
 )
@@ -66,7 +66,8 @@ for i in range(project_trial):
    sugts = suggestion.assignments
 
    metric = train(params=sugts)
-   print('\n  [trial %d] Evaluation: %s | suggest=%s' % (i+1, metric, str(sugts)))
+   print('\n[trial %d] Evaluation: %s' % (i+1, metric))
+   print("suggestion="+str(sugts))
 
    # report to DrOpt
    conn.projects(project_id).validations().create(
