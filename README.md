@@ -112,7 +112,7 @@ https://git.dataarch.myds.me/cysun/dropt_client_sample
 python3 dropt_client.py -token [USER_TOKEN] -proj-name [PROJ_NAME] -trial [TRAIL_NUM]
 ```
 * Please remember to fill the user token!
-* To execute the train.py in this package, you may need to install xgboost (pip install xgboost)
+* To execute the train.py in this sample, you may need to install xgboost (pip install xgboost)
 
 
 ## 4. Result Analysis
