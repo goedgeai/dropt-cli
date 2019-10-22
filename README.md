@@ -16,7 +16,7 @@ The string on the "My tokens" page is your dropt client token.
 ![](https://i.imgur.com/QQvqHlc.png)
 
 ## 2. Run the Experiment
-1. put the "dropt" package into your working directory
+1. put the [Dropt package](http://dataarch.myDS.me/drive/d/f/516675319327891457) into your working directory
 ```
 .
 ├── dropt
