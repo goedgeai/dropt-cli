@@ -66,7 +66,7 @@ for i in range(project_trial):
    sugts = suggestion.assignments
 
    metric = train(params=sugts)
-   print('\n  [trial %d] Evaluation:%s' % (i+1, metric))
+   print('\n  [trial %d] Evaluation: %s | suggest=%s' % (i+1, metric, str(sugts)))
 
    # report to DrOpt
    conn.projects(project_id).validations().create(
