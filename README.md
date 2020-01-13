@@ -1,6 +1,6 @@
 # Dropt Client Readme
 ## 1. Create account and get token
-### Go to [Dropt Website](https://140.113.24.232) and create an account by "New Customer"
+### Go to [Dropt Website](https://dropt.nctu.me) and create an account by "New Customer"
 
 ![](https://i.imgur.com/OSLZaLE.png)
 
@@ -74,8 +74,8 @@ for i in range(project_trial):
    sugts = {
      'filter1': '64',
      'filter2': '32', 
-     'ksize': '5'},
-     'learn_rate': '0.001'},
+     'ksize': '5',
+     'learn_rate': '0.001',
      'hidint': '100'
    }
    """
@@ -89,7 +89,7 @@ for i in range(project_trial):
      value = float(metric),
    )
 ```
-3. Start training, and user can see the result on [dropt website](https://140.113.24.232)
+3. Start training, and user can see the result on [dropt website](https://dropt.nctu.me)
 
 
 ## 3. Client Code Sample
