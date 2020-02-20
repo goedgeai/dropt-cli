@@ -21,10 +21,7 @@ class BoundApiEndpoint(object):
     return None
 
   def __call__(self, **kwargs):
-    rep = self.call_with_params(kwargs)
-    if 'msg' in rep._body:
-      raise ValueError(rep._body['msg'])
-    return rep
+    return self.call_with_params(kwargs)
 
 
 class ApiEndpoint(object):
