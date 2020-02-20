@@ -12,6 +12,7 @@ from .objects import (
 from .requestor import Requestor, DEFAULT_API_URL
 from .resource import ApiResource
 from .version import VERSION
+import json
 
 class ConnectionImpl(object):
   def __init__(self, requestor, api_url=None):
@@ -167,3 +168,8 @@ def object_or_paginated_objects(api_object):
       return Pagination(api_object, body, *args, **kwargs)
     return api_object(body, *args, **kwargs)
   return decorator
+
+def load_config_file(file_name):
+    with open(file_name) as json_file:
+        config = json.load(json_file)
+    return json.dumps(config) 
