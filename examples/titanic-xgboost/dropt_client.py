@@ -1,4 +1,4 @@
-import dropt
+import dropt.client as dropt_cli
 import time
 import random
 import argparse as arg
@@ -7,12 +7,12 @@ from subprocess import check_output
 parser = arg.ArgumentParser()
 parser.add_argument("-token", "--user-api-token", help="user api token", dest="token", default="")
 parser.add_argument("-proj-name", "--project-name", help="project name", dest="name", default="")
-parser.add_argument("-ip", "--server-ip", help="server ip", dest="ip", default="")
+parser.add_argument("-ip", "--server-ip", help="server ip", dest="ip", default="140.113.24.232")
 parser.add_argument("-trial", "--trial-num", help="trail num", dest="trial", default=10)
 args = parser.parse_args()
 
 # Define API token for authorization
-conn = dropt.Connection(client_token=args.token, server_ip=args.ip)
+conn = dropt_cli.Connection(client_token=args.token, server_ip=args.ip)
 
 # Create DrOpt project
 project = conn.projects().create(
@@ -23,15 +23,15 @@ project = conn.projects().create(
    # type: float - means float parameter
    # type: choice - means categorical parameter
    parameters=[
-     {'name': 'max_depth', 'type': 'int', 'min': 1,  'max': 5},
-     {'name': 'gamma', 'type': 'float', 'min': 0.1,  'max': 1.0},
-     {'name': 'subsample', 'type': 'float', 'min': 0.1, 'max': 1.0},
-     {'name': 'colsample', 'type': 'float', 'min': 0.1, 'max': 1.0},
-     {'name': 'alpha', 'type': 'float', 'min': 0.1, 'max': 1.0},
-     {'name': 'learn_rate', 'type': 'float', 'min': 0.1, 'max': 1.0}
-     # {'name': 'tcrang', 'type': 'choice', 'value': 'aaa,bbb,ccc,ddd,eee'},
+     {"name": "max_depth", "type": "int", "min": 1,  "max": 5},
+     {"name": "gamma", "type": "float", "min": 0.1,  "max": 1.0},
+     {"name": "subsample", "type": "float", "min": 0.1, "max": 1.0},
+     {"name": "colsample", "type": "float", "min": 0.1, "max": 1.0},
+     {"name": "alpha", "type": "float", "min": 0.1, "max": 1.0},
+     {"name": "learn_rate", "type": "float", "min": 0.1, "max": 1.0}
+     # {"name": "tcrang", "type": "choice", "value": "aaa,bbb,ccc,ddd,eee"},
    ],
-   # tuner='auto', # or 'TPE,'
+   # tuner="auto", # or "TPE,"
    # Define the validation times for your project (optimization loops)
    trial=args.trial,
 )
@@ -39,10 +39,9 @@ project = conn.projects().create(
 # Get project id that returned from DrOpt
 project_id = project.project_id
 project_trial = project.trial
-print ("\n=================== Trial Start ====================")
-# print ("----------------------------------------------------")
-print ("        Project ID: %s, Project Trial: %s" % (project_id, project_trial))
-print ("----------------------------------------------------")
+print( "\n=================== Trial Start ====================")
+print(f"        Project ID: {project_id}, Project Trial: {project_trial}")
+print( "----------------------------------------------------")
 
 # Delay wait for backend initialing
 time.sleep(1)
@@ -72,8 +71,8 @@ for i in range(project_trial):
    sugts = suggestion.assignments
 
    metric = train(params=sugts)
-   print('\n[trial %d] Evaluation: %s' % (i+1, metric))
-   print("suggestion="+str(sugts))
+   print(f"\n[trial {i+1}] Evaluation: {metric}")
+   print(f"suggestion={sugts}")
 
    # report to DrOpt
    conn.projects(project_id).validations().create(

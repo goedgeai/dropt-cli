@@ -1,2 +1,2 @@
 from .interface import Connection
-from .version import VERSION
+from .version import __version__
