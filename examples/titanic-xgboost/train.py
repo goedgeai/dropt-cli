@@ -35,6 +35,8 @@ def load_data():
     data_train.loc[data_train["Embarked"] == "S", "Embarked"] = 0
     data_train.loc[data_train["Embarked"] == "C", "Embarked"] = 1
     data_train.loc[data_train["Embarked"] == "Q", "Embarked"] = 2
+    data_train["Sex"] = pd.to_numeric(data_train["Sex"])
+    data_train["Embarked"] = pd.to_numeric(data_train["Embarked"])
 
     features = ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"]
     label = ["Survived"]
@@ -58,7 +60,7 @@ def get_default_parameters():
 
 
 def get_model(PARAMS):
-    model = XGBClassifier(booster="gbtree", silent=True, nthread=None, random_state=42, base_score=0.5,
+    model = XGBClassifier(booster="gbtree", silent=True, nthread=None, random_state=None, base_score=0.5,
                           colsample_bylevel=1, n_estimators=50, reg_lambda=1, objective="binary:logistic")
     model.max_depth = PARAMS.get("max_depth")
     model.min_child_weight = PARAMS.get("min_child_weight")
@@ -73,7 +75,7 @@ def get_model(PARAMS):
 
 def run(X_train, y_train, model):
     """Train model and predict result"""
-    kf = model_selection.KFold(n_splits=5, shuffle=False, random_state=42)
+    kf = model_selection.KFold(n_splits=5, shuffle=False, random_state=None)
     scores = model_selection.cross_val_score(model, X_train, y_train, cv=kf)
     # print(scores)
     score = scores.mean()
