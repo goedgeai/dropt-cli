@@ -1,0 +1,57 @@
+{
+   "config":{
+      "experimentName":"test",
+      "maxExecDuration":"1h",
+      "maxTrialNum":10,
+      "parentProject": "my_parent",
+      "model": "my_network",
+      "updatePeriod": 60,      
+      "tuner":{
+         "builtinTunerName":"TPE",
+         "classArgs":{
+            "optimize_mode":"maximize"
+         }
+      }
+   },
+   "search_space":{
+      "prune_method":{
+         "_type":"choice",
+         "_value":[
+            {
+               "_name":"agp",
+               "conv0_sparsity":{
+                  "_type":"uniform",
+                  "_value":[
+                     0.1,
+                     0.9
+                  ]
+               },
+               "conv1_sparsity":{
+                  "_type":"uniform",
+                  "_value":[
+                     0.1,
+                     0.9
+                  ]
+               }
+            },
+            {
+               "_name":"level",
+               "conv0_sparsity":{
+                  "_type":"uniform",
+                  "_value":[
+                     0.1,
+                     0.9
+                  ]
+               },
+               "conv1_sparsity":{
+                  "_type":"uniform",
+                  "_value":[
+                     0.01,
+                     0.9
+                  ]
+               }
+            }
+         ]
+      }
+   }
+}
