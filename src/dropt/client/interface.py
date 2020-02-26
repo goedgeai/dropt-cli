@@ -11,7 +11,7 @@ from .objects import (
 )
 from .requestor import Requestor, DEFAULT_API_URL
 from .resource import ApiResource
-from .version import VERSION
+from .version import __version__
 
 class ConnectionImpl(object):
   def __init__(self, requestor, api_url=None):
@@ -20,42 +20,42 @@ class ConnectionImpl(object):
 
     suggestions = ApiResource(
       self,
-      'suggestions',
+      "suggestions",
       endpoints=[
-        ApiEndpoint(None, Suggestion, 'POST', 'create'),
-        ApiEndpoint(None, object_or_paginated_objects(Suggestion), 'GET', 'fetch'),
-        ApiEndpoint(None, Suggestion, 'PUT', 'update'),
-        ApiEndpoint(None, None, 'DELETE', 'delete'),
+        ApiEndpoint(None, Suggestion, "POST", "create"),
+        ApiEndpoint(None, object_or_paginated_objects(Suggestion), "GET", "fetch"),
+        ApiEndpoint(None, Suggestion, "PUT", "update"),
+        ApiEndpoint(None, None, "DELETE", "delete"),
       ],
     )
 
     validations = ApiResource(
       self,
-      'validations',
+      "validations",
       endpoints=[
-        ApiEndpoint(None, Validation, 'POST', 'create'),
-        ApiEndpoint(None, object_or_paginated_objects(Validation), 'GET', 'fetch'),
-        ApiEndpoint(None, Validation, 'PUT', 'update'),
-        ApiEndpoint(None, None, 'DELETE', 'delete'),
+        ApiEndpoint(None, Validation, "POST", "create"),
+        ApiEndpoint(None, object_or_paginated_objects(Validation), "GET", "fetch"),
+        ApiEndpoint(None, Validation, "PUT", "update"),
+        ApiEndpoint(None, None, "DELETE", "delete"),
       ],
     )
 
     tokens = ApiResource(
       self,
-      'tokens',
+      "tokens",
       endpoints=[
-        ApiEndpoint(None, Token, 'POST', 'create'),
+        ApiEndpoint(None, Token, "POST", "create"),
       ],
     )
 
     self.projects = ApiResource(
       self,
-      'projects',
+      "projects",
       endpoints=[
-        ApiEndpoint(None, Project, 'POST', 'create'),
-        ApiEndpoint(None, object_or_paginated_objects(Project), 'GET', 'fetch'),
-        ApiEndpoint(None, Project, 'PUT', 'update'),
-        ApiEndpoint(None, None, 'DELETE', 'delete'),
+        ApiEndpoint(None, Project, "POST", "create"),
+        ApiEndpoint(None, object_or_paginated_objects(Project), "GET", "fetch"),
+        ApiEndpoint(None, Project, "PUT", "update"),
+        ApiEndpoint(None, None, "DELETE", "delete"),
       ],
       resources=[
         suggestions,
@@ -66,15 +66,15 @@ class ConnectionImpl(object):
 
     client_projects = ApiResource(
       self,
-      'projects',
+      "projects",
       endpoints=[
-        ApiEndpoint(None, Project, 'POST', 'create'),
-        ApiEndpoint(None, lambda *args, **kwargs: Pagination(Project, *args, **kwargs), 'GET', 'fetch'),
+        ApiEndpoint(None, Project, "POST", "create"),
+        ApiEndpoint(None, lambda *args, **kwargs: Pagination(Project, *args, **kwargs), "GET", "fetch"),
       ],
     )
 
   def _request(self, method, url, params):
-    if method.upper() in ('GET', 'DELETE'):
+    if method.upper() in ("GET", "DELETE"):
       json, params = None, self._request_params(params)
     else:
       json, params = ApiObject.as_json(params), None
@@ -86,16 +86,16 @@ class ConnectionImpl(object):
     )
 
   def _get(self, url, params=None):
-    return self._request('GET', url, params)
+    return self._request("GET", url, params)
 
   def _post(self, url, params=None):
-    return self._request('POST', url, params)
+    return self._request("POST", url, params)
 
   def _put(self, url, params=None):
-    return self._request('PUT', url, params)
+    return self._request("PUT", url, params)
 
   def _delete(self, url, params=None):
-    return self._request('DELETE', url, params)
+    return self._request("DELETE", url, params)
 
   def _request_params(self, params):
     req_params = params or {}
@@ -126,21 +126,21 @@ class ConnectionImpl(object):
 
 
 class Connection(object):
-  def __init__(self, client_token=None, user_agent=None, server_ip='140.113.140.24'):
+  def __init__(self, client_token=None, user_agent=None, server_ip="140.113.24.232"):
     client_token = client_token
-    # api_url = os.environ.get('SIGOPT_API_URL') or DEFAULT_API_URL
-    api_url = os.environ.get('SIGOPT_API_URL') or 'http://'+ server_ip + ':8080'
+    # api_url = os.environ.get("SIGOPT_API_URL") or DEFAULT_API_URL
+    api_url = os.environ.get("SIGOPT_API_URL") or "http://"+ server_ip + ":8080"
     if not client_token:
-      raise ValueError('Must provide client_token.')
+      raise ValueError("Must provide client_token.")
 
     default_headers = {
-      'Content-Type': 'application/json',
-      'User-Agent': user_agent if user_agent is not None else 'dropt-python/{0}'.format(VERSION),
-      'X-DrOpt-Python-Version': VERSION,
+      "Content-Type": "application/json",
+      "User-Agent": user_agent if user_agent is not None else "dropt-python/{0}".format(__version__),
+      "X-DrOpt-Python-Version": __version__,
     }
     requestor = Requestor(
       client_token,
-      '',
+      "",
       default_headers,
     )
     self.impl = ConnectionImpl(requestor, api_url=api_url)
@@ -163,7 +163,7 @@ class Connection(object):
 
 def object_or_paginated_objects(api_object):
   def decorator(body, *args, **kwargs):
-    if body.get('object') == 'pagination':
+    if body.get("object") == "pagination":
       return Pagination(api_object, body, *args, **kwargs)
     return api_object(body, *args, **kwargs)
   return decorator
