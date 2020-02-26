@@ -138,6 +138,7 @@ class Validation(ApiObject):
   valid_id = Field(six.text_type)
   suggest_id = Field(six.text_type)
   value = Field(float)
+  value_detail = Field(six.text_type)
 
 class Assignment(ApiObject):
   assign_id = Field(six.text_type)
