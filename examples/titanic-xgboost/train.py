@@ -5,12 +5,16 @@ https://www.twblogs.net/a/5c4a9fb8bd9eee6e7e068b5f
 """
 
 import logging
-import pandas as pd
+
+import argparse as arg
 import numpy as np
+import pandas as pd
+
 from xgboost import XGBClassifier
 from sklearn import model_selection
-import argparse as arg
 
+
+# parse arguments
 parser = arg.ArgumentParser()
 parser.add_argument("-d", "--max_depth", dest="max_depth", type=int, default=5)
 parser.add_argument("-g", "--gamma", dest="gamma", type=float, default=0.2)
@@ -20,26 +24,29 @@ parser.add_argument("-a", "--alpha", dest="alpha", type=float, default=0.25)
 parser.add_argument("-l", "--lr", dest="lr", type=float, default=0.01)
 args = parser.parse_args()
 
+# setup logs
 LOG = logging.getLogger("sklearn_randomForest")
 
-DATA_PATH = "../../data/titanic"
+# setup path to data
+DATA_PATH = '../../data/titanic'
+
 
 def load_data():
-    """Load dataset"""
-    data_train = pd.read_csv(f"{DATA_PATH}/train.csv")
+    '''Load dataset'''
+    data_train = pd.read_csv(f'{DATA_PATH}/train.csv')
 
-    data_train["Age"] = data_train["Age"].fillna(data_train["Age"].median())
-    data_train.loc[data_train["Sex"] == "male", "Sex"] = 0
-    data_train.loc[data_train["Sex"] == "female", "Sex"] = 1
-    data_train["Embarked"] = data_train["Embarked"].fillna('S')
-    data_train.loc[data_train["Embarked"] == "S", "Embarked"] = 0
-    data_train.loc[data_train["Embarked"] == "C", "Embarked"] = 1
-    data_train.loc[data_train["Embarked"] == "Q", "Embarked"] = 2
-    data_train["Sex"] = pd.to_numeric(data_train["Sex"])
-    data_train["Embarked"] = pd.to_numeric(data_train["Embarked"])
+    # data imputation
+    fill_values = {'Age': data_train['Age'].median(), 'Embarked': 'S'}
+    data_train.fillna(fill_values, inplace=True)
 
-    features = ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"]
-    label = ["Survived"]
+    # encode values of 'Sex' and 'Embarked' by integers
+    replace_values = {'Sex': {'male': 0, 'female': 1},
+                      'Embarked': {'S': 0, 'C': 1, 'Q' 2}}
+    data_train.replace(replace_values, inplace=True)
+
+    # determine features and label
+    features = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']
+    label = ['Survived']
 
     X_train, y_train = data_train[features], data_train[label]
     return X_train, y_train
