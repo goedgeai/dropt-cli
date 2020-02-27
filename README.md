@@ -7,13 +7,19 @@ Dr.Opt is a ML model optimization service, which includes automatic hyper-parame
 
 ## Prerequisites
 ### Install Dr.Opt client package
+#### (1) Get the dropt-cli source code
 ```
-pip install dropt
+$ git clone https://git.dataarch.myds.me/cysun/dropt-cli.git
+```
+#### (2) Install dropt-cli by pip
+Move into the dropt-cli directory, and execute pip:
+```
+$ pip install .
 ```
 
 ## Create an account and get a token
-### Go to [Dropt Website](https://dropt-beta.nctu.me) and create an account by "New Customer"
-> current DrOpt v2 beta address: dropt-beta.nctu.me
+### Go to [Dr.Opt Website](https://dropt-beta.nctu.me) and create an account by "New Customer"
+> current Dr.Opt v2 beta address: dropt-beta.nctu.me
 
 ![](https://i.imgur.com/jVBDmRM.png)
 
@@ -52,23 +58,23 @@ result = {'acc': 0.932, 'latency': 0.43}
 
 #### Import dropt package
 ```python
-import dropt
+import dropt.client as dropt_cli
 ```
 
 #### Define API token for authorization
 ```python
-conn = dropt.Connection(client_token=[USER_TOKEN], server_ip=[DROPT_IP])
+conn = dropt_cli.Connection(client_token=[USER_TOKEN], server_ip=[DROPT_IP])
 ```
 
 #### Load the configuration file and create a new project
-* As for the configuration file, please refer to this config README
+* As for the configuration file, please refer to the [Dr.Opt config README](examples/configs/CONFIG.md).
 ```python
 project = conn.projects().create(
-   config = dropt.load_config_file([CONFIG_FILE])
+   config = dropt_cli.load_config_file([CONFIG_FILE])
 )
 ```
 
-#### Get suggestions from DrOpt
+#### Get suggestions from Dr.Opt
 ```python
 suggestion = conn.projects(project_id).suggestions().create()
 sugt_id = suggestion.suggest_id
@@ -89,7 +95,7 @@ sugts = suggestion.assignments
 """
 ```
 
-#### Report the training result to DrOpt
+#### Report the training result to Dr.Opt
 ```python
 conn.projects(project_id).validations().create(
     suggest_id = sugt_id,
@@ -101,23 +107,23 @@ conn.projects(project_id).validations().create(
 ### A complete example
 
 ```python
-import dropt
+import dropt.client as dropt_cli
 
 # Define API token for authorization
-conn = dropt.Connection(client_token=[USER_TOKEN], server_ip=[DROPT_IP])
+conn = dropt_cli.Connection(client_token=[USER_TOKEN], server_ip=[DROPT_IP])
 
-# Create DrOpt project
+# Create Dr.Opt project
 project = conn.projects().create(
-   config = dropt.load_config_file([CONFIG_FILE])
+   config = dropt_cli.load_config_file([CONFIG_FILE])
 )
 
-# Get project id that returned from DrOpt
+# Get project id that returned from Dr.Opt
 project_id = project.project_id
 project_trial = project.trial
 
 # Run the optimization loop
 for i in range(project_trial):
-    # Retrieve hyperparamaters from DrOpt
+    # Retrieve hyperparamaters from Dr.Opt
     suggestion = conn.projects(project_id).suggestions().create()
     sugt_id = suggestion.suggest_id
     sugts = suggestion.assignments
@@ -156,7 +162,7 @@ for i in range(project_trial):
 
 ## Client code examples
 
-The tuning samples is located in ```examples```. As for the details of each training example, please refer to the example README.
+The tuning samples is located in [examples](examples/). As for the details of each training example, please refer to the example README.
 
 ## Result Analysis
 
