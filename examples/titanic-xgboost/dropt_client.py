@@ -47,7 +47,7 @@ print( "----------------------------------------------------")
 time.sleep(1)
 
 def train(params):
-    out = check_output(["python3", "train.py",
+    out = check_output(["python3", "main.py",
     "-d", params["max_depth"],
     "-g", params["gamma"],
     "-s", params["subsample"],
