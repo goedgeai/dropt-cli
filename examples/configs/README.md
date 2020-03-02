@@ -91,13 +91,10 @@ Here is a complete sample:
 ## Current available tuners
 
 * Anneal​
-* Batch Tuner​
 * Naïve Evolution​
 * GP Tuner​
 * Grid Search​
-* Metis Tuner​
 * Random​
-* SMAC​
 * TPE
 
 As for the details of the tuners, please refer to the [NNI tuner document](https://github.com/microsoft/nni/blob/master/docs/en_US/Tuner/BuiltinTuner.md#Anneal).
