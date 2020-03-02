@@ -1,4 +1,5 @@
 from .compat import json as simplejson
+from .objects import ResponseSuggestion
 
 class BoundApiEndpoint(object):
   def __init__(self, bound_resource, endpoint):
@@ -21,7 +22,31 @@ class BoundApiEndpoint(object):
     return None
 
   def __call__(self, **kwargs):
-    return self.call_with_params(kwargs)
+    rep = self.call_with_params(kwargs)
+
+    # type casting (str -> int or float)
+    if hasattr(rep, 'assignments'):
+      resp_sugt = ResponseSuggestion(rep.suggest_id)
+      for a in rep.assignments:
+        if self.is_number(rep.assignments[a]):
+          if float(rep.assignments[a]).is_integer():
+            resp_sugt.assignments[a] = int(float(rep.assignments[a]))
+          else:
+            resp_sugt.assignments[a] = float(rep.assignments[a])
+        else:
+          resp_sugt.assignments[a] = rep.assignments[a]
+      return resp_sugt
+
+    if 'msg' in rep._body:
+      raise ValueError(rep._body['msg'])
+    return rep
+
+  def is_number(self, s):
+    try:
+      float(s)
+      return True
+    except ValueError:
+      return False
 
 
 class ApiEndpoint(object):

@@ -138,6 +138,7 @@ class Validation(ApiObject):
   valid_id = Field(six.text_type)
   suggest_id = Field(six.text_type)
   value = Field(float)
+  value_detail = Field(six.text_type)
 
 class Assignment(ApiObject):
   assign_id = Field(six.text_type)
@@ -180,4 +181,9 @@ class Token(ApiObject):
   token = Field(six.text_type)
   token_type = Field(six.text_type)
   user = Field(six.text_type)
+
+class ResponseSuggestion():
+  def __init__(self, sugt_id):
+    self.suggest_id = sugt_id
+    self.assignments = {}
 
