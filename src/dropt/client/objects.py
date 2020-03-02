@@ -182,3 +182,8 @@ class Token(ApiObject):
   token_type = Field(six.text_type)
   user = Field(six.text_type)
 
+class ResponseSuggestion():
+  def __init__(self, sugt_id):
+    self.suggest_id = sugt_id
+    self.assignments = {}
+
