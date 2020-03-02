@@ -84,14 +84,12 @@ sugts = suggestion.assignments
     The sugt_id will be used when report the result.
     
     sugts = {
-        'filter1': '64',
-        'filter2': '32', 
-        'ksize': '5',
-        'learn_rate': '0.001',
-        'hidint': '100'
+        'filter1': 64,
+        'filter2': 32, 
+        'ksize': 5,
+        'learn_rate': 0.001,
+        'hidint': 100
     }
-    
-    (please note that the values are strings)
 """
 ```
 
@@ -100,7 +98,8 @@ sugts = suggestion.assignments
 conn.projects(project_id).validations().create(
     suggest_id = sugt_id,
     value = float(metric),              # metric (a single value)
-    value_detail = json.dumps(metric)   # details of metric (json string)
+    value_detail = json.dumps(metric)   # details of the metric (JSON string)
+                                        # e.g. "{'acc': 0.927, 'latency':8.43}"
 )
 ```
 
@@ -129,15 +128,14 @@ for i in range(project_trial):
     sugts = suggestion.assignments
     
     """
-    The return object "suggestion.assignments" is a dict 
-    (please note that the values are strings)
+    The return object "suggestion.assignments" is a dict
     
     sugts = {
-        'filter1': '64',
-        'filter2': '32', 
-        'ksize': '5',
-        'learn_rate': '0.001',
-        'hidint': '100'
+        'filter1': 64,
+        'filter2': 32, 
+        'ksize': 5,
+        'learn_rate': 0.001,
+        'hidint': 100
     }
     """
     
@@ -145,7 +143,7 @@ for i in range(project_trial):
     metric = train(filter1=['filter1'], filter2=['filter2'], ... )
     
     """
-    if metric is a dict:
+    assume that the metric is a dict:
     metric = {
         'acc': 0.94
         'latency': 10
@@ -155,7 +153,7 @@ for i in range(project_trial):
     # report result to Dr.Opt
     conn.projects(project_id).validations().create(
      suggest_id = sugt_id,
-     value = float(metric),              # metric (a single value)
+     value = float(metric['acc']),       # metric (a single value)
      value_detail = json.dumps(metric)   # details of metric (json string)
     )
 ```
