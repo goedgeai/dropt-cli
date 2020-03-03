@@ -57,8 +57,7 @@ def get_params():
 
 def get_model(params):
     model = XGBClassifier(booster="gbtree", silent=True, nthread=None,
-                          random_state=None, base_score=0.5,
-                          colsample_bylevel=1, n_estimators=50,
+                          base_score=0.5, colsample_bylevel=1, n_estimators=50,
                           reg_lambda=1, objective="binary:logistic",
                           **params)
 
@@ -67,9 +66,8 @@ def get_model(params):
 
 def main(X, y, model):
     """Train model and predict result"""
-    kf = model_selection.KFold(n_splits=5, shuffle=False, random_state=None)
+    kf = model_selection.KFold(n_splits=5, shuffle=False)
     scores = model_selection.cross_val_score(model, X, y, cv=kf)
-    #print(scores)
     score = scores.mean()
     print(score)
     logger.debug(f"score: {score}")
