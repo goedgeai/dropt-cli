@@ -1,15 +1,15 @@
-"""
+'''
 Reference
 ---
 https://www.twblogs.net/a/5c4a9fb8bd9eee6e7e068b5f
-"""
+'''
 
 import logging
-import argparse
 import numpy as np
 import pandas as pd
-from xgboost import XGBClassifier
+from argparse import ArgumentParser
 from sklearn import model_selection
+from xgboost import XGBClassifier
 
 
 # setup logs
@@ -18,6 +18,15 @@ logger = logging.getLogger("sklearn_randomForest")
 # setup path to data
 DATA_PATH = '../../data/titanic'
 
+# default value of parameters
+params_default = {'booster': 'gbtree',
+                  'verbosity': 0,
+                  'base_score': 0.5,
+                  'colsample_bylevel': 1,
+                  'n_estimators': 50,
+                  'reg_lambda': 1,
+                  'objective': "binary:logistic"}
+                  
 
 def data_loader():
     '''Load dataset'''
@@ -40,22 +49,8 @@ def data_loader():
     return X, y
 
 
-def get_params():
-    """get parameters"""
-    parser = argparse.ArgumentParser(description='Titanic XGBoost Example')
-    parser.add_argument("-d", "--max_depth", type=int, default=5)
-    parser.add_argument("-g", "--gamma", type=float, default=0.2)
-    parser.add_argument("-s", "--subsample", type=float, default=0.8)
-    parser.add_argument("-c", "--colsample", type=float, default=0.8, dest='colsample_bytree')
-    parser.add_argument("-a", "--alpha", type=float, default=0.25)
-    parser.add_argument("-l", "--lr", type=float, default=0.01, dest='eta')
-    parser.add_argument("-w", "--min_child_weight", type=float, default=1.0)
-
-    args, _ = parser.parse_known_args()
-    return vars(args)
-
-
-def get_model(params):
+def model_loader(params):
+    '''Model loader.'''
     model = XGBClassifier(booster="gbtree", silent=True, nthread=None,
                           base_score=0.5, colsample_bylevel=1, n_estimators=50,
                           reg_lambda=1, objective="binary:logistic",
@@ -64,18 +59,38 @@ def get_model(params):
     return model
 
 
-def main(X, y, model):
-    """Train model and predict result"""
+def run(args):
+    '''Evaluate performance of model with the given parameters.'''
+    X, y = data_loader()
+    params = params_default.copy()
+    params.update(args)
+    model = model_loader(params)
     kf = model_selection.KFold(n_splits=5, shuffle=False)
     scores = model_selection.cross_val_score(model, X, y, cv=kf)
     score = scores.mean()
-    print(score)
     logger.debug(f"score: {score}")
+    return score
 
 
-if __name__ == "__main__":
-    X, y = data_loader()
-    params = get_params()
-    logger.debug(params)
-    model = get_model(params)
-    main(X, y, model)
+def params_loader():
+    '''get parameters'''
+    parser = ArgumentParser(description='Titanic XGBoost Example')
+    parser.add_argument('--booster', type=str, default='gbtree')
+    parser.add_argument('--verbosity', type=int, default=0)
+    parser.add_argument('--nthread', type=str, default='none')
+    parser.add_argument('--max-depth', type=int, default=5)
+    parser.add_argument('--gamma', type=float, default=0.2)
+    parser.add_argument('--subsample', type=float, default=0.8)
+    parser.add_argument('--colsample-bytree', type=float, default=0.8)
+    parser.add_argument('--alpha', type=float, default=0.25)
+    parser.add_argument('--learning-rate', type=float, default=0.01)
+    parser.add_argument('--min-child-weight', type=float, default=1.0)
+
+    args, _ = parser.parse_known_args()
+    return vars(args)
+
+
+if __name__ == '__main__':
+    params = params_loader()
+    logger.debug(f'parameters = {params}')
+    print(main(params))
