@@ -1,0 +1,21 @@
+{
+    "config":{
+      "experimentName": "func-rosenbrock",
+      "maxExecDuration": "1h",
+      "maxTrialNum": 10,
+      "parentProject": "None",
+      "model": "Rosenbrock",
+      "updatePeriod": 60,
+      "tuner": {
+        "builtinTunerName": "TPE",
+        "classArgs":{
+          "optimize_mode": "minimize"
+        }
+      }
+    },
+    "search_space":{
+      "x": {"_type": "uniform", "_value": [0, 2.0]},
+      "y": {"_type": "uniform", "_value": [0, 2.0]},
+      "z": {"_type": "uniform", "_value": [0, 2.0]}
+    }
+}
