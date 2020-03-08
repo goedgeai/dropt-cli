@@ -17,8 +17,8 @@
       "max_depth": {"_type": "randint", "_value": [1, 5]},
       "gamma": {"_type": "uniform", "_value": [0.1, 1.0]},
       "subsample": {"_type": "uniform", "_value": [0.1, 1.0]},
-      "colsample": {"_type": "uniform", "_value": [0.1, 1.0]},
+      "colsample_bytree": {"_type": "uniform", "_value": [0.1, 1.0]},
       "alpha": {"_type": "uniform", "_value": [0.1, 1.0]},
-      "learn_rate": {"_type": "uniform", "_value": [0.1, 1.0]}
+      "eta": {"_type": "uniform", "_value": [0.1, 1.0]}
     }
 }
