@@ -14,7 +14,7 @@ Example:
 import time
 import dropt.client as dropt_cli
 from argparse import ArgumentParser
-from xgb import params, run
+from rosenbrock import params, run
 
 
 def header_footer_loop(func):
