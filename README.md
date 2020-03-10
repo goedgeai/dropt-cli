@@ -67,7 +67,7 @@ conn = dropt_cli.Connection(client_token=[USER_TOKEN], server_ip=[DROPT_IP])
 ```
 
 #### Load the configuration file and create a new project
-* As for the configuration file, please refer to the [Dr.Opt config README](examples/configs/CONFIG.md).
+* As for the configuration file, please refer to the [Dr.Opt config README](examples/configs/).
 ```python
 project = conn.projects().create(
    config = dropt_cli.load_config_file([CONFIG_FILE])
@@ -99,7 +99,8 @@ conn.projects(project_id).validations().create(
     suggest_id = sugt_id,
     value = float(metric),              # metric (a single value)
     value_detail = json.dumps(metric)   # details of the metric (JSON string)
-                                        # e.g. "{'acc': 0.927, 'latency':8.43}"
+                                        # e.g. metric = {'acc': 0.927, 'latency':8.43}
+                                        #      convert the dict to a str by json.dumps()
 )
 ```
 
@@ -153,7 +154,7 @@ for i in range(project_trial):
     # report result to Dr.Opt
     conn.projects(project_id).validations().create(
      suggest_id = sugt_id,
-     value = float(metric['acc']),       # metric (a single value)
+     value = metric['acc'],              # metric (a single value)
      value_detail = json.dumps(metric)   # details of metric (json string)
     )
 ```
