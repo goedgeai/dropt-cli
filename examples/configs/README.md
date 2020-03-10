@@ -21,7 +21,7 @@ The experiment settings must include:
 #### parentProject
 * The new created project can inherit the properties of the parentProject
 * The inherit function will be provided on the DrOpt website (not available yet)
-* Just set to ==None== for now
+* Just set to `None` for now
 
 #### model
 * The used model of the project. Can set any value (string).
@@ -37,7 +37,7 @@ The experiment settings must include:
     "experimentName": "car_detection",
     "maxExecDuration": "30h",
     "maxTrialNum": 50,
-    "parentProj": "my_parent",
+    "parentProject": "my_parent",
     "model": "YOLOv3",
     "updatePeriod": 60,
     "tuner": {
