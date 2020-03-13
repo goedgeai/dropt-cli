@@ -1,9 +1,9 @@
 from __future__ import print_function
+import argparse
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from argparse import ArgumentParser
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
 
@@ -44,7 +44,7 @@ def train(args, model, device, train_loader, optimizer, epoch):
         loss.backward()
         optimizer.step()
         if batch_idx % args.log_interval == 0:
-            print('Train Epoch: {epoch} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
                 100. * batch_idx / len(train_loader), loss.item()))
 
@@ -63,16 +63,34 @@ def test(args, model, device, test_loader):
 
     test_loss /= len(test_loader.dataset)
 
-    print((f'\nTest set: '
-           f'Average loss: {test_loss:.4f}, '
-           f'Accuracy: {correct}/{len(test_loader.dataset)} '
-           f'({100.*correct/len(test_loader.dataset):.0f}%)\n'))
-
-    return test_loss
+    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+        test_loss, correct, len(test_loader.dataset),
+        100. * correct / len(test_loader.dataset)))
 
 
-def main(args):
+def main():
     # Training settings
+    parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
+    parser.add_argument('--batch-size', type=int, default=64, metavar='N',
+                        help='input batch size for training (default: 64)')
+    parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
+                        help='input batch size for testing (default: 1000)')
+    parser.add_argument('--epochs', type=int, default=14, metavar='N',
+                        help='number of epochs to train (default: 14)')
+    parser.add_argument('--lr', type=float, default=1.0, metavar='LR',
+                        help='learning rate (default: 1.0)')
+    parser.add_argument('--gamma', type=float, default=0.7, metavar='M',
+                        help='Learning rate step gamma (default: 0.7)')
+    parser.add_argument('--no-cuda', action='store_true', default=False,
+                        help='disables CUDA training')
+    parser.add_argument('--seed', type=int, default=1, metavar='S',
+                        help='random seed (default: 1)')
+    parser.add_argument('--log-interval', type=int, default=10, metavar='N',
+                        help='how many batches to wait before logging training status')
+
+    parser.add_argument('--save-model', action='store_true', default=False,
+                        help='For Saving the current Model')
+    args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
 
     torch.manual_seed(args.seed)
@@ -100,42 +118,12 @@ def main(args):
     scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
     for epoch in range(1, args.epochs + 1):
         train(args, model, device, train_loader, optimizer, epoch)
-        metric = test(args, model, device, test_loader)
+        test(args, model, device, test_loader)
         scheduler.step()
 
     if args.save_model:
         torch.save(model.state_dict(), "mnist_cnn.pt")
 
-    return metric
-
-
-def params_loader():
-    '''Get parameters'''
-    parser = ArgumentParser(description='PyTorch MNIST Example')
-    parser.add_argument('--batch-size', type=int, default=64, metavar='N',
-                        help='input batch size for training (default: 64)')
-    parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
-                        help='input batch size for testing (default: 1000)')
-    parser.add_argument('--epochs', type=int, default=14, metavar='N',
-                        help='number of epochs to train (default: 14)')
-    parser.add_argument('--lr', type=float, default=1.0, metavar='LR',
-                        help='learning rate (default: 1.0)')
-    parser.add_argument('--gamma', type=float, default=0.7, metavar='M',
-                        help='Learning rate step gamma (default: 0.7)')
-    parser.add_argument('--no-cuda', action='store_true', default=False,
-                        help='disables CUDA training')
-    parser.add_argument('--seed', type=int, default=1, metavar='S',
-                        help='random seed (default: 1)')
-    parser.add_argument('--log-interval', type=int, default=10, metavar='N',
-                        help='how many batches to wait before logging training status')
-    parser.add_argument('--save-model', action='store_true', default=False,
-                        help='For Saving the current Model')
-
-    args, _ = parser.parse_known_args()
-    return args
-
 
 if __name__ == '__main__':
-    args = params_loader()
-    metric = main(args)
-    print(metric)
+    main()
