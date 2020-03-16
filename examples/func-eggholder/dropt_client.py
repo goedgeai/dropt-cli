@@ -34,7 +34,7 @@ def header_footer_loop(func):
 def param_search(pid, n_trial):
     '''Parameter search.'''
     # wait for back-end processing
-    time.sleep(1)
+    time.sleep(2)
 
     # request hyper-parameters from DrOpt
     sugt = conn.projects(pid).suggestions().create()

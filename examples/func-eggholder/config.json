@@ -2,7 +2,7 @@
     "config":{
       "experimentName": "func-eggholder",
       "maxExecDuration": "1h",
-      "maxTrialNum": 10,
+      "maxTrialNum": 1000,
       "parentProject": "None",
       "model": "Eggholder",
       "updatePeriod": 60,

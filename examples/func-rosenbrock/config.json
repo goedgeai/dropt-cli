@@ -2,7 +2,7 @@
     "config":{
       "experimentName": "func-rosenbrock",
       "maxExecDuration": "1h",
-      "maxTrialNum": 10,
+      "maxTrialNum": 1000,
       "parentProject": "None",
       "model": "Rosenbrock",
       "updatePeriod": 60,

@@ -71,7 +71,7 @@ def run(args):
     kf = model_selection.KFold(n_splits=5, shuffle=False)
     scores = model_selection.cross_val_score(model, X, y, cv=kf)
     score = scores.mean()
-    logger.debug(f"score: {score}")
+    logger.debug(f'score: {score:10.6f}')
     return score
 
 
