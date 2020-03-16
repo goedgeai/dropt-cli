@@ -1,3 +1,9 @@
+'''
+Reference
+---
+https://github.com/pytorch/examples/tree/master/mnist
+'''
+
 from __future__ import print_function
 import logging
 import torch
@@ -21,18 +27,20 @@ params = {'batch_size': 64,
           'no_cuda': False,
           'seed': 1,
           'log_interval': 10,
-          'save_model': False}
+          'save_model': False,
+          'hidden_size': 128}
 
 
 class Net(nn.Module):
-    def __init__(self):
+    '''Define an NN model.'''
+    def __init__(self, hidden_size):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 32, 3, 1)
         self.conv2 = nn.Conv2d(32, 64, 3, 1)
         self.dropout1 = nn.Dropout2d(0.25)
         self.dropout2 = nn.Dropout2d(0.5)
-        self.fc1 = nn.Linear(9216, 128)
-        self.fc2 = nn.Linear(128, 10)
+        self.fc1 = nn.Linear(9216, hidden_size)
+        self.fc2 = nn.Linear(hidden_size, 10)
 
     def forward(self, x):
         x = self.conv1(x)
@@ -52,6 +60,7 @@ class Net(nn.Module):
 
 
 def train(args, model, device, train_loader, optimizer, epoch):
+    '''Model training.'''
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
@@ -68,6 +77,7 @@ def train(args, model, device, train_loader, optimizer, epoch):
 
 
 def test(args, model, device, test_loader):
+    '''Model testing.'''
     model.eval()
     test_loss = 0
     correct = 0
@@ -90,7 +100,7 @@ def test(args, model, device, test_loader):
 
 
 def run(args):
-    # Training settings
+    '''Evaluate performance of the model with the given parameters.'''
     use_cuda = not args['no_cuda'] and torch.cuda.is_available()
 
     torch.manual_seed(args['seed'])
@@ -120,7 +130,7 @@ def run(args):
         shuffle=True,
         **kwargs)
 
-    model = Net().to(device)
+    model = Net(hidden_size=args['hidden_size']).to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=args['lr'])
 
     scheduler = StepLR(optimizer, step_size=1, gamma=args['gamma'])
@@ -137,10 +147,12 @@ def run(args):
 
 
 def params_loader():
-    '''Get parameters'''
+    '''Get parameters.'''
     parser = ArgumentParser(description='PyTorch MNIST Example')
     parser.add_argument('--batch-size', type=int, metavar='N',
                         help='input batch size for training (default: 64)')
+    parser.add_argument('--hidden-size', type=int, metavar='N',
+                        help='hidden layer size (default: 128)')
     parser.add_argument('--test-batch-size', type=int, metavar='N',
                         help='input batch size for testing (default: 1000)')
     parser.add_argument('--epochs', type=int, metavar='N',
