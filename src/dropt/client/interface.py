@@ -4,11 +4,11 @@ import json
 from .compat import json as simplejson
 from .endpoint import ApiEndpoint
 from .objects import (
-  ApiObject,
-  Project,
-  Suggestion,
-  Validation,
-  Token,
+    ApiObject,
+    Project,
+    Suggestion,
+    Validation,
+    Token,
 )
 from .requestor import Requestor, DEFAULT_API_URL
 from .resource import ApiResource
@@ -126,48 +126,57 @@ class ConnectionImpl(object):
     self.requestor.timeout = timeout
 
 
+
 class Connection(object):
-  def __init__(self, client_token=None, user_agent=None, server_ip="140.113.24.232"):
-    client_token = client_token
-    # api_url = os.environ.get("SIGOPT_API_URL") or DEFAULT_API_URL
-    api_url = os.environ.get("SIGOPT_API_URL") or "http://"+ server_ip + ":8080"
-    if not client_token:
-      raise ValueError("Must provide client_token.")
+    def __init__(self, client_token=None, user_agent=None, server_ip=None):
+        client_token = client_token
+        api_url = f'http://{server_ip}:8080'
+        if not client_token:
+            raise ValueError("Must provide client_token.")
 
-    default_headers = {
-      "Content-Type": "application/json",
-      "User-Agent": user_agent if user_agent is not None else "dropt-python/{0}".format(__version__),
-      "X-DrOpt-Python-Version": __version__,
-    }
-    requestor = Requestor(
-      client_token,
-      "",
-      default_headers,
-    )
-    self.impl = ConnectionImpl(requestor, api_url=api_url)
+        default_headers = {
+            "Content-Type": "application/json",
+            "User-Agent": user_agent if user_agent is not None else f'dropt-python/{__version__}',
+            "X-DrOpt-Python-Version": __version__,
+        }
+        requestor = Requestor(
+            client_token,
+            "",
+            default_headers,
+        )
+        self.impl = ConnectionImpl(requestor, api_url=api_url)
 
-  def set_api_url(self, api_url):
-    self.impl.set_api_url(api_url)
 
-  def set_verify_ssl_certs(self, verify_ssl_certs):
-    self.impl.set_verify_ssl_certs(verify_ssl_certs)
+    def set_api_url(self, api_url):
+        self.impl.set_api_url(api_url)
 
-  def set_proxies(self, proxies):
-    self.impl.set_proxies(proxies)
 
-  def set_timeout(self, timeout):
-    self.impl.set_timeout(timeout)
+    def set_verify_ssl_certs(self, verify_ssl_certs):
+        self.impl.set_verify_ssl_certs(verify_ssl_certs)
 
-  @property
-  def projects(self):
-    return self.impl.projects
+
+    def set_proxies(self, proxies):
+        self.impl.set_proxies(proxies)
+
+
+    def set_timeout(self, timeout):
+        self.impl.set_timeout(timeout)
+
+
+    @property
+    def projects(self):
+        return self.impl.projects
+
+
 
 def object_or_paginated_objects(api_object):
-  def decorator(body, *args, **kwargs):
-    if body.get("object") == "pagination":
-      return Pagination(api_object, body, *args, **kwargs)
-    return api_object(body, *args, **kwargs)
-  return decorator
+    def decorator(body, *args, **kwargs):
+        if body.get("object") == "pagination":
+            return Pagination(api_object, body, *args, **kwargs)
+        return api_object(body, *args, **kwargs)
+    return decorator
+
+
 
 def load_config_file(file_name):
     with open(file_name) as json_file:

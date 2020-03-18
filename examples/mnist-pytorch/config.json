@@ -1,19 +1,18 @@
 {
-    "config":{
-      "experimentName": "mnist-pytorch",
-      "maxExecDuration": "1h",
-      "maxTrialNum": 10,
-      "parentProject": "None",
-      "model": "CNN",
-      "updatePeriod": 60,
-      "tuner": {
-        "builtinTunerName": "TPE",
-        "classArgs":{
-          "optimize_mode": "minimize"
+    "config": {
+        "experimentName": "mnist-pytorch",
+        "maxExecDuration": "1h",
+        "maxTrialNum": 10,
+        "parentProject": "None",
+        "model": "CNN",
+        "updatePeriod": 60,
+        "tuner": {
+            "builtinTunerName": "TPE",
+            "classArgs": {"optimize_mode": "minimize"}
         }
-      }
     },
-    "search_space":{
+
+    "search_space": {
         "batch_size": {"_type": "choice", "_value": [16, 32, 64, 128]},
         "hidden_size": {"_type": "choice", "_value": [128, 256, 512, 1024]},
         "lr": {"_type": "choice", "_value" :[0.0001, 0.001, 0.01, 0.1]},
