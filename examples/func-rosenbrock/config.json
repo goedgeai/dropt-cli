@@ -4,8 +4,7 @@
         "maxExecDuration": "1h",
         "maxTrialNum": 1000,
         "parentProject": "None",
-        "model": "Rosenbrock",
-        "modelFile": "rosenbrock.py",
+        "model": "rosenbrock",
         "updatePeriod": 60,
         "tuner": {
             "builtinTunerName": "TPE",
