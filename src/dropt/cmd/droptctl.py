@@ -10,11 +10,10 @@ Example:
 
 
 import dropt.client as dropt_cli
+import importlib.util
 import json
 import time
 from argparse import ArgumentParser
-from importlib import import_module
-from rosenbrock import run, params
 
 
 def header_footer_loop(func):
@@ -64,7 +63,10 @@ def start():
         conf = json.load(f)
 
     # load model
-    model = import_module(conf['config']['model'])
+    model_name = conf['config']['model']
+    spec = importlib.util.spec_from_file_location(model_name, f'{model_name}.py')
+    model = importlib.util.module_from_spec(spec)
+    print(model)
 
     # establish connection to a DrOpt server with the given user token
     conn = dropt_cli.Connection(client_token=args.user_token, server_ip=args.server_ip)
