@@ -136,8 +136,8 @@ class Connection(object):
 
         default_headers = {
             "Content-Type": "application/json",
-            "User-Agent": user_agent if user_agent is not None else f'dropt-python/{__version__}',
-            "X-DrOpt-Python-Version": __version__,
+            "User-Agent": user_agent if user_agent is not None else f'dropt-python/{version}',
+            "X-DrOpt-Python-Version": version,
         }
         requestor = Requestor(
             client_token,
