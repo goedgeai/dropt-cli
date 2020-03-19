@@ -1,24 +1,23 @@
 {
-    "config":{
-      "experimentName": "titanic-xgboost",
-      "maxExecDuration": "1h",
-      "maxTrialNum": 10,
-      "parentProject": "None",
-      "model": "xgboost",
-      "updatePeriod": 60,
-      "tuner": {
-        "builtinTunerName": "TPE",
-        "classArgs":{
-          "optimize_mode": "maximize"
+    "config": {
+        "experimentName": "titanic-xgboost",
+        "maxExecDuration": "1h",
+        "maxTrialNum": 10,
+        "parentProject": "None",
+        "model": "titanic_xgb",
+        "updatePeriod": 60,
+        "tuner": {
+            "builtinTunerName": "TPE",
+            "classArgs": {"optimize_mode": "maximize"}
         }
-      }
     },
-    "search_space":{
-      "max_depth": {"_type": "randint", "_value": [1, 5]},
-      "gamma": {"_type": "uniform", "_value": [0.1, 1.0]},
-      "subsample": {"_type": "uniform", "_value": [0.1, 1.0]},
-      "colsample_bytree": {"_type": "uniform", "_value": [0.1, 1.0]},
-      "alpha": {"_type": "uniform", "_value": [0.1, 1.0]},
-      "eta": {"_type": "uniform", "_value": [0.1, 1.0]}
+
+    "search_space": {
+        "max_depth": {"_type": "randint", "_value": [1, 5]},
+        "gamma": {"_type": "uniform", "_value": [0.1, 1.0]},
+        "subsample": {"_type": "uniform", "_value": [0.1, 1.0]},
+        "colsample_bytree": {"_type": "uniform", "_value": [0.1, 1.0]},
+        "alpha": {"_type": "uniform", "_value": [0.1, 1.0]},
+        "eta": {"_type": "uniform", "_value": [0.1, 1.0]}
     }
 }

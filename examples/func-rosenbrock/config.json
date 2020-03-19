@@ -8,7 +8,7 @@
         "updatePeriod": 60,
         "tuner": {
             "builtinTunerName": "TPE",
-            "classArgs": {"optimize_mode": "minimize" }
+            "classArgs": {"optimize_mode": "minimize"}
         }
     },
 

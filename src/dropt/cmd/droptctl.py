@@ -42,7 +42,7 @@ def param_search(p, model):
 
     # apply the suggested parameters and evalute the corresponding model
     model.params.update(sugt_value)
-    metric = model.run(params)
+    metric = model.run(model.params)
     print(f"Suggestion = {sugt_value}")
     print(f"Evaluation: {metric}")
 
@@ -66,7 +66,7 @@ def start():
     model_name = conf['config']['model']
     spec = importlib.util.spec_from_file_location(model_name, f'{model_name}.py')
     model = importlib.util.module_from_spec(spec)
-    print(model)
+    spec.loader.exec_module(model)
 
     # establish connection to a DrOpt server with the given user token
     conn = dropt_cli.Connection(client_token=args.user_token, server_ip=args.server_ip)
