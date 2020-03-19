@@ -1,21 +1,26 @@
 {
     "config":{
-      "experimentName": "func-rosenbrock",
-      "maxExecDuration": "1h",
-      "maxTrialNum": 1000,
-      "parentProject": "None",
-      "model": "Rosenbrock",
-      "updatePeriod": 60,
-      "tuner": {
-        "builtinTunerName": "TPE",
-        "classArgs":{
-          "optimize_mode": "minimize"
+        "experimentName": "func-rosenbrock",
+        "maxExecDuration": "1h",
+        "maxTrialNum": 1000,
+        "parentProject": "None",
+        "model": "rosenbrock",
+        "updatePeriod": 60,
+        "tuner": {
+            "builtinTunerName": "TPE",
+            "classArgs": {"optimize_mode": "minimize"}
         }
-      }
     },
-    "search_space":{
-      "x": {"_type": "uniform", "_value": [0, 2.0]},
-      "y": {"_type": "uniform", "_value": [0, 2.0]},
-      "z": {"_type": "uniform", "_value": [0, 2.0]}
+
+    "params": {
+        "x": null,
+        "y": null,
+        "z": null
+    },
+
+    "search_space": {
+        "x": {"_type": "uniform", "_value": [0, 2.0]},
+        "y": {"_type": "uniform", "_value": [0, 2.0]},
+        "z": {"_type": "uniform", "_value": [0, 2.0]}
     }
 }

@@ -18,22 +18,6 @@ logger = logging.getLogger("sklearn_randomForest")
 # setup path to data
 DATA_PATH = '../../data/titanic'
 
-# default value of parameters
-params = {'booster': 'gbtree',
-          'verbosity': 0,
-          'base_score': 0.5,
-          'colsample_bylevel': 1,
-          'n_estimators': 50,
-          'objective': "binary:logistic",
-          'max_depth': 5,
-          'gamma': 0.2,
-          'subsample': 0.8,
-          'colsample-bytree': 0.8,
-          'lambda': 1,
-          'alpha': 0.25,
-          'eta': 0.01,
-          'min_child_weight': 1.0}
-                  
 
 def data_loader():
     '''Load dataset'''
@@ -63,10 +47,9 @@ def model_loader(params):
     return model
 
 
-def run(args):
+def run(params):
     '''Evaluate performance of the model with the given parameters'''
     X, y = data_loader()
-    params.update(args)
     model = model_loader(params)
     kf = model_selection.KFold(n_splits=5, shuffle=False)
     scores = model_selection.cross_val_score(model, X, y, cv=kf)

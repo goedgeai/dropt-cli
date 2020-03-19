@@ -1,20 +1,24 @@
 {
-    "config":{
-      "experimentName": "func-eggholder",
-      "maxExecDuration": "1h",
-      "maxTrialNum": 1000,
-      "parentProject": "None",
-      "model": "Eggholder",
-      "updatePeriod": 60,
-      "tuner": {
-        "builtinTunerName": "TPE",
-        "classArgs":{
-          "optimize_mode": "minimize"
+    "config": {
+        "experimentName": "func-eggholder",
+        "maxExecDuration": "1h",
+        "maxTrialNum": 1000,
+        "parentProject": "None",
+        "model": "eggholder",
+        "updatePeriod": 60,
+        "tuner": {
+            "builtinTunerName": "TPE",
+            "classArgs": {"optimize_mode": "minimize"}
         }
-      }
     },
-    "search_space":{
-      "x": {"_type": "uniform", "_value": [-512.0, 512.0]},
-      "y": {"_type": "uniform", "_value": [-512.0, 512.0]}
+
+    "params": {
+        "x": null,
+        "y": null
+    },
+
+    "search_space": {
+        "x": {"_type": "uniform", "_value": [-512.0, 512.0]},
+        "y": {"_type": "uniform", "_value": [-512.0, 512.0]}
     }
 }
