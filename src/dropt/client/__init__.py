@@ -1,3 +1,3 @@
 from .interface import Connection
 from .interface import load_config_file
-from .version import __version__
+from .version import version
