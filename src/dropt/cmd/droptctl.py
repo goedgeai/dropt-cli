@@ -1,46 +1,60 @@
-"""DrOpt controller
+'''DrOpt controller.
 
-This is the controller of DrOpt experiments.
+This is the DrOpt project control script.
+It encapsulates the procedure for creating and running a DrOpt project
+by standardizing the required model file and the config file.
 
-Example:
-    To run the script, simply execute the following command in shell:
+Usage:
+  Run the following command under the directory storing your DrOpt
+  project (which typically includes 'model.py' and 'config.json'):
 
-        $ droptctl -t [user token] -i [server IP] -c [configuration file]
-"""
+    $ droptctl -t [user token] -i [server IP] -c [configuration file]
+
+  See the online help for details.
+
+
+Todo:
+  - Enable different commands for droptctl.
+'''
 
 
 import dropt.client as dropt_cli
 import importlib.util
 import json
-import time
+from time import sleep
 from argparse import ArgumentParser
 
 
 def header_footer_loop(func):
-    '''Decorator for header, footer and loop.'''
+    '''Decorator tha includes header, footer and trial loop for projects.'''
     def inner(project, model, params, pid, n_trial):
+        # header
         print( '\n=================== Trial Start ====================')
         print(f'\t\tProject ID: {pid}')
         print( '----------------------------------------------------')
+
+        # trial loop
         for i in range(n_trial):
             print(f'\n[trial {i+1}/{n_trial}]')
             func(project, model, params)
+
+        # footer
         print('\n=================== Trial End ======================\n')
     return inner
     
 
 @header_footer_loop
 def param_search(project, model, params):
-    '''Parameter search.'''
+    '''Parameter search and evaluation.'''
     # wait for back-end processing
-    time.sleep(2)
+    sleep(2)
 
     # request hyper-parameters from DrOpt
     sugt = project.suggestions().create()
     sugt_id = sugt.suggest_id
     sugt_value = sugt.assignments
 
-    # apply the suggested parameters and evalute the corresponding model
+    # evaluate the model with the suggested parameter configuration
     params.update(sugt_value)
     metric = model.run(params)
     print(f"Suggestion = {sugt_value}")
@@ -51,11 +65,12 @@ def param_search(project, model, params):
 
 
 def start():
+    '''Main procedure for creating and running a project.'''
     # parse input arguments
-    parser = ArgumentParser()
-    parser.add_argument("-t", "--user-token", help="user token", required=True)
-    parser.add_argument("-s", "--server-ip", help="server IP address", default="140.113.213.86")
-    parser.add_argument("-c", "--config", help="configuration file", default="config.json")
+    parser = ArgumentParser(prog='droptctl', description='Create DrOpt projects.')
+    parser.add_argument('-t', '--token', help='user token', required=True)
+    parser.add_argument('-s', '--server', help='server address', default='140.113.213.86')
+    parser.add_argument('-c', '--config', help='config file', default='config.json')
     args, _ = parser.parse_known_args()
 
     # read config file
@@ -68,11 +83,8 @@ def start():
     model = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(model)
 
-    # read default parameters
-    params = conf['params']
-
-    # establish connection to a DrOpt server with the given user token
-    conn = dropt_cli.Connection(client_token=args.user_token, server_ip=args.server_ip)
+    # establish connection to the given DrOpt server with the given user token
+    conn = dropt_cli.Connection(client_token=args.token, server_ip=args.server)
 
     # create a DrOpt project
     project = conn.projects().create(config = json.dumps(conf))
@@ -80,8 +92,8 @@ def start():
     n_trial = project.trial
     project = conn.projects(pid)
 
-    # perform parameter search
-    param_search(project, model, params, pid, n_trial)
+    # perform parameter search and evaluation
+    param_search(project, model, conf['params'], pid, n_trial)
 
 
 if __name__ == '__main__':
