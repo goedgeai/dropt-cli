@@ -12,7 +12,7 @@ from .objects import (
 )
 from .requestor import Requestor, DEFAULT_API_URL
 from .resource import ApiResource
-from .version import __version__
+from .version import version
 
 class ConnectionImpl(object):
   def __init__(self, requestor, api_url=None):
