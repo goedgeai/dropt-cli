@@ -12,9 +12,6 @@ from argparse import ArgumentParser
 # setup logs
 logger = logging.getLogger("test_function_for_optimization")
 
-# default value of parameters
-params = {}
-
 
 def run(params):
     '''Evaluate the test function'''

@@ -12,6 +12,11 @@
         }
     },
 
+    "params": {
+        "x": null,
+        "y": null
+    },
+
     "search_space": {
         "x": {"_type": "uniform", "_value": [-512.0, 512.0]},
         "y": {"_type": "uniform", "_value": [-512.0, 512.0]}

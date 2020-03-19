@@ -13,9 +13,6 @@ from math import sin, sqrt
 # setup logs
 logger = logging.getLogger("test_function_for_optimization")
 
-# default value of parameters
-params = {}
-
 
 def run(params):
     '''Evaluate the test function'''
