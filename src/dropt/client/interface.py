@@ -1,18 +1,11 @@
 import os
 import json
-
+from .__init__ import __version__
 from .compat import json as simplejson
 from .endpoint import ApiEndpoint
-from .objects import (
-    ApiObject,
-    Project,
-    Suggestion,
-    Validation,
-    Token,
-)
+from .objects import ApiObject, Project, Suggestion, Validation, Token
 from .requestor import Requestor, DEFAULT_API_URL
 from .resource import ApiResource
-from .version import __version__
 
 class ConnectionImpl(object):
   def __init__(self, requestor, api_url=None):
