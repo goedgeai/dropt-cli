@@ -1,18 +1,11 @@
 import os
 import json
-
+from .__init__ import __version__
 from .compat import json as simplejson
 from .endpoint import ApiEndpoint
-from .objects import (
-    ApiObject,
-    Project,
-    Suggestion,
-    Validation,
-    Token,
-)
+from .objects import ApiObject, Project, Suggestion, Validation, Token
 from .requestor import Requestor, DEFAULT_API_URL
 from .resource import ApiResource
-from .version import version
 
 class ConnectionImpl(object):
   def __init__(self, requestor, api_url=None):
@@ -136,8 +129,8 @@ class Connection(object):
 
         default_headers = {
             "Content-Type": "application/json",
-            "User-Agent": user_agent if user_agent is not None else f'dropt-python/{version}',
-            "X-DrOpt-Python-Version": version,
+            "User-Agent": user_agent if user_agent is not None else f'dropt-python/{__version__}',
+            "X-DrOpt-Python-Version": __version__,
         }
         requestor = Requestor(
             client_token,

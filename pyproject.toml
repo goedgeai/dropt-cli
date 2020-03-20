@@ -1,5 +1,2 @@
 [build-system]
-requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>3.4"]
-
-[tool.setuptools_scm]
-write_to = "src/dropt/client/version.py"
+requires = ["setuptools>=38.3.0", "wheel", "setuptools_scm>=3.3.1"]

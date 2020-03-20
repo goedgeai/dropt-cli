@@ -1,3 +1,6 @@
-from .interface import Connection
-from .interface import load_config_file
-from .version import version
+from pkg_resources import get_distribution, DistributionNotFound
+
+try:
+    __version__ = get_distribution('dropt-cli').version
+except DistributionNotFound:
+    pass

@@ -18,9 +18,9 @@ Todo:
 '''
 
 
-import dropt.client as dropt_cli
 import importlib.util
 import json
+from dropt.client.interface import Connection
 from time import sleep
 from argparse import ArgumentParser
 
@@ -84,7 +84,7 @@ def start():
     spec.loader.exec_module(model)
 
     # establish connection to the given DrOpt server with the given user token
-    conn = dropt_cli.Connection(client_token=args.token, server_ip=args.server)
+    conn = Connection(client_token=args.token, server_ip=args.server)
 
     # create a DrOpt project
     project = conn.projects().create(config = json.dumps(conf))
