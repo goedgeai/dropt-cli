@@ -1,3 +1,4 @@
+from .vendored import six
 from .endpoint import BoundApiEndpoint
 
 
@@ -12,7 +13,7 @@ class BoundApiResource(object):
         if id is _NO_ARG:
             self._base_url = api_url
         else:
-            self._base_url = f'{api_url}/{id}')
+            self._base_url = f'{api_url}/{id}'
 
     def get_bound_entity(self, name):
         endpoint = self._resource._endpoints.get(name)
