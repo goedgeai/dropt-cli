@@ -1,4 +1,3 @@
-from .vendored import six
 from .endpoint import BoundApiEndpoint
 
 
@@ -29,16 +28,11 @@ class BoundApiResource(object):
         bound_entity = self.get_bound_entity(attr)
         if bound_entity:
             return bound_entity
-        raise AttributeError(
-            six.u(
-                'Cannot find attribute `{attribute}` on resource `{resource}`, likely no endpoint exists for: '
-                '{base_url}/{attribute}, or `{resource}` does not support `{attribute}`.'
-            ).format(
-                attribute=attr,
-                resource=self._resource._name,
-                base_url=self._base_url,
-            )
-        )
+        raise AttributeError((
+            f'Cannot find attribute `{attr}` on resource `{self._resource._name}`, '
+            f'likely no endpoint exists for: '
+            f'{self._base_url}/{attr}, or `{self._resource._name}` does not support `{attr}`.'
+        ))
 
 
 class PartiallyBoundApiResource(object):
@@ -47,10 +41,7 @@ class PartiallyBoundApiResource(object):
         self._bound_parent_resource = bound_parent_resource
 
     def __call__(self, id=_NO_ARG):
-        api_url = six.u('{parent_api_url}/{name}').format(
-            parent_api_url=self._bound_parent_resource._base_url,
-            name=self._resource._name
-        )
+        api_url = f'{self._bound_parent_resource._base_url}/{self._resource._name}'
         return BoundApiResource(self._resource, id, api_url)
 
 
@@ -72,10 +63,7 @@ class BaseApiResource(object):
         )) if resources else {}
 
     def __call__(self, id=_NO_ARG):
-        api_url = six.u('{api_url}/dropt/v2/{name}').format(
-            api_url=self._conn.api_url,
-            name=self._name,
-        )
+        api_url = f'{self._conn.api_url}/dropt/v2/{self._name}'
         return BoundApiResource(self, id, api_url)
 
 
