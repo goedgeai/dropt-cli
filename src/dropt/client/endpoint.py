@@ -1,4 +1,4 @@
-from .compat import json as simplejson
+import json
 from .objects import ResponseSuggestion
 
 class BoundApiEndpoint(object):
@@ -7,7 +7,7 @@ class BoundApiEndpoint(object):
     self._endpoint = endpoint
 
   def call_with_json(self, json):
-    return self.call_with_params(simplejson.loads(json))
+    return self.call_with_params(json.loads(json))
 
   def call_with_params(self, params):
     name = self._endpoint._name
