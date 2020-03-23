@@ -11,10 +11,8 @@ class ConnectionException(DrOptException):
         self.message = message
 
     def __str__(self):
-        return six.u('{0}: {1}').format(
-            'ConnectionException',
-            self.message if self.message is not None else '',
-        )
+        message = self.message if self.message is not None else ''
+        return f'ConnectionException: {message}'
 
 
 class ApiException(DrOptException):
@@ -28,11 +26,8 @@ class ApiException(DrOptException):
         self.status_code = status_code
 
     def __str__(self):
-        return six.u('{0} ({1}): {2}').format(
-            'ApiException',
-            self.status_code,
-            self.message if self.message is not None else '',
-        )
+        message = self.message if self.message is not None else ''
+        return 'ApiException ({self.status_code}): {message}'
 
     def to_json(self):
         return copy.deepcopy(self._body)
