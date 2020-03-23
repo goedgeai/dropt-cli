@@ -1,7 +1,6 @@
 import os
 import json
 from .__init__ import __version__
-from .compat import json as simplejson
 from .endpoint import ApiEndpoint
 from .objects import ApiObject, Project, Suggestion, Validation, Token
 from .requestor import Requestor, DEFAULT_API_URL
@@ -96,7 +95,7 @@ class ConnectionImpl(object):
 
     def serialize(value):
       if isinstance(value, (dict, list)):
-        return simplejson.dumps(value)
+        return json.dumps(value)
       return str(value)
 
     return dict((
@@ -168,10 +167,3 @@ def object_or_paginated_objects(api_object):
             return Pagination(api_object, body, *args, **kwargs)
         return api_object(body, *args, **kwargs)
     return decorator
-
-
-
-def load_config_file(file_name):
-    with open(file_name) as json_file:
-        config = json.load(json_file)
-    return json.dumps(config) 

@@ -1,7 +1,6 @@
 import copy
 import warnings
-
-from .compat import json
+import json
 from .vendored import six as six
 
 

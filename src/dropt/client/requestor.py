@@ -1,10 +1,11 @@
 import requests
-
-from .compat import json as simplejson
+import json
 from .exception import ApiException, ConnectionException
+
 
 DEFAULT_API_URL = 'http://140.113.140.24:8080'
 DEFAULT_HTTP_TIMEOUT = 150
+
 
 class Requestor(object):
   def __init__(self, user, password, headers, verify_ssl_certs=True, proxies=None, timeout=DEFAULT_HTTP_TIMEOUT):
@@ -79,7 +80,7 @@ class Requestor(object):
     is_success = 200 <= status_code <= 299
 
     try:
-      response_json = simplejson.loads(response.text)
+      response_json = json.loads(response.text)
     except ValueError:
       response_json = {'message': response.text}
       status_code = 500 if is_success else status_code
