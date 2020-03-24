@@ -2,13 +2,13 @@ import requests
 import json
 from .exception import ApiException, ConnectionException
 
-
-DEFAULT_API_URL = 'http://140.113.140.24:8080'
 DEFAULT_HTTP_TIMEOUT = 150
+# ignore invalid SSL certificate
+requests.packages.urllib3.disable_warnings()
 
 
 class Requestor(object):
-  def __init__(self, user, password, headers, verify_ssl_certs=True, proxies=None, timeout=DEFAULT_HTTP_TIMEOUT):
+  def __init__(self, user, password, headers, verify_ssl_certs=False, proxies=None, timeout=DEFAULT_HTTP_TIMEOUT):
 
     if user is not None:
       self.auth = requests.auth.HTTPBasicAuth(user, password)

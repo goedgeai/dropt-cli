@@ -3,13 +3,13 @@ import json
 from .__init__ import __version__
 from .endpoint import ApiEndpoint
 from .objects import ApiObject, Project, Suggestion, Validation, Token
-from .requestor import Requestor, DEFAULT_API_URL
+from .requestor import Requestor
 from .resource import ApiResource
 
 class ConnectionImpl(object):
   def __init__(self, requestor, api_url=None):
     self.requestor = requestor
-    self.api_url = api_url or DEFAULT_API_URL
+    self.api_url = api_url
 
     suggestions = ApiResource(
       self,
@@ -122,7 +122,7 @@ class ConnectionImpl(object):
 class Connection(object):
     def __init__(self, client_token=None, user_agent=None, server_ip=None):
         client_token = client_token
-        api_url = f'http://{server_ip}:8080'
+        api_url = f'https://{server_ip}'
         if not client_token:
             raise ValueError("Must provide client_token.")
 
