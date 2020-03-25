@@ -27,7 +27,7 @@ class ApiException(DrOptException):
 
     def __str__(self):
         message = self.message if self.message is not None else ''
-        return 'ApiException ({self.status_code}): {message}'
+        return f'ApiException ({self.status_code}): {message}'
 
     def to_json(self):
         return copy.deepcopy(self._body)
