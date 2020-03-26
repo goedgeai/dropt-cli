@@ -1,0 +1,46 @@
+{
+    "config":{
+        "experimentName": "ImageNet-PyTorch",
+        "maxExecDuration": "2h",
+        "maxTrialNum": 20,
+        "parentProject": "None",
+        "model": "imagenet",
+        "updatePeriod": 60,
+        "tuner": {
+            "builtinTunerName": "TPE",
+            "classArgs": {"optimize_mode": "maximize"}
+        }
+    },
+
+    "params": {
+        "data": "../../data/tiny-imagenet-200",
+        "arch": "resnet18",
+        "workers": 4,
+        "epochs": 90,
+        "start_epoch": 0,
+        "batch_size": 256,
+        "lr": 0.1,
+        "momentum": 0.9,
+        "weight_decay": 1e-4,
+        "print_freq": 10,
+        "resume": null,
+        "evaluate": false,
+        "pretrained": false,
+        "world_size": -1,
+        "rank": -1,
+        "dist_url": null,
+        "dist_backend": "nccl",
+        "seed": null,
+        "gpu": null,
+        "multiprocessing_distributed": false
+    },
+
+    "search_space": {
+        "arch": {"_type": "choice", "_value": ["resnet18", "vgg16", "densenet121", "vgg16_bn", "alexnet"]},
+        "epochs": {"_type": "choice", "_value": [10, 20, 40, 80]},
+        "batch_size": {"_type": "choice", "_value": [32, 64, 128, 256]},
+        "lr": {"_type": "choice", "_value": [0.1, 0.01, 0.001, 0.0001]},
+        "momentum": {"_type": "choice", "_value": [0.1, 0.3, 0.5, 0.7, 0.9]},
+        "weight_decay": {"_type": "choice", "_value": [0.01, 0.001, 0.0001, 0.00001]}
+    }
+}

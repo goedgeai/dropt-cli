@@ -376,17 +376,16 @@ def param_loader():
                         help='path to dataset')
     parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
                         choices=model_names,
-                        help='model architecture: ' +
-                            ' | '.join(model_names) +
-                            ' (default: resnet18)')
+                        help=(f'model architecture: '
+                              f'{" | ".join(model_names)} '
+                              f'(default: resnet18)'))
     parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
                         help='number of data loading workers (default: 4)')
     parser.add_argument('--epochs', default=90, type=int, metavar='N',
                         help='number of total epochs to run')
     parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                         help='manual epoch number (useful on restarts)')
-    parser.add_argument('-b', '--batch-size', default=256, type=int,
-                        metavar='N',
+    parser.add_argument('-b', '--batch-size', default=256, type=int, metavar='N',
                         help='mini-batch size (default: 256), this is the total '
                              'batch size of all GPUs on the current node when '
                              'using Data Parallel or Distributed Data Parallel')
@@ -395,8 +394,7 @@ def param_loader():
     parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
                         help='momentum')
     parser.add_argument('--wd', '--weight-decay', default=1e-4, type=float,
-                        metavar='W', help='weight decay (default: 1e-4)',
-                        dest='weight_decay')
+                        metavar='W', help='weight decay (default: 1e-4)')
     parser.add_argument('-p', '--print-freq', default=10, type=int,
                         metavar='N', help='print frequency (default: 10)')
     parser.add_argument('--resume', default='', type=str, metavar='PATH',
@@ -429,5 +427,5 @@ def param_loader():
 
 if __name__ == '__main__':
     args = param_loader()
-    score = run(args)
-    print(type(score))
+    acc1 = run(args)
+    print(f'Acc@1 = {score}')
