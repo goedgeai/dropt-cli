@@ -69,8 +69,10 @@ def start():
     # parse input arguments
     parser = ArgumentParser(prog='droptctl', description='Create DrOpt projects.')
     parser.add_argument('-t', '--token', help='user token', required=True)
-    parser.add_argument('-s', '--server', help='server address', default='https://dropt.neuralscope.org/')
-    parser.add_argument('-c', '--config', help='config file', default='config.json')
+    parser.add_argument('-s', '--server', default='dropt.neuralscope.org',
+        help='server address (default: dropt.neuralscope.org/)')
+    parser.add_argument('-c', '--config', default='config.json',
+        help='config file (default: ./config.json)')
     args, _ = parser.parse_known_args()
 
     # read config file
