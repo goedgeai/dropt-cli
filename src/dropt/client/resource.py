@@ -4,7 +4,7 @@ from .endpoint import BoundApiEndpoint
 _NO_ARG = object()
 
 
-class BoundApiResource(object):
+class BoundApiResource:
     def __init__(self, resource, id, api_url):
         self._resource = resource
         self._id = id
@@ -12,7 +12,7 @@ class BoundApiResource(object):
         if id is _NO_ARG:
             self._base_url = api_url
         else:
-            self._base_url = f'{api_url}/{id}'
+            self._base_url = f"{api_url}/{id}"
 
     def get_bound_entity(self, name):
         endpoint = self._resource._endpoints.get(name)
@@ -29,23 +29,23 @@ class BoundApiResource(object):
         if bound_entity:
             return bound_entity
         raise AttributeError((
-            f'Cannot find attribute `{attr}` on resource `{self._resource._name}`, '
-            f'likely no endpoint exists for: '
-            f'{self._base_url}/{attr}, or `{self._resource._name}` does not support `{attr}`.'
+            f"Cannot find attribute `{attr}' on resource `{self._resource._name}', "
+            f"likely no endpoint exists for: "
+            f"{self._base_url}/{attr}, or `{self._resource._name}' does not support `{attr}'."
         ))
 
 
-class PartiallyBoundApiResource(object):
+class PartiallyBoundApiResource:
     def __init__(self, resource, bound_parent_resource):
         self._resource = resource
         self._bound_parent_resource = bound_parent_resource
 
     def __call__(self, id=_NO_ARG):
-        api_url = f'{self._bound_parent_resource._base_url}/{self._resource._name}'
+        api_url = f"{self._bound_parent_resource._base_url}/{self._resource._name}"
         return BoundApiResource(self._resource, id, api_url)
 
 
-class BaseApiResource(object):
+class BaseApiResource:
     def __init__(self, conn, name, endpoints=None, resources=None):
         self._conn = conn
         self._name = name
@@ -63,7 +63,7 @@ class BaseApiResource(object):
         )) if resources else {}
 
     def __call__(self, id=_NO_ARG):
-        api_url = f'{self._conn.api_url}/dropt/v2/{self._name}'
+        api_url = f"{self._conn.api_url}/dropt/v2/{self._name}"
         return BoundApiResource(self, id, api_url)
 
 

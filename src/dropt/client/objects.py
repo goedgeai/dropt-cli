@@ -1,9 +1,9 @@
 import copy
-import warnings
 import json
+import warnings
 
 
-class ListOf(object):
+class ListOf:
     def __init__(self, type):
         self.type = type
 
@@ -11,7 +11,7 @@ class ListOf(object):
         return [self.type(v) for v in value]
 
 
-class Field(object):
+class Field:
     def __init__(self, type):
         self.type = type
 
@@ -24,17 +24,21 @@ class Field(object):
 class DeprecatedField(Field):
     def __init__(self, type, recommendation=None):
         super(DeprecatedField, self).__init__(type)
-        self.recommendation = (' ' + recommendation) if recommendation else ''
+        self.recommendation = f" {recommendation}" if recommendation else ""
 
     def __call__(self, value):
         warnings.warn(
-            'This field has been deprecated and may be removed in a future version.{0}'.format(self.recommendation),
+            (
+                f"This field has been deprecated "
+                f"and may be removed in a future version. "
+                f"{self.recommendation}"
+            ),
             DeprecationWarning,
         )
         return super(DeprecatedField, self).__call__(value)
 
 
-class BaseApiObject(object):
+class BaseApiObject:
     def __getattribute__(self, name):
         value = object.__getattribute__(self, name)
         if isinstance(value, Field):
@@ -69,8 +73,8 @@ class BaseApiObject(object):
             ApiObject.as_json(self._body),
             indent=2,
             sort_keys=True,
-            separators=(',', ': '))
-        return f'{self.__class__.__name__}({j})'
+            separators=(",", ": "))
+        return f"{self.__class__.__name__}({j})"
 
     def to_json(self):
         return copy.deepcopy(self._body)
@@ -79,14 +83,14 @@ class BaseApiObject(object):
 class ApiObject(BaseApiObject):
     def __init__(self, body, bound_endpoint=None, retrieve_params=None):
         super(ApiObject, self).__init__()
-        object.__setattr__(self, '_body', body)
-        object.__setattr__(self, '_bound_endpoint', bound_endpoint)
-        object.__setattr__(self, '_retrieve_params', retrieve_params)
+        object.__setattr__(self, "_body", body)
+        object.__setattr__(self, "_bound_endpoint", bound_endpoint)
+        object.__setattr__(self, "_retrieve_params", retrieve_params)
 
     def __eq__(self, other):
         return (
-          isinstance(other, self.__class__) and
-          self._body == other._body
+            isinstance(other, self.__class__) and
+            self._body == other._body
         )
 
     @staticmethod

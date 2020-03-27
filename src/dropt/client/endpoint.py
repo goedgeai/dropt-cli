@@ -1,13 +1,7 @@
 import json
+
 from .objects import ResponseSuggestion
-
-
-def is_float(string):
-    try:
-        float(string)
-        return True
-    except ValueError:
-        return False
+from .util import is_float
 
 
 class BoundApiEndpoint:
@@ -15,8 +9,8 @@ class BoundApiEndpoint:
         self._bound_resource = bound_resource
         self._endpoint = endpoint
 
-    def call_with_json(self, json):
-        return self.call_with_params(json.loads(json))
+    def call_with_json(self, string):
+        return self.call_with_params(json.loads(string))
 
     def call_with_params(self, params):
         name = self._endpoint._name
@@ -36,14 +30,14 @@ class BoundApiEndpoint:
         # type casting (str -> int or float)
         if hasattr(rep, 'assignments'):
             resp_sugt = ResponseSuggestion(rep.suggest_id)
-            for a in rep.assignments:
-                if is_float(rep.assignments[a]):
-                    if float(rep.assignments[a]).is_integer():
-                        resp_sugt.assignments[a] = int(float(rep.assignments[a]))
+            for key in rep.assignments:
+                if is_float(rep.assignments[key]):
+                    if float(rep.assignments[key]).is_integer():
+                        resp_sugt.assignments[key] = int(float(rep.assignments[key]))
                     else:
-                        resp_sugt.assignments[a] = float(rep.assignments[a])
+                        resp_sugt.assignments[key] = float(rep.assignments[key])
                 else:
-                    resp_sugt.assignments[a] = rep.assignments[a]
+                    resp_sugt.assignments[key] = rep.assignments[key]
             return resp_sugt
 
         if 'msg' in rep._body:

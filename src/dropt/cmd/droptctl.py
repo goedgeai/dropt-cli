@@ -28,7 +28,7 @@ from dropt.client.interface import Connection
 
 def header_footer_loop(func):
     '''Decorator tha includes header, footer and trial loop for projects.'''
-    def inner(project, model, params, pid, n_trial):
+    def wrapper(project, model, params, pid, n_trial):
         # header
         print(f'\n=================== Trial Start ====================')
         print(f'\t\tProject ID: {pid}')
@@ -41,7 +41,7 @@ def header_footer_loop(func):
 
         # footer
         print('\n=================== Trial End ======================\n')
-    return inner
+    return wrapper
 
 
 @header_footer_loop
@@ -57,8 +57,8 @@ def param_search(project, model, params):
 
     # evaluate the model with the suggested parameter configuration
     params.update(sugt_value)
-    metric = model.run(params)
     print(f"Suggestion = {sugt_value}")
+    metric = model.run(params)
     print(f"Evaluation: {metric}")
 
     # report result to DrOpt
