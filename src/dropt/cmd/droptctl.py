@@ -20,18 +20,19 @@ Todo:
 
 import importlib.util
 import json
-from dropt.client.interface import Connection
-from time import sleep
 from argparse import ArgumentParser
+from time import sleep
+
+from dropt.client.interface import Connection
 
 
 def header_footer_loop(func):
     '''Decorator tha includes header, footer and trial loop for projects.'''
-    def inner(project, model, params, pid, n_trial):
+    def wrapper(project, model, params, pid, n_trial):
         # header
-        print( '\n=================== Trial Start ====================')
+        print(f'\n=================== Trial Start ====================')
         print(f'\t\tProject ID: {pid}')
-        print( '----------------------------------------------------')
+        print(f'----------------------------------------------------')
 
         # trial loop
         for i in range(n_trial):
@@ -40,8 +41,8 @@ def header_footer_loop(func):
 
         # footer
         print('\n=================== Trial End ======================\n')
-    return inner
-    
+    return wrapper
+
 
 @header_footer_loop
 def param_search(project, model, params):
@@ -56,8 +57,8 @@ def param_search(project, model, params):
 
     # evaluate the model with the suggested parameter configuration
     params.update(sugt_value)
-    metric = model.run(params)
     print(f"Suggestion = {sugt_value}")
+    metric = model.run(params)
     print(f"Evaluation: {metric}")
 
     # report result to DrOpt
@@ -69,13 +70,15 @@ def start():
     # parse input arguments
     parser = ArgumentParser(prog='droptctl', description='Create DrOpt projects.')
     parser.add_argument('-t', '--token', help='user token', required=True)
-    parser.add_argument('-s', '--server', help='server address', default='140.113.213.86')
-    parser.add_argument('-c', '--config', help='config file', default='config.json')
+    parser.add_argument('-s', '--server', default='dropt.neuralscope.org',
+                        help='server address (default: dropt.neuralscope.org/)')
+    parser.add_argument('-c', '--config', default='config.json',
+                        help='config file (default: ./config.json)')
     args, _ = parser.parse_known_args()
 
     # read config file
-    with open(args.config, 'r') as f:
-        conf = json.load(f)
+    with open(args.config, 'r') as file:
+        conf = json.load(file)
 
     # load model
     model_name = conf['config']['model']
@@ -87,7 +90,7 @@ def start():
     conn = Connection(client_token=args.token, server_ip=args.server)
 
     # create a DrOpt project
-    project = conn.projects().create(config = json.dumps(conf))
+    project = conn.projects().create(config=json.dumps(conf))
     pid = project.project_id
     n_trial = project.trial
     project = conn.projects(pid)
