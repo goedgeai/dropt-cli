@@ -1,43 +1,83 @@
-# Dr.Opt Client Readme
+# dropt-cli
+## Overview
+DrOpt is an ML model optimization service consisting of the following
+parts:
+- Hyper-parameter tuning tools
+- WebUI for result visualization & analysis
 
-Dr.Opt is a ML model optimization service, which includes automatic hyper-parameter tuning tools and provides a WebUI to visualize tuning results & analysis.
+A public DrOpt server is on <https://dropt.neuralscope.org>.
+
+`dropt-cli` is the client application of DrOpt service encapsulated
+as a Python package.  As a result, it requires users either to
+run their ML model or to wrap their ML model in Python.
 
 
-# Getting started
 
-## Prerequisites
-### Install Dr.Opt client package
-#### (1) Get the dropt-cli source code
+## Installation
+### Prerequisites
+We have tested `dropt-cli` in the following environments:
+- `Python>=3.5`
+- `pip>=20.0.0`
+
+Other prerequisites will be taken care of by `pip` when
+installing the package.
+
+
+### Download the package
+A repository of `dropt-cli` is hosted on GitHub:
+<https://github.com/NeuralScope/dropt-cli>.
+Please use `git` to download the package:
+
+```console
+$ git clone https://github.com/NeuralScope/dropt-cli
 ```
-$ git clone https://git.dataarch.myds.me/cysun/dropt-cli.git
-```
-#### (2) Install dropt-cli by pip
-Move into the dropt-cli directory, and execute pip:
-```
-$ pip install .
-```
 
-## Create an account and get a token
-### Go to [Dr.Opt Website](https://dropt-beta.nctu.me) and create an account by "New Customer"
-> current Dr.Opt v2 beta address: dropt-beta.nctu.me
+Since the version of the package is determined by its Git metedata,
+the package downloaded without `git` __cannot__ be installed via `pip`.
 
-![](https://i.imgur.com/jVBDmRM.png)
+> __Todo:__ We will provide _wheel binary distribution_
+> as an alternative in the future.
 
 
-### Get the access token
+### Install the package
+Prepend `sudo` to the following commands if necessary.
+- Update `pip`:
+  ```console
+  $ pip install --upgrade pip
+  ```
+- Use virtual environment [optional]:  
+  We recommend user to install and use `dropt-cli` in a
+  __virtual environment__.
+  ```console
+  $ pip install --upgrade virtualenv
+  $ virtualenv venv
+  $ source venv/bin/activate
+  ```
+- Install `dropt-cli`:
+  ```console
+  $ cd dropt-cli
+  $ pip install .
+  ```
 
-After creating the account, click "My Account" -> "My tokens"
-
-![](https://i.imgur.com/FOjAhgY.png)
 
 
-The string on the "My tokens" page is your dropt client token. (The USER_TOKEN in the following sample code)
+## DrOpt server
+### Registration
+- Open DrOpt server webpage (<https://dropt.neuralscope.org/>) and click __Sign in__.
+  ![DrOpt homepage](https://i.imgur.com/IZ7arvC.png)
+- Select __Continue__ to start the registration.
+  ![DrOpt sign-in page](https://i.imgur.com/4ShuboJ.png)
+- Once the registration is approved, a email will be sent.
 
-![](https://i.imgur.com/XCWFp2i.png)
+
+### Get an access token
+- The link to the access token is found in __My Account__ page.
+  ![token](https://i.imgur.com/QsUyxVH.png)
+- The __api token__ is a string. Copy it for later usage.
 
 
-## How to apply the optimization with Dr.Opt
 
+## Run DrOpt service
 ### (1) Have an training code that can set the hyperparameters by the arguments
 * For instance, the function 'train' will execute the training process and return the results
 ```python
