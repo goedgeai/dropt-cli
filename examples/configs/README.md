@@ -1,8 +1,15 @@
 # Dr.Opt config README
 
-To perform optimization with Dr.Opt, besides insert API code, the user also needs to set the experiment and searching space by a configuration file. which is defined in JSON format.
+To perform optimization with Dr.Opt, besides insert API code, the user also needs to set the experiment and searching space by a configuration file, which is defined in JSON format.
 
 This README provides the information of Dr.Opt config file and the available options.
+
+#### The config file should contain 3 parts:
+* experiment settings
+* parameters
+* searching space
+
+The following sections will introduce the requirements and more details for each part.
 
 ## 1. Give the experiment settings
 
@@ -10,130 +17,148 @@ The experiment settings must include:
 
 #### experimentName
 * Name of the project, which will be shown on the Dr.Opt webpage.
-#### tuner/advisor
-* Name of the tuner/advisor. Every project must specify a tuner or a advisor.
 #### maxTrialNum
-* The number of trials of this project. For instance, if maxTrialNum=50, then Dr.Opt will give 50 suggestions for this project.
-#### maxExecDuration (optional)
+* The number of trials of this project. 
+* For instance, if maxTrialNum=50, then Dr.Opt will give 50 suggestions for this project.
+#### maxExecDuration
 * The expected maximal execution time of the project. (unit: hour)
 * If the experiment time exceeds the maxExecDuration, Dr.Opt will set the project state as finish and discard the incomplete suggestions.
+* Default: 12 hr
 
 #### parentProject
-* The new created project can inherit the properties of the parentProject
-* The inherit function will be provided on the DrOpt website (not available yet)
 * Just set to `None` for now
+* In the future version,
+    * the new created project can inherit the properties of the parentProject
+    * the inherit function will be provided on the DrOpt website (not available yet)
 
 #### model
-* The used model of the project. Can set any value (string).
-* (It is also designed for the inherit function)
+* The Python code of the training program that you want to optimize.
+    * e.g. [mnist.py](examples/trials/mnist-pytorch/mnist.py) in the [mnist-pytorch example](examples/trials/mnist-pytorch)
+* It should contain a function named `run()`
+```python
+def run(params):
+    ...
+
+    return result
+```
+* `run()` recevies all required parameters of a model as a Python dictionary, which includes the hyper-parameters to be tuned
+* `result` should be a floating point number indicating the performance of the resulting model (e.g. accuracy)
+
+#### mode
+* The optimization mode of the project (`max` or `min`).
+* Default: `max`
 
 #### updatePeriod
-* The update period of the webpage. (unit: minute)
-* Could just leave it blank now.
+* The update period of the webpage. (unit: second)
+* Just set it to an arbitrary integer right now. (e.g. 1)
 
-### Sample
-```python
-"config":{
-    "experimentName": "car_detection",
-    "maxExecDuration": "30h",
-    "maxTrialNum": 50,
-    "parentProject": "my_parent",
-    "model": "YOLOv3",
-    "updatePeriod": 60,
-    "tuner": {
-      "builtinTunerName": "TPE",
-      "classArgs":{
-        "optimize_mode": "maximize"
-      }
-    }
-```
+#### tuner/advisor
+* Name of the tuner/advisor(tuning algorithm). Every project must specify a tuner or a advisor.
+> Please refer to [Tuner & Search space README](examples/configs/TUNER_AND_SEARCH_SPACE.md) to get more information about the usage of tuners.
 
-## 2. Give the searching space
-The search space indicates the paramters that the user would like to search. The search space should include the name and the range(distribution).
-
-### Sample
+### Example
 ```
-{
-    "dropout_rate":{"_type":"uniform","_value":[0.5, 0.9]},
-    "batch_size": {"_type":"choice", "_value": [1, 4, 8, 16, 32]},
-    "learning_rate":{"_type":"choice","_value":[0.0001, 0.001, 0.01, 0.1]}
-    "optimizer":{"_type":"choice", "_value":["SGD", "Adadelta", "Adagrad", "Adam", "Adamax"]}
-}
-```
-Please note that each tuner supports different kinds of searching space. As for the details of availability of each search space type, please refer to [NNI search space document](https://nni.readthedocs.io/en/latest/Tutorial/SearchSpaceSpec.html#search-space-types-supported-by-each-tuner).
-
-## 3. Combine experiment config and search space
-Here is a complete sample:
-```
-{
-    "config":{
-      "experimentName": "test",
-      "maxExecDuration": "1h",
-      "maxTrialNum": 10,
-      "tuner": {
-        "builtinTunerName": "TPE",
-        "classArgs":{
-          "optimize_mode": "maximize"
+"config": {
+        "experimentName": "titanic-xgboost",
+        "maxExecDuration": "1h",
+        "maxTrialNum": 10,
+        "parentProject": "None",
+        "mode": "max",
+        "model": "titanic_xgb",
+	    "updatePeriod": 1,
+        "tuner": {
+            "builtinTunerName": "TPE",
+            "classArgs": {"optimize_mode": "maximize"}
         }
-      },
-      "parentProject": "my_parent",
-      "model": "my_network",
-      "updatePeriod": 600
+    }
+```
+
+## 2. Give the parameters (& arguments)
+Define the parameters and arguments that needed by the training function, which specify the default values.
+
+### Example
+This is the parameter list of the [mnist-pytorch example](examples/trials/mnist-pytorch).
+```
+"params": {
+    "batch_size": 64,
+    "test_batch_size": 1000,
+    "epochs": 14,
+    "lr": 1.0,
+    "gamma": 0.7,
+    "no_cuda": false,
+    "seed": 1,
+    "log_interval": 10,
+    "save_model": false,
+    "hidden_size": 128
+}
+```
+
+## 3. Give the searching space
+The search space indicates the paramters that the user would like to search. The search space should include the parameter names, types and values (choice, range, or distribution).
+
+> As for the details of how to define a search space, please refer to [Tuner & Search space README](examples/configs/TUNER_AND_SEARCH_SPACE.md).
+
+### Example
+* Below is the search space of [imagenet-pytorch example](examples/trials/imagenet-pytorch).
+```
+"search_space": {
+    "epochs": {"_type": "choice", "_value": [10, 20, 40, 80]},
+    "batch_size": {"_type": "choice", "_value": [32, 64, 128, 256]},
+    "lr": {"_type": "choice", "_value": [0.1, 0.01, 0.001, 0.0001]},
+    "momentum": {"_type": "choice", "_value": [0.1, 0.3, 0.5, 0.7, 0.9]},
+    "weight_decay": {"_type": "choice", "_value": [0.01, 0.001, 0.0001, 0.00001]}
+}
+
+```
+
+
+Please note that each tuner supports different kinds of searching space. As for the availability of each search space type, please refer to [Tuner & Search space README](https://).
+
+## 4. Combine experiment settings, parameter list, and the search space
+
+A Dr.Opt config file should be in JSON format, and includes 3 objects: `config`, `params` and `search_space`. 
+
+Here is a complete Dr.Opt config example:
+```
+{
+    "config": {
+        "experimentName": "mnist-pytorch",
+        "maxExecDuration": "1h",
+        "maxTrialNum": 10,
+        "parentProject": "None",
+        "model": "mnist",
+        "updatePeriod": 60,
+        "tuner": {
+            "builtinTunerName": "TPE",
+            "classArgs": {"optimize_mode": "minimize"}
+        }
     },
-    "search_space":{
-      "dropout_rate":{"_type":"uniform","_value":[0.5, 0.9]},
-      "lr":{"_type":"choice", "_value":[0.1, 0.01, 0.001, 0.0001]},
-      "optimizer":{"_type":"choice", "_value":["SGD", "Adadelta", "Adagrad", "Adam", "Adamax"]}
+
+    "params": {
+        "batch_size": 64,
+        "test_batch_size": 1000,
+        "epochs": 14,
+        "lr": 1.0,
+        "gamma": 0.7,
+        "no_cuda": false,
+        "seed": 1,
+        "log_interval": 10,
+        "save_model": false,
+        "hidden_size": 128
+    },
+
+    "search_space": {
+        "batch_size": {"_type": "choice", "_value": [16, 32, 64, 128]},
+        "hidden_size": {"_type": "choice", "_value": [128, 256, 512, 1024]},
+        "lr": {"_type": "choice", "_value" :[0.0001, 0.001, 0.01, 0.1]},
+        "gamma": {"_type": "uniform", "_value": [0, 1]}
     }
 }
 ```
 
-## Current available tuners
-
-* Anneal​
-* Naïve Evolution​
-* GP Tuner​
-* Grid Search​
-* Random​
-* TPE
-
-As for the details of the tuners, please refer to the [NNI tuner document](https://github.com/microsoft/nni/blob/master/docs/en_US/Tuner/BuiltinTuner.md#Anneal).
-
-
-<!--
-### Anneal​
-> Built-in Tuner Name: Anneal
-#### classArgs
-* optimize_mode
-    * maximize or minimize, default = maximize
-### Batch Tuner​
-> Built-in Tuner Name: BatchTuner
-#### classArgs
-* (None)
-### Naïve Evolution​
-> Built-in Tuner Name: Evolution
-#### classArgs
-* optimize_mode
-    * maximize or minimize, default = maximize
-* population_size
-    * int value (should > 0), optional, default = 20
-    * the initial size of the population (trial num) in evolution tuner
-### GP Tuner​
-> Built-in Tuner Name: GPTuner
-#### classArgs
-* optimize_mode
-    * maximize or minimize, default = maximize
-* utility ('ei', 'ucb' or 'poi', optional, default = 'ei')
-    * The kind of utility function (acquisition function)
-* kappa (float, optional, default = 5) 
-    * Used by utility function 'ucb'
-#### Note
-This tuner only support numerical values.
-#### Grid Search​
-#### Metis Tuner​
-#### Random​
-#### SMAC​
-#### TPE
-arguments
-* optimize_mode (maximize or minimize, optional, default = maximize)
--->
+Please note that the config file also needs to be placed at the same directory with your training program. For instance, the directory that executes a Dr.Opt project would look like:
+```
+.
+├── config.json         // configuration file
+└── xgb.py              // training program
+```
