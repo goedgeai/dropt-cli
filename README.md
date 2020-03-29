@@ -73,144 +73,134 @@ Prepend `sudo` to the following commands if necessary.
 ### Get an access token
 - The link to the access token is found in __My Account__ page.
   ![token](https://i.imgur.com/QsUyxVH.png)
-- The __api token__ is a string. Copy it for later usage.
+- Copy the __api token__ (a string) for later usage.
 
 
 
-## Run DrOpt service
-### (1) Have an training code that can set the hyperparameters by the arguments
-* For instance, the function 'train' will execute the training process and return the results
-```python
-result = train(
-            max_depth=10, 
-            gamma=0.25, 
-            subsample=0.75, 
-            colsample=0.75, 
-            alpha=0.5, 
-            learn_rate=0.001
-         )
-"""
-result = {'acc': 0.932, 'latency': 0.43}
-"""
-```
+## Run a DrOpt project
+A DrOpt project uses the DrOpt service to solve an optimization problem.
 
-### (2) Insert Dr.Opt API code in the original training program
+We will use __finding a best hyper-parameter combination for an ML model__
+to illustrate the steps of preparing and running a DrOpt project.
 
-#### Import dropt package
-```python
-import dropt.client as dropt_cli
-```
 
-#### Define API token for authorization
-```python
-conn = dropt_cli.Connection(client_token=[USER_TOKEN], server_ip=[DROPT_IP])
-```
+### Preparation
+- Create a folder for your DrOpt project.
+- Two files are needed in the folder:
+  - `model.py`: the Python code of the model you want to optimize
+  - `config.json`: the configuration of the project
+  
+  You can choose different names for these two files.
+- `model.py` should contain a function named `run()`:
+  ```python
+  def run(params):
+      ...
 
-#### Load the configuration file and create a new project
-* As for the configuration file, please refer to the [Dr.Opt config README](examples/configs/).
-```python
-project = conn.projects().create(
-   config = dropt_cli.load_config_file([CONFIG_FILE])
-)
-```
+      return result
+  ```
+  - `run()` recevies all required parameters of a model
+    as a __Python dictionary__, which includes the hyper-parameters to be tuned.
+  - `result` should be a floating point number indicating the performance of
+    the resulting model.
+- Here is an example of calling `run()`:
+  ```python
+  params = {'max_depth': 10,
+            'gamma': 0.25,
+            'subsample': 0.75,
+            'colspample': 0.75,
+            'alpha': 0.5,
+            'learn_rate': 0.001}
+  acc = run(params)
+  """
+  acc = 0.732
+  """
+  ```
+- `config.json` should include __metadata of your DrOpt project__,
+  the __default value of model parameters__ and
+  the __search space of model hyper-parameters__.
+- Here is an example of `config.json` for an XGBoost classification model:
+  ```
+  {
+      "config": {
+          "experimentName": "titanic-xgboost",
+          "maxExecDuration": "1h",
+          "maxTrialNum": 10,
+          "parentProject": "None",
+          "model": "model",
+          "updatePeriod": 60,
+          "tuner": {
+              "builtinTunerName": "TPE",
+              "classArgs": {"optimize_mode": "maximize"}
+          }
+      },
 
-#### Get suggestions from Dr.Opt
-```python
-suggestion = conn.projects(project_id).suggestions().create()
-sugt_id = suggestion.suggest_id
-sugts = suggestion.assignments
-"""
-    The return object "suggestion.assignments" is a dict that contains values of each paramter.
-    The sugt_id will be used when report the result.
-    
-    sugts = {
-        'filter1': 64,
-        'filter2': 32, 
-        'ksize': 5,
-        'learn_rate': 0.001,
-        'hidint': 100
-    }
-"""
-```
+      "params": {
+          "booster": "gbtree",
+          "verbosity": 0,
+          "base_score": 0.5,
+          "colsample_bylevel": 1,
+          "n_estimators": 50,
+          "objective": "binary:logistic",
+          "max_depth": 5,
+          "gamma": 0.2,
+          "subsample": 0.8,
+          "colsample-bytree": 0.8,
+          "lambda": 1,
+          "alpha": 0.25,
+          "eta": 0.01,
+          "min_child_weight": 1.0
+      },
+                  
+      "search_space": {
+          "max_depth": {"_type": "randint", "_value": [1, 5]},
+          "gamma": {"_type": "uniform", "_value": [0.1, 1.0]},
+          "subsample": {"_type": "uniform", "_value": [0.1, 1.0]},
+          "colsample_bytree": {"_type": "uniform", "_value": [0.1, 1.0]},
+          "alpha": {"_type": "uniform", "_value": [0.1, 1.0]},
+          "eta": {"_type": "uniform", "_value": [0.1, 1.0]}
+      }
+  }
+  ```
+  - `config`: metadata of the project  
+    __Note that the value of field `model` here should coincide
+    with the filename of the Python model code.__
+  - `params`: default value of parameters
+  - `search_space`: search space of hyper-parameters
 
-#### Report the training result to Dr.Opt
-```python
-conn.projects(project_id).validations().create(
-    suggest_id = sugt_id,
-    value = float(metric),              # metric (a single value)
-    value_detail = json.dumps(metric)   # details of the metric (JSON string)
-                                        # e.g. metric = {'acc': 0.927, 'latency':8.43}
-                                        #      convert the dict to a str by json.dumps()
-)
-```
 
-### A complete example
+### Create/run a DrOpt project
+- `dropt-cli` provides script `droptctl` for creating and running a DrOpt project.
+- Run the following command for user instructions of `droptctl`:
+  ```console
+  $ droptctl -h
+  usage: droptctl [-h] -t TOKEN [-s SERVER] [-c CONFIG]
 
-```python
-import dropt.client as dropt_cli
+  Create DrOpt projects.
 
-# Define API token for authorization
-conn = dropt_cli.Connection(client_token=[USER_TOKEN], server_ip=[DROPT_IP])
+  optional arguments:
+    -h, --help            show this help message and exit
+    -t TOKEN, --token TOKEN
+                          user token
+    -s SERVER, --server SERVER
+                          server address (default: dropt.neuralscope.org/)
+    -c CONFIG, --config CONFIG
+                          config file (default: ./config.json)
+  ```
+- Since there are default values for DrOpt server address and project config file,
+  it suffices to pass the __user token__ to `droptctl` in most cases.
+- In aforementioned example, simply run the following command
+  under the project folder to start a new DrOpt project:
+  ```console
+  $ droptctl -t [your token]
+  ```
 
-# Create Dr.Opt project
-project = conn.projects().create(
-   config = dropt_cli.load_config_file([CONFIG_FILE])
-)
 
-# Get project id that returned from Dr.Opt
-project_id = project.project_id
-project_trial = project.trial
-
-# Run the optimization loop
-for i in range(project_trial):
-    # Retrieve hyperparamaters from Dr.Opt
-    suggestion = conn.projects(project_id).suggestions().create()
-    sugt_id = suggestion.suggest_id
-    sugts = suggestion.assignments
-    
-    """
-    The return object "suggestion.assignments" is a dict
-    
-    sugts = {
-        'filter1': 64,
-        'filter2': 32, 
-        'ksize': 5,
-        'learn_rate': 0.001,
-        'hidint': 100
-    }
-    """
-    
-    # user's training fuction
-    metric = train(filter1=['filter1'], filter2=['filter2'], ... )
-    
-    """
-    assume that the metric is a dict:
-    metric = {
-        'acc': 0.94
-        'latency': 10
-    }
-    """
-    
-    # report result to Dr.Opt
-    conn.projects(project_id).validations().create(
-     suggest_id = sugt_id,
-     value = metric['acc'],              # metric (a single value)
-     value_detail = json.dumps(metric)   # details of metric (json string)
-    )
-```
-
-## Client code examples
-
-The tuning samples is located in [examples](examples/). As for the details of each training example, please refer to the example README.
 
 ## Result Analysis
 
-When the training is done, the results and the analysis will be shown on the project list.
-
+When a project is finished, the results and its analysis will be presented on the DrOpt webpage.
 ![](https://i.imgur.com/tZLKzMV.png)
-
 ![](https://i.imgur.com/u96FW8D.png)
-
 ![](https://i.imgur.com/I3cNOEe.png)
 
 
