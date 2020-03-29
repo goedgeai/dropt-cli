@@ -1,14 +1,14 @@
 # Dr.Opt Tuners & Search Space README
 # Tuners
 
-Currently, Dr.Opt provides the following tuners. Below is a brief introduction of the tuner algorithms.
+Currently, Dr.Opt provides the following tuners. Below is a brief introduction to the tuner algorithms.
 
 | Name | Information |
 | -------- | -------- |
-| Anneal     | Annealing algorithm begins by sampling from the prior, and tends over time to sample from points closer and closer to the best ones observed.     |
-| Naïve Evolution | Naïve Evolution randomly initializes a population-based on the search space, and chooses better ones and does some mutation on them to get the next generation. Naïve Evolution may requires many trials to work.  [[reference]](https://arxiv.org/pdf/1703.01041.pdf)
+| Anneal     | Annealing algorithm begins by sampling from the prior and tends over time to sample from points closer and closer to the best ones observed.     |
+| Naïve Evolution | Naïve Evolution randomly initializes a population-based on the search space, and chooses better ones and does some mutation on them to get the next generation. Naïve Evolution may require many trials to work.  [[reference]](https://arxiv.org/pdf/1703.01041.pdf)
 | GP Tuner    | GP (Gaussian Process) Tuner is a sequential model-based optimization (SMBO) approach that uses Gaussian Process as the surrogate. [[reference]](https://github.com/fmfn/BayesianOptimization) |
-| Grid Search | Grid Search performs an exhaustive searching through a manually specified subset of the space defined in the searchspace file. |
+| Grid Search | Grid Search performs an exhaustive searching through a manually specified subset of the space defined in the search space file. |
 | Random     | As the name implies, it randomly selects hyper-parameter combinations through the search space. It's worth noting that researches show that it might be surprisingly effective. [[reference]](http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf) |
 | TPE | TPE (Tree-structured Parzen Estimator) is a sequential model-based optimization (SMBO) approach that used Tree Parzen Estimators as the surrogate. [[reference]](https://papers.nips.cc/paper/4443-algorithms-for-hyper-parameter-optimization.pdf) |
 
@@ -89,7 +89,7 @@ It only accepts the following types of search space:
 * kappa (float, optional, default = 5) 
     * Used by utility function 'ucb'
 * xi (float, optional, default = 0)
-    * Used by the 'ei' and 'poi' utility functions, which controls the tendency of explore.
+    * Used by the 'ei' and 'poi' utility functions, which controls the tendency to explore.
 * nu (float, optional, default = 2.5)
     * Used to specify the Matern kernel. It represents the smoothness of the approximated function.
 * alpha (float, optional, default = 1e-6)
@@ -97,7 +97,7 @@ It only accepts the following types of search space:
 * cold_start_num (int, optional, default = 10)
     * Number of random explorations before the Gaussian Process starts.
 * selection_num_warm_up (int, optional, default = 1e5) 
-    * Number of random points to evaluate when getting the point which maximizes the acquisition function.
+    * Number of random points to evaluate when getting the point that maximizes the acquisition function.
 * selection_num_starting_points (int, optional, default = 250)
     * Number of times to run L-BFGS-B from a random starting point after the warmup.
     
@@ -128,7 +128,7 @@ This tuner only supports numerical values:
 
 Dr.Opt will suggest parameters according to the user-defined search space.
 
-The define the search space for a parameter, users should provide 3 informations: parameter name, `_type` and `_value`.
+The define the search space for a parameter, users should provide 3 pieces of informations: parameter name, `_type` and `_value`.
 
 * An example is shown as follow:
 ```
@@ -181,10 +181,10 @@ Which means the chosen value is a value uniformly between low and high.
     "_value": [0.1, 0.5]
 }
 ```
-* In this example, the suggested droptout rate will be an real number that between (0.1, 0.5).
+* In this example, the suggested droptout rate will be an real number between (0.1, 0.5).
 
 ### Quniform
-The chosen value will be a value that between the lower bound and the upper bound, and the generated value will be constrainted the `step`.
+The chosen value will be a value that between the lower bound and the upper bound, and the generated value will be constrained by the `step`.
 #### Value format
 * [ lower_bound, upper_bound, step ]
 #### Example

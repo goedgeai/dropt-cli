@@ -28,7 +28,7 @@ The experiment settings must include:
 #### parentProject
 * Just set to `None` for now
 * In the future version,
-    * the new created project can inherit the properties of the parentProject
+    * the newly created project can inherent the properties of the parentProject
     * the inherit function will be provided on the DrOpt website (not available yet)
 
 #### model
@@ -41,8 +41,8 @@ def run(params):
 
     return result
 ```
-* `run()` recevies all required parameters of a model as a Python dictionary, which includes the hyper-parameters to be tuned
-* `result` should be a floating point number indicating the performance of the resulting model (e.g. accuracy)
+* `run()` receives all required parameters of a model as a Python dictionary, which includes the hyper-parameters to be tuned
+* `result` should be a floating-point number indicating the performance of the resulting model (e.g. accuracy)
 
 #### mode
 * The optimization mode of the project (`max` or `min`).
@@ -53,7 +53,7 @@ def run(params):
 * Just set it to an arbitrary integer right now. (e.g. 1)
 
 #### tuner/advisor
-* Name of the tuner/advisor(tuning algorithm). Every project must specify a tuner or a advisor.
+* Name of the tuner/advisor(tuning algorithm). Every project must specify an tuner or a advisor.
 > Please refer to [Tuner & Search space README](examples/configs/TUNER_AND_SEARCH_SPACE.md) to get more information about the usage of tuners.
 
 ### Example
@@ -116,7 +116,7 @@ Please note that each tuner supports different kinds of searching space. As for 
 
 ## 4. Combine experiment settings, parameter list, and the search space
 
-A Dr.Opt config file should be in JSON format, and includes 3 objects: `config`, `params` and `search_space`. 
+A Dr.Opt config file should be in JSON format and includes 3 objects: `config`, `params` and `search_space`. 
 
 Here is a complete Dr.Opt config example:
 ```
