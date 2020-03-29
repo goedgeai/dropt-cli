@@ -45,7 +45,7 @@ Prepend `sudo` to the following commands if necessary.
   ```console
   $ pip install --upgrade pip
   ```
-- Use virtual environment [optional]:  
+- __[optional]__ Use virtual environment:  
   We recommend user to install and use `dropt-cli` in a
   __virtual environment__.
   ```console
