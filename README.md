@@ -5,7 +5,7 @@ parts:
 - Hyper-parameter tuning tools
 - WebUI for result visualization & analysis
 
-A public DrOpt server is on <https://dropt.neuralscope.org>.
+A public DrOpt server is hosted on <https://dropt.neuralscope.org>.
 
 `dropt-cli` is the client application of DrOpt service encapsulated
 as a Python package.  As a result, it requires users either to
@@ -23,7 +23,7 @@ Other prerequisites will be taken care of by `pip` when
 installing the package.
 
 
-### Download the package
+### Download the Package
 A repository of `dropt-cli` is hosted on GitHub:
 <https://github.com/NeuralScope/dropt-cli>.
 Please use `git` to download the package:
@@ -39,7 +39,7 @@ the package downloaded without `git` __cannot__ be installed via `pip`.
 > as an alternative in the future.
 
 
-### Install the package
+### Install the Package
 Prepend `sudo` to the following commands if necessary.
 - Update `pip`:
   ```console
@@ -61,7 +61,7 @@ Prepend `sudo` to the following commands if necessary.
 
 
 
-## DrOpt server
+## DrOpt Server
 ### Registration
 - Open DrOpt server webpage (<https://dropt.neuralscope.org/>) and click __Sign in__.
   ![DrOpt homepage](https://i.imgur.com/IZ7arvC.png)
@@ -70,14 +70,14 @@ Prepend `sudo` to the following commands if necessary.
 - Once the registration is approved, a email will be sent.
 
 
-### Get an access token
+### Get an Access Token
 - The link to the access token is found in __My Account__ page.
   ![token](https://i.imgur.com/QsUyxVH.png)
 - Copy the __api token__ (a string) for later usage.
 
 
 
-## Run a DrOpt project
+## Run a DrOpt Project
 A DrOpt project uses the DrOpt service to solve an optimization problem.
 
 We will use __finding a best hyper-parameter combination for an ML model__
@@ -104,12 +104,12 @@ to illustrate the steps of preparing and running a DrOpt project.
     the resulting model.
 - Here is an example of calling `run()`:
   ```python
-  params = {'max_depth': 10,
-            'gamma': 0.25,
-            'subsample': 0.75,
-            'colspample': 0.75,
-            'alpha': 0.5,
-            'learn_rate': 0.001}
+  params = {"max_depth": 10,
+            "gamma": 0.25,
+            "subsample": 0.75,
+            "colspample": 0.75,
+            "alpha": 0.5,
+            "learn_rate": 0.001}
   acc = run(params)
   """
   acc = 0.732
@@ -168,8 +168,8 @@ to illustrate the steps of preparing and running a DrOpt project.
   - `search_space`: search space of hyper-parameters
 
 
-### Create/run a DrOpt project
-- `dropt-cli` provides script `droptctl` for creating and running a DrOpt project.
+### Create/Run a DrOpt Project
+- User can use script `droptctl` to create and run a DrOpt project.
 - Run the following command for user instructions of `droptctl`:
   ```console
   $ droptctl -h
@@ -197,10 +197,12 @@ to illustrate the steps of preparing and running a DrOpt project.
 
 
 ## Result Analysis
-
-When a project is finished, the results and its analysis will be presented on the DrOpt webpage.
+Once a project is created, its result will be presented on the DrOpt webpage.
 ![](https://i.imgur.com/tZLKzMV.png)
 ![](https://i.imgur.com/u96FW8D.png)
 ![](https://i.imgur.com/I3cNOEe.png)
 
 
+
+## Examples
+One can find more examples about DrOpt project in folder `examples`.

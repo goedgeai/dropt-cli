@@ -17,13 +17,21 @@ of different types of optimization problems:
   ```console
   $ pip insatll -r requirements.txt
   ```
+
   > Perform this step only if `requirements.txt` is presented.
+
+- __[optional]__ Download required dataset.  
+  For `titanic-xgboost` and `imagenet-pytorch`, additional datasets
+  are required.  Download these datasets with the following command:
+  ```console
+  $ git submodule init
+  $ git submodule update
+  ```
+
 - Run the trial via `droptctl`:
   ```console
   $ droptctl -t [token]
   ```
-- Note that the datasets required by `titanic-xgboost` and
-  `imagenet-pytorch` are not included in the package.
-  One needs to download these datasets before running the trials.
-  Please see the readme files corresponding to these two trials
-  for details.
+
+- Inspect the project result on DrOpt webpage
+  (The default one is <https://dropt.neuralscope.org>).
