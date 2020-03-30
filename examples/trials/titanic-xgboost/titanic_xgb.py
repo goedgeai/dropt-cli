@@ -16,7 +16,7 @@ from xgboost import XGBClassifier
 logger = logging.getLogger("sklearn_randomForest")
 
 # setup path to data
-DATA_PATH = '../../data/titanic'
+DATA_PATH = '../../../data/titanic'
 
 
 def data_loader():
