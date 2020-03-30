@@ -1,5 +1,4 @@
 # dropt-cli
-## Overview
 DrOpt is an ML model optimization service consisting of the following
 parts:
 - Hyper-parameter tuning tools

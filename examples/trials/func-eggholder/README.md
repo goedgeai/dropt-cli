@@ -1,5 +1,4 @@
 # Eggholder Function
-## Overview
 The Eggholder function is a function defined on the two-dimensional Euclidean space.
 To be more explicit,
 

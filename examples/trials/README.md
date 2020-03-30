@@ -1,5 +1,4 @@
 # Trial Examples
-## Overview
 Here we provide several examples of DrOpt projects consisting
 of different types of optimization problems:
 - `func-eggholder`: test function for optimization

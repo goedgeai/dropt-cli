@@ -1,5 +1,4 @@
 # Rosenbrock Function
-## Overview
 The Rosenbrock function in our case is a function defined on the three-dimensional Euclidean space.
 To be more explicit,
 
