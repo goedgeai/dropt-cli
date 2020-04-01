@@ -63,15 +63,15 @@ Prepend `sudo` to the following commands if necessary.
 ## DrOpt Server
 ### Registration
 - Open DrOpt server webpage (<https://dropt.neuralscope.org/>) and click __Sign in__.
-  ![DrOpt homepage](https://i.imgur.com/IZ7arvC.png)
+  ![DrOpt homepage](https://i.imgur.com/IZ7arvC.png?1)
 - Select __Continue__ to start the registration.
-  ![DrOpt sign-in page](https://i.imgur.com/4ShuboJ.png)
+  ![DrOpt sign-in page](https://i.imgur.com/4ShuboJ.png?1)
 - Once the registration is approved, a email will be sent.
 
 
 ### Get an Access Token
 - The link to the access token is found in __My Account__ page.
-  ![token](https://i.imgur.com/QsUyxVH.png)
+  ![token](https://i.imgur.com/QsUyxVH.png?1)
 - Copy the __api token__ (a string) for later usage.
 
 
