@@ -7,8 +7,8 @@ parts:
 A public DrOpt server is hosted on <https://dropt.neuralscope.org>.
 
 `dropt-cli` is the client application of DrOpt service encapsulated
-as a Python package.  As a result, it requires users either to
-run their ML model or to wrap their ML model in Python.
+as a Python package; users need to either run their ML model in Python
+or to wrap their ML model in Python at least.
 
 
 
@@ -18,46 +18,73 @@ We have tested `dropt-cli` in the following environments:
 - `Python>=3.5`
 - `pip>=20.0.0`
 
-Other prerequisites will be taken care of by `pip` when
-installing the package.
 
-
-### Download the Package
-A repository of `dropt-cli` is hosted on GitHub:
-<https://github.com/NeuralScope/dropt-cli>.
-Please use `git` to download the package:
+### On Linux distro using APT
+If running linux distribution such as Ubuntu,
+one can perform the following commands to meet
+the prerequisites.
 
 ```console
-$ git clone https://github.com/NeuralScope/dropt-cli
+$ sudo apt-get update && sudo apt-get upgrade
+$ sudo apt-get install python3 python3-pip
+$ sudo pip install --upgrade pip
 ```
 
-Since the version of the package is determined by its Git metedata,
-the package downloaded without `git` __cannot__ be installed via `pip`.
 
-> __Todo:__ We will provide _wheel binary distribution_
-> as an alternative in the future.
+### [Optional] Virtual environment
+We recommend users to set up virtual environment
+for `dropt-cli`.
 
-
-### Install the Package
-Prepend `sudo` to the following commands if necessary.
-- Update `pip`:
+- Install `virtualenv`
   ```console
-  $ pip install --upgrade pip
+  $ sudo pip install --upgrade virtualenv
   ```
-- __[optional]__ Use virtual environment:  
-  We recommend user to install and use `dropt-cli` in a
-  __virtual environment__.
+
+- Create and activate virtual environment
   ```console
-  $ pip install --upgrade virtualenv
   $ virtualenv venv
   $ source venv/bin/activate
   ```
-- Install `dropt-cli`:
+
+- Deactivate virtual environment
+  ```console
+  $ deactivate
+  ```
+
+
+### Download/Install the package
+A repository of `dropt-cli` is hosted on GitHub:
+<https://github.com/NeuralScope/dropt-cli>.
+
+#### with Git
+One can download the source code from GitHub and
+install the package.
+
+- Download the source code
+  ```console
+  $ git clone https://github.com/NeuralScope/dropt-cli
+  ```
+
+- Install the package
   ```console
   $ cd dropt-cli
   $ pip install .
   ```
 
+#### without Git
+Alternatively, we provide __wheel binary distribution__
+and __source code archive__ on
+<https://github.com/NeuralScope/dropt-cli/releases/latest>.
+Simply click links on the page to get the files.
+
+The `.whl` file is sufficient for installing `dropt-cli`.
+The source code and examples of `dropt-cli` are included in
+the source code archive (`.zip` or `.tar.gz` files).
+
+- Install the package from wheel binary distribution
+  ```
+  $ pip install [the filename of the wheel file]
+  ```
 
 
 ## DrOpt Server
