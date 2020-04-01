@@ -60,7 +60,7 @@ class Requestor:
             )
         except requests.exceptions.RequestException as e:
             message = ["An error occurred connecting to DrOpt."]
-            if not url or not url.startswith(DEFAULT_API_URL):
+            if not url:
                 message.append("The host may be misconfigured or unavailable.")
             message.append("Contact system manager for assistance.")
             message.append("")
