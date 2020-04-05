@@ -33,7 +33,22 @@ The experiment settings must include:
 
 #### model
 * The Python code of the training program that you want to optimize.
-    * e.g. [mnist.py](examples/trials/mnist-pytorch/mnist.py) in the [mnist-pytorch example](examples/trials/mnist-pytorch)
+    * e.g. [mnist.py](../trials/mnist-pytorch/mnist.py) in the [mnist-pytorch example](../trials/mnist-pytorch)
+    * see the `"model": "mnist"` in the following example:
+```
+    "config": {
+        "experimentName": "mnist-pytorch",
+        "maxExecDuration": "1h",
+        "maxTrialNum": 10,
+        "parentProject": "None",
+        "model": "mnist",
+        "updatePeriod": 60,
+        "tuner": {
+            "builtinTunerName": "TPE",
+            "classArgs": {"optimize_mode": "minimize"}
+        }
+    }
+```
 * It should contain a function named `run()`
 ```python
 def run(params):
@@ -54,7 +69,7 @@ def run(params):
 
 #### tuner/advisor
 * Name of the tuner/advisor(tuning algorithm). Every project must specify an tuner or a advisor.
-> Please refer to [Tuner & Search space README](examples/configs/TUNER_AND_SEARCH_SPACE.md) to get more information about the usage of tuners.
+> Please refer to [Tuner & Search space README](TUNER_AND_SEARCH_SPACE.md) to get more information about the usage of tuners.
 
 ### Example
 ```
@@ -77,7 +92,7 @@ def run(params):
 Define the parameters and arguments that needed by the training function, which specify the default values.
 
 ### Example
-This is the parameter list of the [mnist-pytorch example](examples/trials/mnist-pytorch).
+This is the parameter list of the [mnist-pytorch example](../trials/mnist-pytorch).
 ```
 "params": {
     "batch_size": 64,
@@ -96,10 +111,10 @@ This is the parameter list of the [mnist-pytorch example](examples/trials/mnist-
 ## 3. Give the searching space
 The search space indicates the paramters that the user would like to search. The search space should include the parameter names, types and values (choice, range, or distribution).
 
-> As for the details of how to define a search space, please refer to [Tuner & Search space README](examples/configs/TUNER_AND_SEARCH_SPACE.md).
+> As for the details of how to define a search space, please refer to [Tuner & Search space README](TUNER_AND_SEARCH_SPACE.md).
 
 ### Example
-* Below is the search space of [imagenet-pytorch example](examples/trials/imagenet-pytorch).
+* Below is the search space of [imagenet-pytorch example](../trials/imagenet-pytorch).
 ```
 "search_space": {
     "epochs": {"_type": "choice", "_value": [10, 20, 40, 80]},
@@ -112,7 +127,7 @@ The search space indicates the paramters that the user would like to search. The
 ```
 
 
-Please note that each tuner supports different kinds of searching space. As for the availability of each search space type, please refer to [Tuner & Search space README](https://).
+Please note that each tuner supports different kinds of searching space. As for the availability of each search space type, please refer to [Tuner & Search space README](TUNER_AND_SEARCH_SPACE.md).
 
 ## 4. Combine experiment settings, parameter list, and the search space
 
