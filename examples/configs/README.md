@@ -32,8 +32,23 @@ The experiment settings must include:
     * the inherit function will be provided on the DrOpt website (not available yet)
 
 #### model
-* The Python code of the training program that you want to optimize.
+* The name of the Python code of the training program that you want to optimize.
     * e.g. [mnist.py](../trials/mnist-pytorch/mnist.py) in the [mnist-pytorch example](../trials/mnist-pytorch)
+    * see the `"model": "mnist"` in the following example:
+```
+    "config": {
+        "experimentName": "mnist-pytorch",
+        "maxExecDuration": "1h",
+        "maxTrialNum": 10,
+        "parentProject": "None",
+        "model": "mnist",
+        "updatePeriod": 60,
+        "tuner": {
+            "builtinTunerName": "TPE",
+            "classArgs": {"optimize_mode": "minimize"}
+        }
+    }
+```
 * It should contain a function named `run()`
 ```python
 def run(params):
