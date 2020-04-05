@@ -197,9 +197,9 @@ The chosen value will be a value that between the lower bound and the upper boun
 * In this example, the suggested input size will be a number that between ```[224, 417)```. To be more specific, the possible values are: [224, 256, 288, 320, ... , 384, 416].
 
 ### Normal
-Which means the variable value is a real value that’s normally-distributed with mean($`\mu`$) and standard deviation($`\sigma`$).
+Which means the variable value is a real value that’s normally-distributed with mean(μ) and standard deviation(σ).
 #### Value format
-* [ $`\mu`$, $`\sigma`$ ]
+* [ μ, σ ]
 #### Example
 ```
 "dropout_rate": {
@@ -207,7 +207,7 @@ Which means the variable value is a real value that’s normally-distributed wit
     "_value": [0.5, 0.1]
 }
 ```
-* In this example, the suggested input size will be a number that randomly sampled from the normal distribution $N(0.5, 0.1^2)$.
+* In this example, the suggested input size will be a number that randomly sampled from the normal distribution N(0.5, 0.1^2).
 
 # Reference
 ### Tuning algorithms
