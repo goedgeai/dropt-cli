@@ -1,9 +1,15 @@
+from argparse import ArgumentParser
+from pathlib import Path
+from tempfile import TemporaryFile
+from zipfile import ZipFile
+import csv
 import os
 import random
+import requests
 import shutil
 import time
+from tqdm import tqdm
 import warnings
-from argparse import ArgumentParser
 
 import torch
 import torch.nn as nn
@@ -19,7 +25,14 @@ import torchvision.datasets as datasets
 import torchvision.models as models
 
 
+PREFIX = Path("../../../data")
+DATA_PATH = PREFIX.joinpath("tiny-imagenet-200")
+
 best_acc1 = 0
+
+
+def prepare_ti200(args):
+    pass
 
 
 def run(args):
@@ -372,7 +385,7 @@ def param_loader():
         and callable(models.__dict__[name]))
 
     parser = ArgumentParser(description='PyTorch ImageNet Training')
-    parser.add_argument('data', metavar='DIR',
+    parser.add_argument('-d', '--data', metavar='DIR',
                         help='path to dataset')
     parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
                         choices=model_names,
@@ -427,5 +440,6 @@ def param_loader():
 
 if __name__ == '__main__':
     args = param_loader()
+    print(args['data'])
     acc1 = run(args)
     print(f'Acc@1 = {score}')
