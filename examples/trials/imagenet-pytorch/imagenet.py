@@ -25,14 +25,64 @@ import torchvision.datasets as datasets
 import torchvision.models as models
 
 
-PREFIX = Path("../../../data")
-DATA_PATH = PREFIX.joinpath("tiny-imagenet-200")
-
 best_acc1 = 0
 
 
-def prepare_ti200(args):
-    pass
+def prepare_ti200():
+    # define dataset url and paths
+    URL = "http://cs231n.stanford.edu/tiny-imagenet-200.zip"
+    PREFIX = Path("../../../data")
+    DATA_PATH = PREFIX.joinpath("tiny-imagenet-200")
+    TRAIN_PATH = DATA_PATH.joinpath("train")
+    VAL_PATH = DATA_PATH.joinpath("val")
+    TEST_PATH = DATA_PATH.joinpath("test")
+
+    # download and unzip dataset
+    with TemporaryFile() as fp, requests.get(URL, stream=True) as rp:
+        TOTAL_SIZE = int(rp.headers.get("content-length", 0))
+        BLOCK_SIZE = 1024
+        print("Downloading dataset tiny-imagenet-200...")
+        with tqdm(total=TOTAL_SIZE, unit="iB", unit_scale=True) as t:
+            for data in rp.iter_content(BLOCK_SIZE):
+                t.update(BLOCK_SIZE)
+                fp.write(data)
+
+        print("Unzipping dataset...", end=" ")
+        with ZipFile(fp) as zf:
+            zf.extractall(ROOT)
+        print("done.")
+
+    # prepare training data
+    print("Prepare training data...", end=" ")
+    for im_path in TRAIN_PATH.rglob("*.JPEG"):
+        im_path.rename(im_path.parents[1].joinpath(im_path.name))
+    print("done.")
+
+    # prepare validating data
+    print("Prepare validating data...", end=" ")
+    CSV_PATH = next(VAL_PATH.glob("*.txt"))
+    with open(CSV_PATH) as csv_file:
+        READER = csv.reader(csv_file, dialect="excel-tab")
+        for im_info in READER:
+            im_path = VAL_PATH.joinpath("images", im_info[0])
+            class_path = VAL_PATH.joinpath(im_info[1])
+            if not class_path.is_dir():
+                class_path.mkdir()
+            im_path.rename(class_path.joinpath(im_info[0]))
+    print("done.")
+
+    # remove extra files
+    print("Removing extra files...", end=" ")
+    for im_path in TEST_PATH.rglob("*.JPEG"):
+        im_path.unlink()
+    for txt_path in DATA_PATH.rglob("*.txt"):
+        txt_path.unlink()
+    for dir_path in DATA_PATH.rglob("images"):
+        dir_path.rmdir()
+    TEST_PATH.rmdir()
+    print("done.\n")
+
+    return DATA_PATH
 
 
 def run(args):
@@ -52,6 +102,9 @@ def run(args):
 
     if args['dist_url'] == "env://" and args['world_size'] == -1:
         args['world_size'] = int(os.environ["WORLD_SIZE"])
+
+    if (args['data'] is None) or (not Path(args['data']).is_dir()):
+        args['data'] = prepare_ti200()
 
     args['distributed'] = args['world_size'] > 1 or args['multiprocessing_distributed']
 
@@ -385,7 +438,7 @@ def param_loader():
         and callable(models.__dict__[name]))
 
     parser = ArgumentParser(description='PyTorch ImageNet Training')
-    parser.add_argument('-d', '--data', metavar='DIR',
+    parser.add_argument('-d', '--data', metavar='DIR', default=None,
                         help='path to dataset')
     parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
                         choices=model_names,
@@ -440,6 +493,5 @@ def param_loader():
 
 if __name__ == '__main__':
     args = param_loader()
-    print(args['data'])
     acc1 = run(args)
     print(f'Acc@1 = {score}')
