@@ -58,29 +58,29 @@ def run(params):
     return score
 
 
-def params_loader():
+def param_loader():
     '''Get parameters'''
     parser = ArgumentParser(description='Titanic XGBoost Example')
-    parser.add_argument('--booster', type=str)
-    parser.add_argument('--verbosity', type=int)
-    parser.add_argument('--base_score', type=float)
-    parser.add_argument('--colsample-bylevel', type=float)
-    parser.add_argument('--n_estimators', type=int)
-    parser.add_argument('--objective', type=str)
-    parser.add_argument('--max-depth', type=int)
-    parser.add_argument('--gamma', type=float)
-    parser.add_argument('--subsample', type=float)
-    parser.add_argument('--colsample-bytree', type=float)
-    parser.add_argument('--alpha', type=float)
-    parser.add_argument('--learning-rate', type=float)
-    parser.add_argument('--min-child-weight', type=float)
+    parser.add_argument('--booster', type=str, default='gbtree')
+    parser.add_argument('--verbosity', type=int, default=0)
+    parser.add_argument('--base_score', type=float, default=0.5)
+    parser.add_argument('--colsample-bylevel', type=float, default=1.0)
+    parser.add_argument('--n_estimators', type=int, default=50)
+    parser.add_argument('--objective', type=str, default='binary:logistic')
+    parser.add_argument('--max-depth', type=int, default=5)
+    parser.add_argument('--gamma', type=float, default=0.2)
+    parser.add_argument('--subsample', type=float, default=0.8)
+    parser.add_argument('--colsample-bytree', type=float, default=0.8)
+    parser.add_argument('--lambda', type=float, default=1.0)
+    parser.add_argument('--alpha', type=float, default=0.25)
+    parser.add_argument('--learning-rate', type=float, default=0.01)
+    parser.add_argument('--min-child-weight', type=float, default=1.0)
 
     args, _ = parser.parse_known_args()
-    params = {k: v for k, v in vars(args).items() if v is not None}
-    return params
+    return vars(args)
 
 
 if __name__ == '__main__':
-    params.update(params_loader())
+    params = param_loader()
     logger.debug(f'parameters = {params}')
     print(run(params))
