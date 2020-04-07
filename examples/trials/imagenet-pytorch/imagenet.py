@@ -49,7 +49,7 @@ def prepare_ti200():
 
         print("Unzipping dataset...", end=" ")
         with ZipFile(fp) as zf:
-            zf.extractall(ROOT)
+            zf.extractall(PREFIX)
         print("done.")
 
     # prepare training data
