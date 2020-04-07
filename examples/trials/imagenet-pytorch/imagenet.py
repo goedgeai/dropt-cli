@@ -27,16 +27,16 @@ import torchvision.models as models
 
 best_acc1 = 0
 
+# define dataset url and paths
+URL = "http://cs231n.stanford.edu/tiny-imagenet-200.zip"
+PREFIX = Path("../../../data")
+DATA_PATH = PREFIX.joinpath("tiny-imagenet-200")
+TRAIN_PATH = DATA_PATH.joinpath("train")
+VAL_PATH = DATA_PATH.joinpath("val")
+TEST_PATH = DATA_PATH.joinpath("test")
+
 
 def prepare_ti200():
-    # define dataset url and paths
-    URL = "http://cs231n.stanford.edu/tiny-imagenet-200.zip"
-    PREFIX = Path("../../../data")
-    DATA_PATH = PREFIX.joinpath("tiny-imagenet-200")
-    TRAIN_PATH = DATA_PATH.joinpath("train")
-    VAL_PATH = DATA_PATH.joinpath("val")
-    TEST_PATH = DATA_PATH.joinpath("test")
-
     # download and unzip dataset
     with TemporaryFile() as fp, requests.get(URL, stream=True) as rp:
         TOTAL_SIZE = int(rp.headers.get("content-length", 0))
@@ -82,8 +82,6 @@ def prepare_ti200():
     TEST_PATH.rmdir()
     print("done.\n")
 
-    return DATA_PATH
-
 
 def run(args):
     if args['seed'] is not None:
@@ -103,8 +101,10 @@ def run(args):
     if args['dist_url'] == "env://" and args['world_size'] == -1:
         args['world_size'] = int(os.environ["WORLD_SIZE"])
 
-    if args['data'] is None:
-        args['data'] = prepare_ti200()
+    if (not 'data' in args) or (args['data'] is None):
+        args['data'] = DATA_PATH
+        if not DATA_PATH.is_dir():
+            prepare_ti200()
 
     args['distributed'] = args['world_size'] > 1 or args['multiprocessing_distributed']
 
