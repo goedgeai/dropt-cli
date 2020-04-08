@@ -1,24 +1,24 @@
-# ImageNet in PyTorch
-This example demonstrates an image classification model on PyTorch,
-which is based on the [official PyTorch ImageNet example][ref:imagenet].
-The default dataset is [tiny-imagenet-200][ref:ti200].
+# ImageNet on PyTorch
+This example demonstrates an image classification model for ImageNet on PyTorch.
+It is based on the [PyTorch ImageNet example][ref:imagenet] and
+the default dataset is [tiny-imagenet-200][ref:ti200].
 
 
 ## Run model script
-Simply enter the following command to train/evaluate the model with default
-hyper-parameter configuration.
+Enter the following command to train/evaluate the model with default
+hyper-parameter configuration:
 ```console
 $ python imagenet.py
 ```
 
-See the online help for options available:
+To know more options, enter
 ```console
 $ python imagenet.py -h
 ```
 
 
 ## Apply DrOpt service
-See readme for trials.
+See trial readme.
 
 
 

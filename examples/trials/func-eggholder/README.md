@@ -22,7 +22,7 @@ $ python eggholder [x] [y]
 
 
 ## Apply DrOpt service
-See readme for trials.
+See trial readme.
 
 
 

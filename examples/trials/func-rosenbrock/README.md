@@ -22,7 +22,7 @@ $ python rosenbrock [x] [y] [z]
 
 
 ## Apply DrOpt service
-See readme for trials.
+See trial readme.
 
 
 
