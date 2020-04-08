@@ -8,7 +8,21 @@ The graph of the function is as follows:
 
 ![The graph of Eggholder][graph]
 
-Within area ![area formula][area], the Eggholder function admits the __global minimum -959.6407 at (512,404.2319)__.
+Within area ![area formula][area], the Eggholder function admits the
+__global minimum -959.6407 at (512,404.2319)__.
+
+
+## Run model script
+Run the following command to evaluate the function:
+```console
+$ python eggholder [x] [y]
+```
+
+(`[x]` and `[y]` are __float__.)
+
+
+## Apply DrOpt service
+See readme for trials.
 
 
 

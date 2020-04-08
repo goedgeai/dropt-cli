@@ -26,12 +26,11 @@ def run(params):
 def param_loader():
     '''Get parameters'''
     parser = ArgumentParser(description='Eggholder function')
-    parser.add_argument('-x', type=float, required=True)
-    parser.add_argument('-y', type=float, required=True)
+    parser.add_argument('x', type=float)
+    parser.add_argument('y', type=float)
 
     args, _ = parser.parse_known_args()
-    params = vars(args)
-    return params
+    return vars(args)
 
 
 if __name__ == '__main__':
