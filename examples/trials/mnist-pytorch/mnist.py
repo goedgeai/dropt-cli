@@ -134,36 +134,35 @@ def run(args):
     return loss
 
 
-def params_loader():
+def param_loader():
     '''Get parameters.'''
     parser = ArgumentParser(description='PyTorch MNIST Example')
-    parser.add_argument('--batch-size', type=int, metavar='N',
+    parser.add_argument('--batch-size', type=int, metavar='N', default=64,
                         help='input batch size for training (default: 64)')
-    parser.add_argument('--hidden-size', type=int, metavar='N',
+    parser.add_argument('--hidden-size', type=int, metavar='N', default=128,
                         help='hidden layer size (default: 128)')
-    parser.add_argument('--test-batch-size', type=int, metavar='N',
+    parser.add_argument('--test-batch-size', type=int, metavar='N', default=1000,
                         help='input batch size for testing (default: 1000)')
-    parser.add_argument('--epochs', type=int, metavar='N',
+    parser.add_argument('--epochs', type=int, metavar='N', default=14,
                         help='number of epochs to train (default: 14)')
-    parser.add_argument('--lr', type=float, metavar='LR',
+    parser.add_argument('--lr', type=float, metavar='LR', default=1.0,
                         help='learning rate (default: 1.0)')
-    parser.add_argument('--gamma', type=float, metavar='M',
+    parser.add_argument('--gamma', type=float, metavar='M', default=0.7,
                         help='Learning rate step gamma (default: 0.7)')
     parser.add_argument('--no-cuda', action='store_true',
                         help='disables CUDA training')
-    parser.add_argument('--seed', type=int, default=1, metavar='S',
+    parser.add_argument('--seed', type=int, metavar='S', default=1,
                         help='random seed (default: 1)')
-    parser.add_argument('--log-interval', type=int, metavar='N',
+    parser.add_argument('--log-interval', type=int, metavar='N', default=10,
                         help='how many batches to wait before logging training status')
     parser.add_argument('--save-model', action='store_true',
                         help='For Saving the current Model')
 
     args, _ = parser.parse_known_args()
-    params = {k: v for k, v in vars(args).items() if v is not None}
-    return params
+    return vars(args)
 
 
 if __name__ == '__main__':
-    params.update(params_loader())
+    params = param_loader()
     logger.debug(f'parameters = {params}')
     print(run(params))
