@@ -11,7 +11,7 @@ hyper-parameter configuration:
 $ python imagenet.py
 ```
 
-To know more options, enter
+To know about more options, enter
 ```console
 $ python imagenet.py -h
 ```

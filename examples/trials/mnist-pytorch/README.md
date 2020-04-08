@@ -10,7 +10,7 @@ hyper-parameter configuration:
 $ python mnist.py
 ```
 
-To know more options, enter
+To know about more options, enter
 ```console
 $ python mnist.py -h
 ```
