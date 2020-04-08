@@ -439,7 +439,7 @@ def param_loader():
 
     parser = ArgumentParser(description='PyTorch ImageNet Training')
     parser.add_argument('-d', '--data', metavar='DIR', default=None,
-                        help='path to dataset')
+                        help='path to dataset (without this option, tiny-imagenet-200 dataset will be downloaded)')
     parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
                         choices=model_names,
                         help=(f'model architecture: '
