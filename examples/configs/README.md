@@ -79,7 +79,7 @@ def run(params):
         "maxTrialNum": 10,
         "parentProject": "None",
         "mode": "max",
-        "model": "titanic_xgb",
+        "model": "xgb",
 	    "updatePeriod": 1,
         "tuner": {
             "builtinTunerName": "TPE",

@@ -4,7 +4,7 @@
         "maxExecDuration": "1h",
         "maxTrialNum": 10,
         "parentProject": "None",
-        "model": "titanic_xgb",
+        "model": "xgb",
         "updatePeriod": 60,
         "tuner": {
             "builtinTunerName": "TPE",

@@ -1,26 +1,25 @@
-# Titanic-xgboost example
-This example shows how to use Dr.Opt to optimize a XGBoost model
-trained on [Kaggle Titanic dataset](https://www.kaggle.com/c/titanic).
+# Prediction on Titanic survivors with XGBoost
+This example demonstrates the XGBoost classification model.
+It is based on the [Titanic survival prediction competition on Kaggle][ref:titanic].
 
 
-
-## Components
-```
-.
-├── config.json         // project configuration
-├── titanic_xgb.py      // model Python code
-└── requirements.txt    // required Python packages (xgboost, etc.)
+## Run model script
+Enter the following command to train/evaluate the model with default
+hyper-parameter configuration:
+```console
+$ python xgb.py
 ```
 
+To know about more options, enter
+```console
+$ python xgb.py -h
+```
 
 
-## Hyperparameters
-* max\_depth
-* gamma
-* subsample
-* colsample\_bytree
-* alpha
-* eta (learning rate)
+## Apply DrOpt service
+See trial readme.
 
-As for the detail of hyper-parameters, please see
-[XGBoost document](https://xgboost.readthedocs.io/en/latest/parameter.html).
+
+
+[ref:titanic]: https://www.kaggle.com/c/titanic
+[ref:xgboost]: https://xgboost.readthedocs.io/en/latest/parameter.html
