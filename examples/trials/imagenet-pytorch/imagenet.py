@@ -512,4 +512,4 @@ def param_loader():
 if __name__ == '__main__':
     args = param_loader()
     acc1 = run(args)
-    print(f'Acc@1 = {score}')
+    print(f'Acc@1 = {acc1}')
