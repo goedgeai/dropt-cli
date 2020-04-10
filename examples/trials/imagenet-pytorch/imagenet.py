@@ -102,7 +102,7 @@ def runtime_err_handler(run):
         try:
             result = run(args)
         except RuntimeError as exc:
-            logger.warning(f'{str(exc)}\nReturn the extreme result.')
+            logger.warning(f'{str(exc)} Return the extreme result.')
             result = -1e+100
         return result
 
