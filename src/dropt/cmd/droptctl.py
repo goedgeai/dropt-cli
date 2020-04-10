@@ -18,6 +18,7 @@ Todo:
 '''
 
 
+import sys
 import importlib.util
 import json
 from argparse import ArgumentParser
@@ -58,7 +59,12 @@ def param_search(project, model, params):
     # evaluate the model with the suggested parameter configuration
     params.update(sugt_value)
     print(f"Suggestion = {sugt_value}")
-    metric = model.run(params)
+    try:
+        metric = model.run(params)
+    except RuntimeError as exc:
+        print(exc)
+        print('Please add RuntimeError handler in your model code.')
+        sys.exit(1)
     print(f"Evaluation: {metric}")
 
     # report result to DrOpt

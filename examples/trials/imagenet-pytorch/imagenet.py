@@ -3,6 +3,7 @@ from pathlib import Path
 from tempfile import TemporaryFile
 from zipfile import ZipFile
 import csv
+import logging
 import os
 import random
 import requests
@@ -25,8 +26,6 @@ import torchvision.datasets as datasets
 import torchvision.models as models
 
 
-best_acc1 = 0
-
 # define dataset url and paths
 URL = "http://cs231n.stanford.edu/tiny-imagenet-200.zip"
 PREFIX = Path("../../../data")
@@ -34,6 +33,21 @@ DATA_PATH = PREFIX.joinpath("tiny-imagenet-200")
 TRAIN_PATH = DATA_PATH.joinpath("train")
 VAL_PATH = DATA_PATH.joinpath("val")
 TEST_PATH = DATA_PATH.joinpath("test")
+
+# set up logging
+logger = logging.getLogger('imagenet-pytorch')
+# create console handler and set level to warning 
+ch = logging.StreamHandler()
+ch.setLevel(logging.WARNING)
+# create formatter
+formatter = logging.Formatter('[%(asctime)s] %(name)s/%(levelname)s: %(message)s', '%Y/%m/%d %H:%M:%S')
+# add formatter to ch
+ch.setFormatter(formatter)
+# add ch to logger
+logger.addHandler(ch)
+
+# best top 1 accuracy
+best_acc1 = 0
 
 
 def prepare_ti200():
@@ -83,6 +97,19 @@ def prepare_ti200():
     print("done.\n")
 
 
+def runtime_err_handler(run):
+    def wrapper(args):
+        try:
+            result = run(args)
+        except RuntimeError as exc:
+            logger.warning(f'{str(exc)} Return the extreme result.')
+            result = -1e+100
+        return result
+
+    return wrapper
+
+
+@runtime_err_handler
 def run(args):
     if args['seed'] is not None:
         random.seed(args['seed'])
@@ -495,4 +522,4 @@ def param_loader():
 if __name__ == '__main__':
     args = param_loader()
     acc1 = run(args)
-    print(f'Acc@1 = {score}')
+    print(f'Acc@1 = {acc1}')
