@@ -3,6 +3,7 @@ from pathlib import Path
 from tempfile import TemporaryFile
 from zipfile import ZipFile
 import csv
+import logging
 import os
 import random
 import requests
@@ -34,6 +35,9 @@ DATA_PATH = PREFIX.joinpath("tiny-imagenet-200")
 TRAIN_PATH = DATA_PATH.joinpath("train")
 VAL_PATH = DATA_PATH.joinpath("val")
 TEST_PATH = DATA_PATH.joinpath("test")
+
+# initiate logging
+logger = logging.getLogger('imagenet-pytorch')
 
 
 def prepare_ti200():
@@ -83,6 +87,19 @@ def prepare_ti200():
     print("done.\n")
 
 
+def runtime_err_handler(run):
+    def wrapper(args):
+        try:
+            result = run(args)
+        except RuntimeError as exc:
+            logger.warning(f'{str(exc)} Return the extreme result.')
+            result = -1e+100
+        return result
+
+    return wrapper
+
+
+@runtime_err_handler
 def run(args):
     if args['seed'] is not None:
         random.seed(args['seed'])
