@@ -63,7 +63,7 @@ def param_search(project, model, params):
         metric = model.run(params)
     except RuntimeError as exc:
         print(exc)
-        print('Please add a RuntimeError handler in your model code.')
+        print('Please add RuntimeError handler in your model code.')
         sys.exit(1)
     print(f"Evaluation: {metric}")
 
