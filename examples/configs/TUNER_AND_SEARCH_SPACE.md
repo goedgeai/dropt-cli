@@ -7,7 +7,7 @@ Currently, Dr.Opt provides the following tuners. Below is a brief introduction t
 | -------- | -------- |
 | Anneal     | Annealing algorithm begins by sampling from the prior and tends over time to sample from points closer and closer to the best ones observed.     |
 | Naïve Evolution | Naïve Evolution randomly initializes a population-based on the search space, and chooses better ones and does some mutation on them to get the next generation. Naïve Evolution may require many trials to work.  [[reference]](https://arxiv.org/pdf/1703.01041.pdf)
-| GP Tuner    | GP (Gaussian Process) Tuner is a sequential model-based optimization (SMBO) approach that uses Gaussian Process as the surrogate. [[reference]](https://github.com/fmfn/BayesianOptimization) |
+| GP Tuner <br> **[not available now]** | GP (Gaussian Process) Tuner is a sequential model-based optimization (SMBO) approach that uses Gaussian Process as the surrogate. [[reference]](https://github.com/fmfn/BayesianOptimization) |
 | Grid Search | Grid Search performs an exhaustive searching through a manually specified subset of the space defined in the search space file. |
 | Random     | As the name implies, it randomly selects hyper-parameter combinations through the search space. It's worth noting that researches show that it might be surprisingly effective. [[reference]](http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf) |
 | TPE | TPE (Tree-structured Parzen Estimator) is a sequential model-based optimization (SMBO) approach that used Tree Parzen Estimators as the surrogate. [[reference]](https://papers.nips.cc/paper/4443-algorithms-for-hyper-parameter-optimization.pdf) |
@@ -80,7 +80,12 @@ It only accepts the following types of search space:
 }
 ```
 
-### GP Tuner
+### GP Tuner `(Not available now)`
+```diff
+- Note: Currently errors may occur while using this tuner. GPTuner is not recommended to use now.
+```
+
+
 #### Arguments
 * optimize_mode
     * maximize or minimize, default = maximize
