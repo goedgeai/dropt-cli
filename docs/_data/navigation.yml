@@ -1,0 +1,6 @@
+- name: Doc
+  link: /doc.html
+- name: Download
+  link: /download.html
+- name: About
+  link: /about.html
