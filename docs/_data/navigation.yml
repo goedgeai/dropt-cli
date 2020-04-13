@@ -1,6 +1,10 @@
-- name: Doc
-  link: /doc.html
-- name: Download
-  link: /download.html
 - name: About
   link: /about.html
+- name: Download
+  link: /download.html
+- name: Installation
+  link: /installation.html
+- name: QuickStart
+  link: /quick_start.html
+- name: Doc
+  link: /doc.html
