@@ -1,4 +1,3 @@
 ---
 title: QuickStart
 ---
-# QuickStart

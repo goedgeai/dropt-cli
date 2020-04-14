@@ -1,4 +1,3 @@
 ---
 title: Doc
 ---
-# Doc
