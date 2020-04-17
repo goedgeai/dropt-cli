@@ -1,3 +1,4 @@
 ---
-title: Installation
+title: Install
 ---
+# Install

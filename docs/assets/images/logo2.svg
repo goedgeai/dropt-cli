@@ -14,7 +14,7 @@
    viewBox="0 0 206.08438 181.90381"
    version="1.1"
    id="svg7563"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="logo.svg">
   <defs
      id="defs7557" />
@@ -26,17 +26,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="165.15088"
-     inkscape:cy="350.55558"
+     inkscape:cx="245.96308"
+     inkscape:cy="306.10887"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-height="1052"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      fit-margin-top="10"
      fit-margin-left="10"
@@ -124,17 +124,17 @@
      id="layer1"
      transform="translate(-8.4508018,-41.671926)">
     <path
-       style="fill:#9696ff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#a1b3db;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 102.6884,52.671926 17.32051,3e-6 83.66025,144.903801 H 53.669167 l 8.660257,-15 H 177.6884 Z"
        id="path7583"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:#ff9696;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#9bc8aa;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 177.6884,182.57573 -75,-129.903804 -83.660248,144.903804 8.66025,15 74.999998,-129.903798 57.67948,99.903798 z"
        id="path8128"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:#c8c8c8;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#c8c8c8;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 111.34865,97.671936 102.6884,82.671932 27.688402,212.57573 H 195.00891 l 8.66025,-15 H 53.669167 Z"
        id="path8130"
        inkscape:connector-curvature="0" />
