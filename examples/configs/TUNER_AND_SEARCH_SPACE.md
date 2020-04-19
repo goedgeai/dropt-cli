@@ -28,13 +28,11 @@ Currently, Dr.Opt provides the following tuners. Below is a brief introduction t
 
 ### Random
 #### Arguments
-* optimize_mode
-    * "maximize" or "minimize" (default: "maximize")
+(None)
 #### Example config
 ```
 "tuner": {
-    "builtinTunerName": "Random",
-    "classArgs": {"optimize_mode": "maximize"}
+    "builtinTunerName": "Random"
 }
 ```
 
