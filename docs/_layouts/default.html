@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <title>{{ site.title }} | {{ page.title }}</title>
-  <link rel="icon" type="image/svg+xml" href="/assets/images/logo3.svg" />
-  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="icon" type="image/svg+xml" href="{{ site.logo | relative_url }}" />
+  <link rel="stylesheet" href="{{ site.style | relative_url }}" />
 </head>
 <body>
   {% include header.html %}
