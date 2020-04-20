@@ -1,0 +1,11 @@
+<nav>
+  <a href="/"><img id="logo" src="/assets/images/logo3.svg" /></a>
+  <span class="sep"></span>
+  {% for item in site.data.header %}
+    {% if page.url == item.link %}
+      {{ item.name }}
+    {% else %}
+      <a href="{{ item.link }}">{{ item.name }}</a>
+    {% endif %}
+  {% endfor %}
+</nav>

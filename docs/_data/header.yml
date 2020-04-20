@@ -1,0 +1,8 @@
+- name: Install
+  link: /install.html
+- name: QuickStart
+  link: /quick_start.html
+- name: Doc
+  link: /doc.html
+- name: Changelog
+  link: /changelog.html
