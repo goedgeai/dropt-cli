@@ -1,5 +1,3 @@
-- name: About
-  link: /about.html
 - name: Install
   link: /install.html
 - name: QuickStart
