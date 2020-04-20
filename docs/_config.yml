@@ -1,4 +1,6 @@
 title: "DrOpt"
+logo: "/assets/images/logo3.svg"
+style: "/assets/css/styles.css"
 
 collections:
   docs:
@@ -18,5 +20,3 @@ defaults:
       path: "assets/images"
     values:
       image: true
-
-theme: jekyll-theme-slate
