@@ -25,6 +25,10 @@ class BoundApiEndpoint:
         return None
 
     def __call__(self, **kwargs):
+        if self._endpoint.get_attribute_name() == 'resume':
+            assert kwargs.get('project_id') != None, "Please provide the project_id of the resumed project!"
+            self._bound_resource._base_url += "/resume/"+str(kwargs['project_id'])
+        
         rep = self.call_with_params(kwargs)
 
         # type casting (str -> int or float)
@@ -51,3 +55,6 @@ class ApiEndpoint:
         self._response_cls = response_cls
         self._method = method
         self._attribute_name = attribute_name or name
+    
+    def get_attribute_name(self):
+        return self._attribute_name
