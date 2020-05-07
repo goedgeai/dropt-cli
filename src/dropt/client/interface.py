@@ -49,6 +49,7 @@ class ConnectionImpl:
                 ApiEndpoint(None, object_or_paginated_objects(Project), "GET", "fetch"),
                 ApiEndpoint(None, Project, "PUT", "update"),
                 ApiEndpoint(None, None, "DELETE", "delete"),
+                ApiEndpoint(None, Project, "POST", "resume")
             ],
             resources=[
                 suggestions,
@@ -63,6 +64,7 @@ class ConnectionImpl:
             endpoints=[
                 ApiEndpoint(None, Project, "POST", "create"),
                 ApiEndpoint(None, lambda *args, **kwargs: Pagination(Project, *args, **kwargs), "GET", "fetch"),
+                ApiEndpoint(None, Project, "POST", "resume")
             ],
         )
 
@@ -120,9 +122,12 @@ class ConnectionImpl:
 
 
 class Connection:
-    def __init__(self, client_token=None, server_ip=None):
+    def __init__(self, client_token=None, server_ip=None, server_port=""):
         client_token = client_token
-        api_url = f"https://{server_ip}"
+        if server_port != "":
+            api_url = f"http://{server_ip}:{server_port}"
+        else:
+            api_url = f"https://{server_ip}"
         if not client_token:
             raise ValueError("Must provide client_token.")
 
