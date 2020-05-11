@@ -5,21 +5,23 @@ https://en.wikipedia.org/wiki/Test_functions_for_optimization
 '''
 
 
-import logging
-from argparse import ArgumentParser
 from math import sin, sqrt
+from dropt.utils.log import DroptUserLogger
+from argparse import ArgumentParser
+import logging
 
 
 # setup logs
-logger = logging.getLogger("test_function_for_optimization")
+logger = DroptUserLogger('eggholder_function')
 
 
 def run(params):
     '''Evaluate the test function'''
+    logger.info(f'parameters = {params}')
     x = params['x']
     y = params['y']
     value = -(y+47)*sin(sqrt(abs(x/2+(y+47))))-x*sin(sqrt(abs(x-(y+47))))
-    logger.debug(f"value = {value}")
+    logger.info(f'function value = {value}')
     return value
 
 
@@ -34,6 +36,6 @@ def param_loader():
 
 
 if __name__ == '__main__':
+    logger.info('Evaluation of the eggholder function')
     params = param_loader()
-    logger.debug(f'parametrs = {params}')
     print(run(params))

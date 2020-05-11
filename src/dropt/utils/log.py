@@ -6,6 +6,7 @@ https://bbengfort.github.io/snippets/2016/01/11/logging-mixin.html
 
 
 import logging
+import functools
 from pathlib import Path
 from datetime import date
 
@@ -127,3 +128,17 @@ class DroptUserLogger(Logger):
 
         # initialize the logging object
         super().__init__(logger, [ch, fh])
+
+
+class function_logging_wrapper:
+    def __init__(self, logger):
+        self._logger = logger
+
+    def __call__(self, func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            self._logger.debug(f'Entering function {func.__name__}.')
+            r = func(*args, **kwargs)
+            self._logger.debug(f'Exiting function {func.__name__}.')
+            return r
+        return wrapper
