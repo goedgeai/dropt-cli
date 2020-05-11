@@ -18,7 +18,7 @@ class Logger:
     '''Wrapping class for logger.'''
 
     # class variables regarding logging format
-    fmt = '[%(asctime)s] %(name)s@%(module)s [%(levelname)s] %(message)s'
+    fmt = '[%(asctime)s] %(name)s [%(levelname)s] %(message)s'
     dtfmt = '%Y-%m-%d %H:%M:%S'
     dfmt = '%Y%m%d'
     formatter = logging.Formatter(fmt, dtfmt)
@@ -130,15 +130,15 @@ class DroptUserLogger(Logger):
         super().__init__(logger, [ch, fh])
 
 
-class function_logging_wrapper:
+class FuncLoggingWrapper:
     def __init__(self, logger):
         self._logger = logger
 
     def __call__(self, func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            self._logger.debug(f'Entering function {func.__name__}.')
+            self._logger.debug(f'Entering function "{func.__name__}".')
             r = func(*args, **kwargs)
-            self._logger.debug(f'Exiting function {func.__name__}.')
+            self._logger.debug(f'Exiting function "{func.__name__}".')
             return r
         return wrapper
