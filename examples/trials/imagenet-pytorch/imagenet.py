@@ -1,16 +1,6 @@
-from argparse import ArgumentParser
-from pathlib import Path
-from tempfile import TemporaryFile
-from zipfile import ZipFile
-import csv
-import logging
-import os
-import random
-import requests
-import shutil
-import time
-from tqdm import tqdm
-import warnings
+'''PyTorch/Imagenet example for DrOpt
+'''
+
 
 import torch
 import torch.nn as nn
@@ -24,6 +14,21 @@ import torch.utils.data.distributed
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
+
+from argparse import ArgumentParser
+from pathlib import Path
+from tempfile import TemporaryFile
+from zipfile import ZipFile
+import csv
+import logging
+from dropt.utils.log import DroptUserLogger
+import os
+import random
+import requests
+import shutil
+import time
+from tqdm import tqdm
+import warnings
 
 
 # define dataset url and paths
