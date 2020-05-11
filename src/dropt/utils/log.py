@@ -11,9 +11,6 @@ from pathlib import Path
 from datetime import date
 
 
-# constants
-
-
 class Logger:
     '''Wrapping class for logger.'''
 
