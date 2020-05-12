@@ -14,7 +14,7 @@ from datetime import date
 class Logger:
     '''Wrapping class for logger.'''
 
-    # class variables regarding logging format
+    # logging format
     fmt = '[%(asctime)s] %(name)s [%(levelname)s] %(message)s'
     dtfmt = '%Y-%m-%d %H:%M:%S'
     dfmt = '%Y%m%d'
@@ -70,16 +70,16 @@ class DroptServiceLogger(Logger):
         name = 'dropt.srv'
 
         # console handler
-        ch = Logger.__create_console_handler(ch_level)
+        ch = super()._create_console_handler(ch_level)
 
         # file handler
         log_dir = Path(log_dir)
         date_str = date.today().strftime(super().dfmt)
         log_path = log_dir.joinpath(f'{name}-{date_str}.log')
-        fh = Logger.__create_file_handler(log_path, fh_level)
+        fh = super()._create_file_handler(log_path, fh_level)
 
         # logger
-        logger = Logger.__create_logger(name)
+        logger = super()._create_logger(name)
 
         # initialize the logging object
         super().__init__(self, logger, [ch, fh])
@@ -112,16 +112,16 @@ class DroptUserLogger(Logger):
         name = f'dropt.project.{name}'
 
         # console handler
-        ch = Logger._create_console_handler(ch_level)
+        ch = super()._create_console_handler(ch_level)
 
         # file handler
         log_dir = Path(log_dir)
         date_str = date.today().strftime(super().dfmt)
         log_path = log_dir.joinpath(f'{name}-{date_str}.log')
-        fh = Logger._create_file_handler(log_path, fh_level)
+        fh = super()._create_file_handler(log_path, fh_level)
 
         # logger
-        logger = Logger._create_logger(name)
+        logger = super()._create_logger(name)
 
         # initialize the logging object
         super().__init__(logger, [ch, fh])
