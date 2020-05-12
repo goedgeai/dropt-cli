@@ -12,3 +12,11 @@ def is_float(string):
         return True
     except ValueError:
         return False
+
+def is_int(string):
+    '''Check a given string can be converted to an int number.'''
+    try:
+        int(string)
+        return True
+    except ValueError:
+        return False
