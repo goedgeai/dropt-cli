@@ -1,8 +1,4 @@
-"""Logging utilities for DrOpt packages.
-
-Here I follow the suggestion on
-https://bbengfort.github.io/snippets/2016/01/11/logging-mixin.html
-"""
+'''Logging utilities for DrOpt packages.'''
 
 
 import logging
@@ -15,10 +11,12 @@ class Logger:
     '''Wrapping class for logger.'''
 
     # logging format
-    fmt = '[%(asctime)s] %(name)s [%(levelname)s] %(message)s'
-    dtfmt = '%Y-%m-%d %H:%M:%S'
     dfmt = '%Y%m%d'
-    formatter = logging.Formatter(fmt, dtfmt)
+    dtfmt = '%Y-%m-%d %H:%M:%S'
+    chfmt = '[%(asctime)s] %(name)s [%(levelname)s] %(message)s'
+    chformatter = logging.Formatter(chfmt, dtfmt)
+    fhfmt = '%(asctime)s|%(name)s|%(levelname)s|%(message)s'
+    fhformatter = logging.Formatter(fhfmt, dtfmt)
 
     def __init__(self, logger, handlers):
         level = min([h.level for h in handlers])
@@ -51,83 +49,75 @@ class Logger:
     def _create_console_handler(cls, level):
         ch = logging.StreamHandler()
         ch.setLevel(level)
-        ch.setFormatter(cls.formatter)
+        ch.setFormatter(cls.chformatter)
         return ch
 
     @classmethod
-    def _create_file_handler(cls, log_path, level):
-        log_path = Path(log_path)
-        log_path.parent.mkdir(parents=True, exist_ok=True)
-        fh = logging.FileHandler(log_path)
+    def _create_file_handler(cls, level, **kwargs):
+        '''A class method that creates a logging file handler.
+
+        "kwargs" consists of arguments for logging.FileHandler,
+        which should contain at least "filename."
+        '''
+        kwargs['filename'] = Path(kwargs['filename'])
+        kwargs['filename'].parent.mkdir(parents=True, exist_ok=True)
+        fh = logging.FileHandler(**kwargs)
         fh.setLevel(level)
-        fh.setFormatter(cls.formatter)
+        fh.setFormatter(cls.fhformatter)
         return fh
 
 
-class DroptServiceLogger(Logger):
-    def __init__(self, ch_level=logging.WARNING, fh_level=logging.INFO, log_dir='/tmp/dropt/'):
+class DrOptLogger(Logger):
+    '''Logger class for DrOpt'''
+
+    name = 'dropt'
+
+    def __init__(self, suffix=None, ch_level=logging.WARNING, fh_level=logging.INFO, log_dir='/tmp/dropt/'):
         # logger name
-        name = 'dropt.srv'
+        if suffix:
+            name = f'{self.name}.{suffix}'
+        else:
+            name = self.name
 
         # console handler
-        ch = super()._create_console_handler(ch_level)
+        ch = self._create_console_handler(ch_level)
 
         # file handler
         log_dir = Path(log_dir)
-        date_str = date.today().strftime(super().dfmt)
-        log_path = log_dir.joinpath(f'{name}-{date_str}.log')
-        fh = super()._create_file_handler(log_path, fh_level)
+        date_str = date.today().strftime(self.dfmt)
+        filename = log_dir.joinpath(f'{name}_{date_str}.log')
+        fh = self._create_file_handler(fh_level, filename=filename)
 
         # logger
-        logger = super()._create_logger(name)
-
-        # initialize the logging object
-        super().__init__(self, logger, [ch, fh])
-
-
-class DroptClientLogger(Logger):
-    def __init__(self, ch_level=logging.WARNING, fh_level=logging.INFO, log_dir='/tmp/dropt/'):
-        # logger name
-        name = 'dropt.cli'
-
-        # console handler
-        ch = super()._create_console_handler(ch_level)
-
-        # file handler
-        log_dir = Path(log_dir)
-        date_str = date.today().strftime(super().dfmt)
-        log_path = log_dir.joinpath(f'{name}-{date_str}.log')
-        fh = super()._create_file_handler(log_path, fh_level)
-
-        # logger
-        logger = super()._create_logger(name)
-
-        # initialize the logging object
-        super().__init__(self, logger, [ch, fh])
-
-
-class DroptUserLogger(Logger):
-    def __init__(self, name, ch_level=logging.WARNING, fh_level=logging.INFO, log_dir='log/'):
-        # logger name
-        name = f'dropt.project.{name}'
-
-        # console handler
-        ch = super()._create_console_handler(ch_level)
-
-        # file handler
-        log_dir = Path(log_dir)
-        date_str = date.today().strftime(super().dfmt)
-        log_path = log_dir.joinpath(f'{name}-{date_str}.log')
-        fh = super()._create_file_handler(log_path, fh_level)
-
-        # logger
-        logger = super()._create_logger(name)
+        logger = self._create_logger(name)
 
         # initialize the logging object
         super().__init__(logger, [ch, fh])
 
 
+class DrOptServiceLogger(DrOptLogger):
+    '''Logger class for DrOpt service.'''
+
+    name = 'dropt.srv'
+
+
+class DrOptClientLogger(DrOptLogger):
+    '''Logger class for DrOpt client.'''
+
+    name = 'dropt.client'
+
+
+class DrOptUserLogger(DrOptLogger):
+    '''Logger class for DrOpt project.'''
+
+    name = 'dropt.user'
+
+    def __init__(self, suffix=None, ch_level=logging.WARNING, fh_level=logging.INFO, log_dir='log/'):
+        super().__init__(suffix, ch_level, fh_level, log_dir)
+
+
 class FuncLoggingWrapper:
+    '''Logging wrapping class for function.'''
     def __init__(self, logger):
         self._logger = logger
 
