@@ -4,42 +4,49 @@ Reference
 https://www.twblogs.net/a/5c4a9fb8bd9eee6e7e068b5f
 '''
 
-import logging
-import numpy as np
-import pandas as pd
-from argparse import ArgumentParser
-from sklearn import model_selection
 from xgboost import XGBClassifier
+from sklearn import model_selection
+import pandas as pd
+import numpy as np
+from argparse import ArgumentParser
+from dropt.utils.log import DroptUserLogger, FuncLoggingWrapper
+import logging
 
 
 # setup logs
-logger = logging.getLogger("sklearn_randomForest")
+logger = DroptUserLogger('sklearn_randomForest', logging.DEBUG, logging.DEBUG)
 
 # setup path to data
 DATA_PATH = '../../../data/titanic'
 
 
+@FuncLoggingWrapper(logger)
 def data_loader():
     '''Load dataset'''
     data = pd.read_csv(f'{DATA_PATH}/train.csv')
 
     # data imputation
+    logger.info('Impute "Age" with median and "Embarked" with "S".')
     fill_values = {'Age': data['Age'].median(), 'Embarked': 'S'}
     data.fillna(fill_values, inplace=True)
 
     # encode values of 'Sex' and 'Embarked' by integers
+    logger.info('Encode "Sex" and "Embarked" by integers.')
     replace_values = {'Sex': {'male': 0, 'female': 1},
                       'Embarked': {'S': 0, 'C': 1, 'Q': 2}}
     data.replace(replace_values, inplace=True)
 
     # determine features and label
+    logger.info('Select "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare" and "Embarked" to be the features.')
     features = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']
+    logger.info('Select "Survived" to be the label.')
     label = 'Survived'
 
     X, y = data[features], data[label]
     return X, y
 
 
+@FuncLoggingWrapper(logger)
 def model_loader(params):
     '''Model loader'''
     model = XGBClassifier(**params)
@@ -49,12 +56,13 @@ def model_loader(params):
 
 def run(params):
     '''Evaluate performance of the model with the given parameters'''
+    logger.info(f'Parameters: {params}')
     X, y = data_loader()
     model = model_loader(params)
     kf = model_selection.KFold(n_splits=5, shuffle=False)
     scores = model_selection.cross_val_score(model, X, y, cv=kf)
     score = scores.mean()
-    logger.debug(f'score: {score:10.6f}')
+    logger.info(f'Score: {score:6.6f}')
     return score
 
 
@@ -96,6 +104,6 @@ def param_loader():
 
 
 if __name__ == '__main__':
+    logger.info('The Titanic survival prediction by XGBoost.')
     params = param_loader()
-    logger.debug(f'parameters = {params}')
     print(run(params))
