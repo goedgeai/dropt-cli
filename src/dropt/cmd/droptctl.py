@@ -21,25 +21,30 @@ Todo:
 import sys
 import importlib.util
 import json
-from argparse import ArgumentParser
+from argparse import ArgumentParser, SUPPRESS
 from time import sleep
 
 from dropt.client.interface import Connection
+from dropt.cmd.execute import execute_cmd, update_progress_file, project_log
 
 
 def header_footer_loop(func):
     '''Decorator tha includes header, footer and trial loop for projects.'''
-    def wrapper(project, model, params, pid, n_trial):
+    def wrapper(project, model, params, pid, n_trial, progress):
         # header
         print(f'\n=================== Trial Start ====================')
         print(f'\t\tProject ID: {pid}')
         print(f'----------------------------------------------------')
 
         # trial loop
-        for i in range(n_trial):
+        for i in range(progress, n_trial):
             print(f'\n[trial {i+1}/{n_trial}]')
             func(project, model, params)
-
+        
+        # save project log
+        # project_log['status'] = 'done'
+        update_progress_file(project_log['project_id'], 'done')
+        
         # footer
         print('\n=================== Trial End ======================\n')
     return wrapper
@@ -70,16 +75,22 @@ def param_search(project, model, params):
     # report result to DrOpt
     project.validations().create(suggest_id=sugt_id, value=metric)
 
+    # update project_log
+    update_progress_file(project_log['project_id'])
 
 def start():
     '''Main procedure for creating and running a project.'''
     # parse input arguments
     parser = ArgumentParser(prog='droptctl', description='Create DrOpt projects.')
+    parser.add_argument('command', metavar='CMD', type=str, nargs='?',
+                         help='the action that will be executed by droptctl', default='create')
     parser.add_argument('-t', '--token', help='user token', required=True)
     parser.add_argument('-s', '--server', default='dropt.neuralscope.org',
                         help='server address (default: dropt.neuralscope.org/)')
     parser.add_argument('-c', '--config', default='config.json',
                         help='config file (default: ./config.json)')
+    parser.add_argument('-p', '--port', default='',
+                        help=SUPPRESS)
     args, _ = parser.parse_known_args()
 
     # read config file
@@ -93,16 +104,13 @@ def start():
     spec.loader.exec_module(model)
 
     # establish connection to the given DrOpt server with the given user token
-    conn = Connection(client_token=args.token, server_ip=args.server)
+    conn = Connection(client_token=args.token, server_ip=args.server, server_port=args.port)
 
-    # create a DrOpt project
-    project = conn.projects().create(config=json.dumps(conf))
-    pid = project.project_id
-    n_trial = project.trial
-    project = conn.projects(pid)
+    # execute the given command
+    pid, n_trial, progress, project = execute_cmd(args.command, conn, conf)
 
     # perform parameter search and evaluation
-    param_search(project, model, conf['params'], pid, n_trial)
+    param_search(project, model, conf['params'], pid, n_trial, progress)
 
 
 if __name__ == '__main__':
