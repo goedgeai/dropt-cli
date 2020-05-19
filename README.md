@@ -198,10 +198,13 @@ to illustrate the steps of preparing and running a DrOpt project.
 - User can use script `droptctl` to create and run a DrOpt project.
 - Run the following command for user instructions of `droptctl`:
   ```console
-  $ droptctl -h
-  usage: droptctl [-h] -t TOKEN [-s SERVER] [-c CONFIG]
+  $ droptctl -h   
+  usage: droptctl [-h] -t TOKEN [-s SERVER] [-c CONFIG] [CMD]
 
   Create DrOpt projects.
+
+  positional arguments:
+    CMD                   the action that will be executed by droptctl
 
   optional arguments:
     -h, --help            show this help message and exit
@@ -218,6 +221,32 @@ to illustrate the steps of preparing and running a DrOpt project.
   under the project folder to start a new DrOpt project:
   ```console
   $ droptctl -t [your token]
+  ```
+
+### Resume a DrOpt Project
+* To resume a project, run the following command under the project folder:
+
+  ```console
+  $ droptctl resume -t [your token]
+  ```
+* After executing `droptctl resume`, if any project progress file is found under the project folder, there will be a prompt that provides a resumable project list.
+
+  ```console
+  ? Which project would you like to resume?  (Use arrow keys)
+    [project 122] name: dummy, progress: 4, create_time: 2020-05-08 16:11:10
+  » [project 121] name: dummy, progress: 1, create_time: 2020-05-08 16:10:05
+    [project 120] name: dummy, progress: 2, create_time: 2020-05-08 15:46:54
+    [project 119] name: dummy, progress: 4, create_time: 2020-05-08 15:46:26
+  ```
+
+* If `droptctl` can't found any progress file, user can manually input the `project_id`.
+* The `project_id` can be found on the WebUI (project sidebar ➔ Properties).
+
+  ```console
+  ! The project history directory does not exist.
+
+  ? Would you like to specify a project_id?  Yes
+  ? The project_id you would like to resume: 123
   ```
 
 
