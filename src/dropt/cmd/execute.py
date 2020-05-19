@@ -80,10 +80,14 @@ def create_project(cmd, conn, conf):
     # pid, trial_num, progress, project
     return (pid, n_trial, 0, project)
 
-def resume_promot():
+def resume_prompt():
     """
     Get the resume project_id. 
     Users can select from exist progress files or input the project_id manually.
+
+    Returns:
+        project_id    - id of the selected project
+        file_progress - progress of the selected local file
     """
 
     def get_proj_id_input():
@@ -119,29 +123,38 @@ def resume_promot():
             print("\n! There does not exist any running project in this dir.\n")
             proj_id = int(get_proj_id_input())
             return proj_id
-
-        print()
         
         user_answer = questionary.select(
             "Which project would you like to resume?",
             choices = choices
         ).ask()
 
-        return int(user_answer.split(']')[0].split('project ')[1])
+        if user_answer == None:
+            print("droptctl exited.")
+            exit(0)
+
+        return int(user_answer.split(']')[0].split('project ')[1]), int(user_answer.split('progress: ')[1].split(', create_time')[0])
 
 def resume_project(cmd, conn):
     """ Create a resume request and return the project object. """
     if cmd != 'resume':
         return (None, None, None, None)
     # find project id
-    project = conn.projects().resume(project_id=resume_promot())
+    project_id, file_progress = resume_prompt()
+    project = conn.projects().resume(project_id=project_id)
     pid = project.project_id
     progress = project.progress
+
+    if file_progress != progress and file_progress != progress-1:
+        if (questionary.confirm("Local file / server progress mismatches! server progress: {progress}. Would you like to continue?").ask() == False):
+                print("droptctl exited.")
+                exit(0)
+
     n_trial = project.trial
     project = conn.projects(pid)
     project_log['project_id'] = pid
 
-    return (pid, n_trial, progress, project)
+    return (pid, n_trial, progress-1, project)
 
 def execute_cmd(cmd, conn, conf=None):
     """

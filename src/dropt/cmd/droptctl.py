@@ -21,7 +21,7 @@ Todo:
 import sys
 import importlib.util
 import json
-from argparse import ArgumentParser
+from argparse import ArgumentParser, SUPPRESS
 from time import sleep
 
 from dropt.client.interface import Connection
@@ -90,7 +90,7 @@ def start():
     parser.add_argument('-c', '--config', default='config.json',
                         help='config file (default: ./config.json)')
     parser.add_argument('-p', '--port', default='',
-                        help='server port (default: no specified)')
+                        help=SUPPRESS)
     args, _ = parser.parse_known_args()
 
     # read config file
