@@ -15,7 +15,7 @@ or to wrap their ML model in Python at least.
 ## Installation
 ### Prerequisites
 We have tested `dropt-cli` in the following environments:
-- `Python>=3.5`
+- `Python>=3.6`
 - `pip>=20.0.0`
 
 
