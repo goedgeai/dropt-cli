@@ -9,7 +9,7 @@ with open(DIR.joinpath('README.md'), encoding='utf-8') as f:
 
 
 setup(
-    use_scm_version=True
+    use_scm_version=True,
     long_description=long_description,
     long_description_content_type='text/markdown'
 )
