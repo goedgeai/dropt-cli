@@ -16,9 +16,6 @@ Usage:
 
 from dropt.client.interface import Connection
 from .launcher import create_project, resume_project
-import importlib.util
-import json
-from time import sleep
 from pkg_resources import get_distribution
 import argparse
 import sys
@@ -71,16 +68,6 @@ def start():
     # run the associated function
     func = kwargs.pop('func')
     func(**kwargs)
-
-
-#   # load model
-#   model_name = conf['config']['model']
-#   spec = importlib.util.spec_from_file_location(model_name, f'{model_name}.py')
-#   model = importlib.util.module_from_spec(spec)
-#   spec.loader.exec_module(model)
-
-#   # execute the given command
-#   pid, n_trial, progress, project = execute_cmd(args.command, conn, conf)
 
 
 if __name__ == '__main__':

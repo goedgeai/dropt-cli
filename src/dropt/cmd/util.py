@@ -1,64 +1,119 @@
 import questionary
 from dropt.client.util import is_int
+import importlib.util
 import os
 import sys
-import ctypes
 import json
-import time
+from datetime import datetime, timezone
+from time import sleep
 from pathlib import Path
+
 
 class ProjectCache:
     '''Project cache.'''
-    def __init__(self, project_id, config, create_time=time, progress=0, status='pending', path='.dropt/projects'):
+    def __init__(self, project_id, n_trial, config, path='.dropt/projects'):
         # create directory if it does not exist
         path = Path(path)
         try:
-            path.mkdir(parent=True, exist_ok=True)
+            path.mkdir(parents=True, exist_ok=True)
         except FileExistsError as e:
             print('Directory path conflicts with an existing regular file: {e}')
             sys.exit(1)
 
-        self.filename = path.joinpath(filename)
+        self.filename = path.joinpath(f'{project_id}.json')
         self.project_id = project_id
-        self.write()
+        self.n_trial = n_trial
+        self.config = config
+        self.create_time = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
+        self.progress = 0
+        self.status = 'pending'
 
-    def write(self):
+    def _to_dict(self):
+        d = self.__dict__.copy()
+        d.pop('filename')
+        return d
+
+    def save(self):
         with open(self.filename, 'w') as f:
-            json.dump(self.data, f)
+            json.dump(self._to_dict(), f)
 
-    def read(self):
+    def load(self):
         with open(self.filename, 'r') as f:
-            self.data = json.load(f)
+            self.__dict__.update(json.load(f))
 
-    def update(self):
-        self.data['progress'] += 1
+    def load_model(self):
+        '''Load model.'''
+        name = self.config['config']['model']
+        spec = importlib.util.spec_from_file_location(name, f'{name}.py')
+        self.model = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.model)
 
-    def close(self)
+    def kill(self, signal):
+        if signal == 'update':
+            if self.status == 'running':
+                self.progress += 1
+                if self.progress == self.n_trial:
+                    self.status = 'done'
+            else:
+                raise RuntimeError(f'Project (id={self.project_id}) is not running.')
+        elif signal == 'start':
+            if self.status == 'pending':
+                self.status = 'running'
+            else:
+                raise RuntimeError(f'Project (id={self.project_id}) is not pending.')
+        elif signal == 'kill':
+            self.status = 'killed'
+        else:
+            raise ValueError('Unknown signal.')
 
 
-def write_project_cache(filename, data):
-    filename = PROJECTS_DIR.joinpath(filename)
-    with open(filename, 'w')
+def header_footer_loop(func):
+    '''Decorator tha includes header, footer and trial loop for projects.'''
+    def wrapper(project, pcache):
+        # header
+        print(f'\n=================== Trial Start ====================')
+        print(f'\t\tProject ID: {pcache.project_id}')
+        print(f'----------------------------------------------------')
+
+        # trial loop
+        for i in range(pcache.progress, pcache.n_trial):
+            print(f'\n[trial {i+1}/{pcache.n_trial}]')
+            func(project, pcache)
+        
+        # footer
+        print('\n=================== Trial End ======================\n')
+    return wrapper
 
 
-def update_project_cache(filename, status=None):
-    """ 
-    Update the progress of a project progress file. 
-    (Default action: progress += 1. The status is used to update the project status (e.g. running or done)
-    """
+@header_footer_loop
+def search_parameter(project, pcache):
+    '''Parameter search and evaluation.'''
+    # wait for back-end processing
+    sleep(2)
 
-    # TODO: if the progress file does not exist, create it
+    # request hyper-parameters from DrOpt
+    sugt = project.suggestions().create()
+    sugt_id = sugt.suggest_id
+    sugt_value = sugt.assignments
 
-    project_log['progress'] += 1
+    # evaluate the model with the suggested parameter configuration
+    params = pcache.config['params']
+    params.update(sugt_value)
+    print(f"Suggestion = {sugt_value}")
+    try:
+        metric = pcache.model.run(params)
+    except RuntimeError as e:
+        print(e)
+        print('Please add RuntimeError handler in your model code.')
+        sys.exit(1)
+    print(f"Evaluation: {metric}")
 
-    # read config file
-    with open(os.path.join(PROGRESS_DIR, f'.{file_name}.json'), 'r') as f:
-        data = json.load(f)
-    data['progress'] += 1
-    if status == 'done':
-        data['status'] = 'done'
-    with open(os.path.join(PROGRESS_DIR, f'.{file_name}.json'), 'w') as f:
-        json.dump(data, f)
+    # report result to DrOpt
+    project.validations().create(suggest_id=sugt_id, value=metric)
+
+    # update project_log
+    pcache.kill('update')
+    pcache.save()
 
 
 def resume_prompt():
