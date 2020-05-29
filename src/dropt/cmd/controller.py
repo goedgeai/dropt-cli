@@ -44,12 +44,12 @@ def start():
     parser_create.add_argument('-p', '--port',
                                default='',
                                help='port number')
-    parser_create.set_default(func=create_project)
+    parser_create.set_defaults(func=create_project)
 
     # command 'resume': resume a existing project
     parser_resume = subparsers.add_parser('resume', help='resume an existing project',
                                           description='Create new DrOpt project.')
-    parser_resume.set_default(func=resume_project)
+    parser_resume.set_defaults(func=resume_project)
 
     # show help info if no argument is given
     if len(sys.argv) == 1:

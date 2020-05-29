@@ -31,6 +31,7 @@ class ProjectCache:
     def _to_dict(self):
         d = self.__dict__.copy()
         d.pop('filename')
+        d.pop('model')
         return d
 
     def save(self):
@@ -74,6 +75,12 @@ def header_footer_loop(func):
         print(f'\n=================== Trial Start ====================')
         print(f'\t\tProject ID: {pcache.project_id}')
         print(f'----------------------------------------------------')
+
+        # load model
+        pcache.load_model()
+
+        # send start signal
+        pcache.kill('start')
 
         # trial loop
         for i in range(pcache.progress, pcache.n_trial):

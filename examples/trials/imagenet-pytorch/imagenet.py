@@ -21,7 +21,6 @@ from tempfile import TemporaryFile
 from zipfile import ZipFile
 import csv
 import logging
-from dropt.utils.log import DroptUserLogger
 import os
 import random
 import requests

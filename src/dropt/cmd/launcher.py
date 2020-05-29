@@ -13,7 +13,7 @@ def create_project(conn, config_file):
         config = json.load(f)
 
     # create a new project and its cache
-    project = conn.projects().create(config=config)
+    project = conn.projects().create(config=json.dumps(config))
     pcache = ProjectCache(project_id=project.project_id, n_trial=project.trial, config=config)
     project = conn.projects(pcache.project_id)
 
