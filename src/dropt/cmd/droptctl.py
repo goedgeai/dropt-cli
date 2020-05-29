@@ -18,14 +18,14 @@ Todo:
 '''
 
 
-import sys
-import importlib.util
-import json
-from argparse import ArgumentParser, SUPPRESS
-from time import sleep
-
 from dropt.client.interface import Connection
 from dropt.cmd.execute import execute_cmd, update_progress_file, project_log
+import importlib.util
+import json
+from time import sleep
+from pkg_resources import get_distribution, DistributionNotFound
+import argparse
+import sys
 
 
 def header_footer_loop(func):
@@ -78,39 +78,63 @@ def param_search(project, model, params):
     # update project_log
     update_progress_file(project_log['project_id'])
 
+
 def start():
-    '''Main procedure for creating and running a project.'''
-    # parse input arguments
-    parser = ArgumentParser(prog='droptctl', description='Create DrOpt projects.')
-    parser.add_argument('command', metavar='CMD', type=str, nargs='?',
-                         help='the action that will be executed by droptctl', default='create')
-    parser.add_argument('-t', '--token', help='user token', required=True)
-    parser.add_argument('-s', '--server', default='dropt.neuralscope.org',
-                        help='server address (default: dropt.neuralscope.org/)')
-    parser.add_argument('-c', '--config', default='config.json',
-                        help='config file (default: ./config.json)')
-    parser.add_argument('-p', '--port', default='',
-                        help=SUPPRESS)
+    '''droptctl command parser.'''
+    # info of droptctl
+    parser = argparse.ArgumentParser(prog='droptctl',
+                            description='Use command to control DrOpt project.',
+                            epilog='Run "droptctl CMD -h" to learn more about a specific command.')
+    parser.add_argument('-v', '--version', action='version', version=get_distribution('dropt-cli').version)
+
+    # create subparesers for commands
+    subparsers = parser.add_subparsers(title='commands', metavar='CMD')
+
+    # command 'create' for creating a new project
+    parser_create = subparsers.add_parser('create', help='create new project',
+                                          description='Create new DrOpt project.')
+    parser_create.add_argument('-t', '--token', help='user token', required=True)
+    parser_create.add_argument('-s', '--server', metavar='ADDRESS',
+                               default='dropt.neuralscope.org',
+                               help='server address (default: %(default)s)')
+    parser_create.add_argument('-c', '--config', metavar='FILENAME',
+                               default='config.json',
+                               help='config file (default: %(default)s)')
+    parser_create.add_argument('-p', '--port',
+                               default='',
+                               help='port number')
+
+    # command 'resume' for resuming a existing project
+    parser_create = subparsers.add_parser('resume', help='resume an existing project',
+                                          description='Create new DrOpt project.')
+
+    # display help info if no argument is given
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
+
     args, _ = parser.parse_known_args()
+    kwargs = vars(args)
+    args.func(**kwargs)
 
-    # read config file
-    with open(args.config, 'r') as file:
-        conf = json.load(file)
+#   # read config file
+#   with open(args.config, 'r') as file:
+#       conf = json.load(file)
 
-    # load model
-    model_name = conf['config']['model']
-    spec = importlib.util.spec_from_file_location(model_name, f'{model_name}.py')
-    model = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(model)
+#   # load model
+#   model_name = conf['config']['model']
+#   spec = importlib.util.spec_from_file_location(model_name, f'{model_name}.py')
+#   model = importlib.util.module_from_spec(spec)
+#   spec.loader.exec_module(model)
 
-    # establish connection to the given DrOpt server with the given user token
-    conn = Connection(client_token=args.token, server_ip=args.server, server_port=args.port)
+#   # establish connection to the given DrOpt server with the given user token
+#   conn = Connection(client_token=args.token, server_ip=args.server, server_port=args.port)
 
-    # execute the given command
-    pid, n_trial, progress, project = execute_cmd(args.command, conn, conf)
+#   # execute the given command
+#   pid, n_trial, progress, project = execute_cmd(args.command, conn, conf)
 
-    # perform parameter search and evaluation
-    param_search(project, model, conf['params'], pid, n_trial, progress)
+#   # perform parameter search and evaluation
+#   param_search(project, model, conf['params'], pid, n_trial, progress)
 
 
 if __name__ == '__main__':
