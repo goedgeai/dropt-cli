@@ -223,7 +223,10 @@ to illustrate the steps of preparing and running a DrOpt project.
   $ droptctl -t [your token]
   ```
 
-### Resume a DrOpt Project
+### Resume a DrOpt Project (will be available soon)
+
+> The `resume` function will be available after the coming server maintenance. Please stay tuned to our announcement for updates!
+
 * To resume a project, run the following command under the project folder:
 
   ```console
