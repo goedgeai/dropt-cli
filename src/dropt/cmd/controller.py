@@ -24,9 +24,16 @@ import sys
 def start():
     '''droptctl command parser.'''
     parser = argparse.ArgumentParser(prog='droptctl',
-                            description='Use command to control DrOpt project.',
-                            epilog='Run "droptctl CMD -h" to learn more about a specific command.')
+                                     description='Use command to control DrOpt project.',
+                                     epilog='Run "droptctl CMD -h" to learn more about a specific command.')
     parser.add_argument('-v', '--version', action='version', version=get_distribution('dropt-cli').version)
+    parser.add_argument('-t', '--token', help='user token', required=True)
+    parser.add_argument('-s', '--server', metavar='ADDRESS',
+                        default='dropt.neuralscope.org',
+                        help='server address (default: %(default)s)')
+    parser.add_argument('-p', '--port',
+                        default='',
+                        help='port number')
 
     # create subparesers for commands
     subparsers = parser.add_subparsers(title='commands', metavar='CMD')
@@ -34,16 +41,9 @@ def start():
     # command 'create': create a new project
     parser_create = subparsers.add_parser('create', help='create new project',
                                           description='Create new DrOpt project.')
-    parser_create.add_argument('-t', '--token', help='user token', required=True)
-    parser_create.add_argument('-s', '--server', metavar='ADDRESS',
-                               default='dropt.neuralscope.org',
-                               help='server address (default: %(default)s)')
     parser_create.add_argument('-c', '--config-file', metavar='FILENAME',
                                default='config.json',
                                help='config file (default: %(default)s)')
-    parser_create.add_argument('-p', '--port',
-                               default='',
-                               help='port number')
     parser_create.set_defaults(func=create_project)
 
     # command 'resume': resume a existing project
