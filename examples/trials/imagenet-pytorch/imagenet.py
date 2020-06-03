@@ -21,7 +21,7 @@ from tempfile import TemporaryFile
 from zipfile import ZipFile
 import csv
 import logging
-from dropt.utils.log import DroptUserLogger
+from dropt.util.log import UserLogger
 import os
 import random
 import requests
@@ -39,17 +39,12 @@ TRAIN_PATH = DATA_PATH.joinpath("train")
 VAL_PATH = DATA_PATH.joinpath("val")
 TEST_PATH = DATA_PATH.joinpath("test")
 
-# set up logging
-logger = logging.getLogger('imagenet-pytorch')
-# create console handler and set level to warning 
-ch = logging.StreamHandler()
-ch.setLevel(logging.WARNING)
-# create formatter
-formatter = logging.Formatter('[%(asctime)s] %(name)s/%(levelname)s: %(message)s', '%Y/%m/%d %H:%M:%S')
-# add formatter to ch
-ch.setFormatter(formatter)
-# add ch to logger
-logger.addHandler(ch)
+
+# logger
+logger = UserLogger('imagenet-pytorch')
+logger.add_console_handler(logging.INFO)
+logger.add_file_handler(logging.INFO, filename='log/imagenet.log')
+
 
 # best top 1 accuracy
 best_acc1 = 0

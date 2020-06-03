@@ -6,13 +6,15 @@ https://en.wikipedia.org/wiki/Test_functions_for_optimization
 
 
 from math import sin, sqrt
-from dropt.utils.log import DroptUserLogger
+from dropt.util.log import UserLogger
 from argparse import ArgumentParser
 import logging
 
 
-# setup logs
-logger = DroptUserLogger('eggholder_function')
+# logger
+logger = UserLogger('eggholder')
+logger.add_console_handler(logging.INFO)
+logger.add_file_handler(logging.INFO, filename='log/eggholder.log')
 
 
 def run(params):

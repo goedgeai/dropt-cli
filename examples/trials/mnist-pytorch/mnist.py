@@ -13,10 +13,13 @@ import torch.optim as optim
 from argparse import ArgumentParser
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
+from dropt.util.log import UserLogger
 
 
 # setup log
-logger = logging.getLogger('MNIST with PyTorch')
+logger = UserLogger('mnist-pytorch')
+logger.add_console_handler(logging.INFO)
+logger.add_file_handler(logging.INFO, filename='log/mnist.log')
 
 
 class Net(nn.Module):
@@ -58,8 +61,7 @@ def train(args, model, device, train_loader, optimizer, epoch):
         loss.backward()
         optimizer.step()
         if batch_idx % args['log_interval'] == 0:
-            print((f'Train Epoch: {epoch:3d} '
-                   f'[{batch_idx*len(data):5d}/{len(train_loader.dataset)} '
+            print((f'[{batch_idx*len(data):5d}/{len(train_loader.dataset)} '
                    f'({100.*batch_idx/len(train_loader):3.0f}%)]\t'
                    f'Loss: {loss.item():10.6f}'))
 
@@ -123,6 +125,7 @@ def run(args):
 
     scheduler = StepLR(optimizer, step_size=1, gamma=args['gamma'])
     for epoch in range(1, args['epochs'] + 1):
+        logger.info(f'training epoch: {epoch:3d}/{args["epochs"]}')
         train(args, model, device, train_loader, optimizer, epoch)
         loss = test(args, model, device, test_loader)
         scheduler.step()
@@ -130,7 +133,7 @@ def run(args):
     if args['save_model']:
         torch.save(model.state_dict(), 'mnist_cnn.pt')
 
-    logger.debug(f'loss: (loss:10.6f)')
+    logger.info(f'loss: (loss:10.6f)')
     return loss
 
 
@@ -164,5 +167,5 @@ def param_loader():
 
 if __name__ == '__main__':
     params = param_loader()
-    logger.debug(f'parameters = {params}')
+    logger.info(f'parameters = {params}')
     print(run(params))
