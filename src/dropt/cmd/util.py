@@ -9,18 +9,20 @@ from time import sleep
 from pathlib import Path
 
 
+PCACHE_DIR = Path('.dropt/projects')
+
+
 class ProjectCache:
     '''Project cache.'''
-    def __init__(self, project_id, n_trial, config, path='.dropt/projects'):
+    def __init__(self, project_id, n_trial, config):
         # create directory if it does not exist
-        path = Path(path)
         try:
-            path.mkdir(parents=True, exist_ok=True)
+            PCACHE_DIR.mkdir(parents=True, exist_ok=True)
         except FileExistsError as e:
             print('Directory path conflicts with an existing regular file: {e}')
             sys.exit(1)
 
-        self.filename = path.joinpath(f'{project_id}.json')
+        self.filename = PCACHE_DIR.joinpath(f'{project_id}.json')
         self.project_id = project_id
         self.n_trial = n_trial
         self.config = config
@@ -106,14 +108,14 @@ def search_parameter(project, pcache):
     # evaluate the model with the suggested parameter configuration
     params = pcache.config['params']
     params.update(sugt_value)
-    print(f"Suggestion = {sugt_value}")
+    print(f'Suggestion = {sugt_value}')
     try:
         metric = pcache.model.run(params)
     except RuntimeError as e:
         print(e)
         print('Please add RuntimeError handler in your model code.')
         sys.exit(1)
-    print(f"Evaluation: {metric}")
+    print(f'Evaluation: {metric}')
 
     # report result to DrOpt
     project.validations().create(suggest_id=sugt_id, value=metric)
@@ -124,43 +126,42 @@ def search_parameter(project, pcache):
 
 
 def resume_prompt():
-    """
-    Get the resume project_id. 
+    '''Get the resume project_id. 
     Users can select from exist progress files or input the project_id manually.
 
     Returns:
         project_id    - id of the selected project
         file_progress - progress of the selected local file
-    """
+    '''
 
     def get_proj_id_input():
-        if(questionary.confirm("Would you like to specify a project_id?").ask()):
-            proj_id = questionary.text("The project_id you would like to resume:").ask()
+        if questionary.confirm('Would you like to specify a project_id?').ask():
+            proj_id = questionary.text('The project_id you would like to resume:').ask()
             if is_int(proj_id) != True:
-                print("\nThe project_id must be an integer! droptctl exited.")
-                exit(0)
+                print('\nThe project_id must be an integer! droptctl exited.')
+                sys.exit(1)
         else:
-            print("\ndroptctl exited.")
-            exit(0)
+            print('\ndroptctl exited.')
+            exit(1)
         return proj_id
 
     # read resume files
-    if (os.path.isdir(PROGRESS_DIR) != True):
-        print("\n! The project history directory does not exist.\n")
-        proj_id = int(get_proj_id_input())
-        return proj_id
-    elif (len(os.listdir(PROGRESS_DIR)) == 0):
-        print("\n! There does not exist any project history file.\n")
+    if (PCACHE_DIR.is_dir() != True):
+        print('\n! The project cache directory does not exist.\n')
         proj_id = int(get_proj_id_input())
         return proj_id
     else:
         project_files = []
-        for f in os.listdir(PROGRESS_DIR):
-            with open(os.path.join(PROGRESS_DIR, f)) as json_file:
-                project_files.append(json.load(json_file)) 
+        for f in PCACHE_DIR.glob('*'):
+            with open(f) as fh:
+                project_files.append(json.load(fh)) 
+
         project_files = sorted(project_files, key=lambda k: k['create_time'], reverse=True) 
-        choices =  [ f"[project {p['project_id']}] name: {p['name']}, progress: {p['progress']+1}, create_time: {p['create_time']}"\
-                      for p in project_files if p.get('status') == 'running']
+        choices =  [(f"[project {p['project_id']}] "
+                     f"name: {p['name']}, "
+                     f"progress: {p['progress']+1}, "
+                     f"create_time: {p['create_time']}")
+                         for p in project_files if p.get('status') == 'running']
         
         if len(choices) == 0:
             print("\n! There does not exist any running project in this dir.\n")
@@ -176,4 +177,5 @@ def resume_prompt():
             print("droptctl exited.")
             exit(0)
 
-        return int(user_answer.split(']')[0].split('project ')[1]), int(user_answer.split('progress: ')[1].split(', create_time')[0])
+        return int(user_answer.split(']')[0].split('project ')[1]),\
+               int(user_answer.split('progress: ')[1].split(', create_time')[0])

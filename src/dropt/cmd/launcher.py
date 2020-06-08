@@ -1,4 +1,4 @@
-from .util import ProjectCache, search_parameter
+from .util import ProjectCache, search_parameter, PCACHE_DIR
 import questionary
 from dropt.client.util import is_int
 import json
@@ -23,10 +23,6 @@ def create_project(conn, config_file):
 
 def resume_project(conn):
     """ Create a resume request and return the project object. """
-    # read config file
-    with open(args.config, 'r') as file:
-        conf = json.load(file)
-
     # find project id
     project_id, file_progress = resume_prompt()
     project = conn.projects().resume(project_id=project_id)
@@ -34,12 +30,16 @@ def resume_project(conn):
     progress = project.progress
 
     if file_progress != progress and file_progress != progress-1:
-        if (questionary.confirm("Local file / server progress mismatches! server progress: {progress}. Would you like to continue?").ask() == False):
+        if (questionary.confirm((f'Local file and server progresses mismatch! '
+                                 f'file progress: {file_progress}, '
+                                 f'server progress: {progress}.\n'
+                                 f'Would you like to continue?').ask() == False):
                 print("droptctl exited.")
                 exit(0)
 
-    n_trial = project.trial
     project = conn.projects(pid)
     project_log['project_id'] = pid
+    pcache = ProjectCache(project_id=pid, n_trial=project.trial, config=config)
 
-    return (pid, n_trial, progress-1, project)
+    # search parameter
+    search_parameter(project, pcache)
