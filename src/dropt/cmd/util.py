@@ -1,70 +1,76 @@
 import questionary
-from dropt.client.util import is_int
 import importlib.util
-import os
 import sys
 import json
 from datetime import datetime, timezone
 from time import sleep
 from pathlib import Path
+from dropt.util.log import CliLogger
 
 
-PCACHE_DIR = Path('.dropt/projects')
+PCACHE_DIR = Path('.dropt/pcache')
 
 
 class ProjectCache:
     '''Project cache.'''
-    def __init__(self, project_id, n_trial, config):
-        # create directory if it does not exist
-        try:
-            PCACHE_DIR.mkdir(parents=True, exist_ok=True)
-        except FileExistsError as e:
-            print('Directory path conflicts with an existing regular file: {e}')
-            sys.exit(1)
+    def __init__(self, pid, name=None, n_trial=None, model_file=None, model_params=None):
+        # create cache directory
+        PCACHE_DIR.mkdir(parents=True, exist_ok=True)
 
-        self.filename = PCACHE_DIR.joinpath(f'{project_id}.json')
-        self.project_id = project_id
+        self.pid = pid
+        self.name = name
         self.n_trial = n_trial
-        self.config = config
+        self._model_file = model_file
+        self.model_params = model_params
         self.create_time = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
         self.progress = 0
         self.status = 'pending'
 
-    def _to_dict(self):
-        d = self.__dict__.copy()
-        d.pop('filename')
-        d.pop('model')
-        return d
+    @property
+    def model_file(self):
+        return Path(self._model_file)
+
+    @property
+    def cache_file(self):
+        return PCACHE_DIR.joinpath(f'{self.pid}.json')
 
     def save(self):
-        with open(self.filename, 'w') as f:
-            json.dump(self._to_dict(), f)
+        '''Save project cache.'''
+        with open(self.cache_file, 'w') as f:
+            json.dump(self.__dict__, f)
 
     def load(self):
-        with open(self.filename, 'r') as f:
+        '''Load project cache.'''
+        with open(self.cache_file, 'r') as f:
             self.__dict__.update(json.load(f))
 
     def load_model(self):
-        '''Load model.'''
-        name = self.config['config']['model']
-        spec = importlib.util.spec_from_file_location(name, f'{name}.py')
-        self.model = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(self.model)
+        '''Return project model.'''
+        spec = importlib.util.spec_from_file_location(self.model_file.stem, self.model_file)
+        model = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(model)
+        return model
 
     def kill(self, signal):
+        '''Send signal to project.'''
         if signal == 'update':
+            # udpate project progress
             if self.status == 'running':
                 self.progress += 1
                 if self.progress == self.n_trial:
                     self.status = 'done'
             else:
-                raise RuntimeError(f'Project (id={self.project_id}) is not running.')
+                raise RuntimeError(f'Project (id={self.pid}) is not running.')
         elif signal == 'start':
+            # start running a project
             if self.status == 'pending':
                 self.status = 'running'
+            elif self.status == 'running':
+                print(f'Project {self.pid} is already running!')
             else:
-                raise RuntimeError(f'Project (id={self.project_id}) is not pending.')
+                raise RuntimeError(f'Project {self.pid} cannot start.')
         elif signal == 'kill':
+            # terminate a project
             self.status = 'killed'
         else:
             raise ValueError('Unknown signal.')
@@ -75,19 +81,19 @@ def header_footer_loop(func):
     def wrapper(project, pcache):
         # header
         print(f'\n=================== Trial Start ====================')
-        print(f'\t\tProject ID: {pcache.project_id}')
+        print(f'\t\tProject ID: {pcache.pid}')
         print(f'----------------------------------------------------')
 
-        # load model
-        pcache.load_model()
-
-        # send start signal
+        # signal project to start
         pcache.kill('start')
 
+        # load the model
+        model = pcache.load_model()
+
         # trial loop
-        for i in range(pcache.progress, pcache.n_trial):
-            print(f'\n[trial {i+1}/{pcache.n_trial}]')
-            func(project, pcache)
+        while (pcache.progress < pcache.n_trial):
+            print(f'\n[trial {pcache.progress+1}/{pcache.n_trial}]')
+            func(project, pcache, model)
         
         # footer
         print('\n=================== Trial End ======================\n')
@@ -95,7 +101,7 @@ def header_footer_loop(func):
 
 
 @header_footer_loop
-def search_parameter(project, pcache):
+def search_parameter(project, pcache, model):
     '''Parameter search and evaluation.'''
     # wait for back-end processing
     sleep(2)
@@ -104,13 +110,13 @@ def search_parameter(project, pcache):
     sugt = project.suggestions().create()
     sugt_id = sugt.suggest_id
     sugt_value = sugt.assignments
+    print(f'Suggestion = {sugt_value}')
 
     # evaluate the model with the suggested parameter configuration
-    params = pcache.config['params']
+    params = pcache.model_params.copy()
     params.update(sugt_value)
-    print(f'Suggestion = {sugt_value}')
     try:
-        metric = pcache.model.run(params)
+        metric = model.run(params)
     except RuntimeError as e:
         print(e)
         print('Please add RuntimeError handler in your model code.')
@@ -130,52 +136,31 @@ def resume_prompt():
     Users can select from exist progress files or input the project_id manually.
 
     Returns:
-        project_id    - id of the selected project
-        file_progress - progress of the selected local file
+        pid    - id of the selected project
     '''
 
-    def get_proj_id_input():
-        if questionary.confirm('Would you like to specify a project_id?').ask():
-            proj_id = questionary.text('The project_id you would like to resume:').ask()
-            if is_int(proj_id) != True:
-                print('\nThe project_id must be an integer! droptctl exited.')
-                sys.exit(1)
-        else:
-            print('\ndroptctl exited.')
-            exit(1)
-        return proj_id
-
     # read resume files
-    if (PCACHE_DIR.is_dir() != True):
-        print('\n! The project cache directory does not exist.\n')
-        proj_id = int(get_proj_id_input())
-        return proj_id
-    else:
-        project_files = []
-        for f in PCACHE_DIR.glob('*'):
-            with open(f) as fh:
-                project_files.append(json.load(fh)) 
-
-        project_files = sorted(project_files, key=lambda k: k['create_time'], reverse=True) 
-        choices =  [(f"[project {p['project_id']}] "
-                     f"name: {p['name']}, "
-                     f"progress: {p['progress']+1}, "
-                     f"create_time: {p['create_time']}")
-                         for p in project_files if p.get('status') == 'running']
+    choices = []
+    for f in PCACHE_DIR.glob('*'):
+        with open(f) as fh:
+            pcache_dict = json.load(fh)
+        if pcache_dict['status'] != 'running':
+            continue
+        pid = pcache_dict['pid']
+        name = pcache_dict['name']
+        n_trial = pcache_dict['n_trial']
+        progress = pcache_dict['progress']
+        create_time = pcache_dict['create_time']
+        choices.append(questionary.Choice(
+            title=f'[Project {pid}: {name}] progress: {progress}/{n_trial} (created at {create_time})',
+            value=int(pid)
+        ))
         
-        if len(choices) == 0:
-            print("\n! There does not exist any running project in this dir.\n")
-            proj_id = int(get_proj_id_input())
-            return proj_id
+    if len(choices) == 0:
+        print("There are no running projects!")
+        sys.exit(1)
         
-        user_answer = questionary.select(
-            "Which project would you like to resume?",
-            choices = choices
-        ).ask()
-
-        if user_answer == None:
-            print("droptctl exited.")
-            exit(0)
-
-        return int(user_answer.split(']')[0].split('project ')[1]),\
-               int(user_answer.split('progress: ')[1].split(', create_time')[0])
+    return questionary.select(
+               "Which project would you like to resume?",
+               choices = choices
+           ).ask()
