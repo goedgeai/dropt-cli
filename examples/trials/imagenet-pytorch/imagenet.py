@@ -21,7 +21,6 @@ from tempfile import TemporaryFile
 from zipfile import ZipFile
 import csv
 import logging
-from dropt.util.log import UserLogger
 import os
 import random
 import requests
@@ -29,6 +28,7 @@ import shutil
 import time
 from tqdm import tqdm
 import warnings
+from dropt.util.log import UserLogger
 
 
 # define dataset url and paths
@@ -41,9 +41,10 @@ TEST_PATH = DATA_PATH.joinpath("test")
 
 
 # logger
-logger = UserLogger('imagenet-pytorch')
+logger_name = Path(__file__).stem
+logger = UserLogger(logger_name)
 logger.add_console_handler(logging.INFO)
-logger.add_file_handler(logging.INFO, filename='log/imagenet.log')
+logger.add_file_handler(logging.INFO, filename=f'{logger_name}.log')
 
 
 # best top 1 accuracy

@@ -11,12 +11,14 @@ import numpy as np
 from argparse import ArgumentParser
 from dropt.util.log import UserLogger, FuncLoggingWrapper
 import logging
+from pathlib import Path
 
 
-# setup logs
-logger = UserLogger('titanic-xgb')
+# logger
+logger_name = Path(__file__).stem
+logger = UserLogger(logger_name)
 logger.add_console_handler(logging.INFO)
-logger.add_file_handler(logging.INFO, filename='log/titanic.log')
+logger.add_file_handler(logging.INFO, filename=f'{logger_name}.log')
 
 
 # setup path to data

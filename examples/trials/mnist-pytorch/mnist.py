@@ -13,13 +13,15 @@ import torch.optim as optim
 from argparse import ArgumentParser
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
+from pathlib import Path
 from dropt.util.log import UserLogger
 
 
-# setup log
-logger = UserLogger('mnist-pytorch')
+# logger
+logger_name = Path(__file__).stem
+logger = UserLogger(logger_name)
 logger.add_console_handler(logging.INFO)
-logger.add_file_handler(logging.INFO, filename='log/mnist.log')
+logger.add_file_handler(logging.INFO, filename=f'{logger_name}.log')
 
 
 class Net(nn.Module):
