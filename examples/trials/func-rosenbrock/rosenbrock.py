@@ -20,13 +20,14 @@ logger.add_file_handler(logging.INFO, filename=f'{logger_name}.log')
 
 def run(params):
     '''Evaluate the test function'''
+    logger.info(f'parameters = {params}')
     x = params['x']
     y = params['y']
     z = params['z']
     value = 0
     value = value + 100*(y-x**2)**2+(1-x)**2
     value = value + 100*(z-y**2)**2+(1-y)**2
-    logger.debug(f"value = {value}")
+    logger.info(f"value = {value}")
     return value
 
 
@@ -42,6 +43,6 @@ def param_loader():
 
 
 if __name__ == '__main__':
+    logger.info('Evaluation of the eggholder function')
     params = param_loader()
-    logger.debug(f'parameters = {params}')
     print(run(params))
