@@ -14,7 +14,7 @@ import logging
 
 
 # logger
-logger_name = Path(__FILE__).stem
+logger_name = Path(__file__).stem
 logger = UserLogger(logger_name)
 logger.add_console_handler(logging.INFO)
 logger.add_file_handler(logging.INFO, filename=f'{logger_name}.log')
