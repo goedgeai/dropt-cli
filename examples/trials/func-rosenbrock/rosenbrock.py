@@ -5,12 +5,17 @@ https://en.wikipedia.org/wiki/Test_functions_for_optimization
 '''
 
 
-import logging
+from dropt.util.log import UserLogger
+from pathlib import Path
 from argparse import ArgumentParser
+import logging
 
 
-# setup logs
-logger = logging.getLogger("test_function_for_optimization")
+# logger
+logger_name = Path(__FILE__).stem
+logger = UserLogger(logger_name)
+logger.add_console_handler(logging.INFO)
+logger.add_file_handler(logging.INFO, filename=f'{logger_name}.log')
 
 
 def run(params):

@@ -15,8 +15,11 @@ from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
 
 
-# setup log
-logger = logging.getLogger('MNIST with PyTorch')
+# logger
+logger_name = Path(__FILE__).stem
+logger = UserLogger(logger_name)
+logger.add_console_handler(logging.INFO)
+logger.add_file_handler(logging.INFO, filename=f'{logger_name}.log')
 
 
 class Net(nn.Module):

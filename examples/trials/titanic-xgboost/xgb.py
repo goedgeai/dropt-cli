@@ -9,12 +9,16 @@ from sklearn import model_selection
 import pandas as pd
 import numpy as np
 from argparse import ArgumentParser
-from dropt.util.log import DrOptUserLogger, FuncLoggingWrapper
+from dropt.util.log import UserLogger, FuncLoggingWrapper
 import logging
 
 
-# setup logs
-logger = DrOptUserLogger('sklearn_randomForest', logging.DEBUG, logging.DEBUG)
+# logger
+logger_name = Path(__FILE__).stem
+logger = UserLogger(logger_name)
+logger.add_console_handler(logging.INFO)
+logger.add_file_handler(logging.INFO, filename=f'{logger_name}.log')
+
 
 # setup path to data
 DATA_PATH = '../../../data/titanic'

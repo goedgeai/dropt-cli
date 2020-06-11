@@ -28,6 +28,7 @@ import shutil
 import time
 from tqdm import tqdm
 import warnings
+from dropt.util.log import UserLogger
 
 
 # define dataset url and paths
@@ -38,17 +39,13 @@ TRAIN_PATH = DATA_PATH.joinpath("train")
 VAL_PATH = DATA_PATH.joinpath("val")
 TEST_PATH = DATA_PATH.joinpath("test")
 
-# set up logging
-logger = logging.getLogger('imagenet-pytorch')
-# create console handler and set level to warning 
-ch = logging.StreamHandler()
-ch.setLevel(logging.WARNING)
-# create formatter
-formatter = logging.Formatter('[%(asctime)s] %(name)s/%(levelname)s: %(message)s', '%Y/%m/%d %H:%M:%S')
-# add formatter to ch
-ch.setFormatter(formatter)
-# add ch to logger
-logger.addHandler(ch)
+
+# logger
+logger_name = Path(__FILE__).stem
+logger = UserLogger(logger_name)
+logger.add_console_handler(logging.INFO)
+logger.add_file_handler(logging.INFO, filename=f'{logger_name}.log')
+
 
 # best top 1 accuracy
 best_acc1 = 0
