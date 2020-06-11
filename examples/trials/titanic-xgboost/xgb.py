@@ -11,6 +11,7 @@ import numpy as np
 from argparse import ArgumentParser
 from dropt.util.log import UserLogger, FuncLoggingWrapper
 import logging
+from pathlib import Path
 
 
 # logger
