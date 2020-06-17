@@ -51,11 +51,6 @@ def start():
                                           description='Create new DrOpt project.')
     parser_resume.set_defaults(func=resume_project)
 
-    # show help info if no argument is given
-    if len(sys.argv) == 1:
-        parser.print_help(sys.stderr)
-        sys.exit(1)
-
     # parse arguments
     args, _ = parser.parse_known_args()
     kwargs = vars(args)
@@ -66,8 +61,13 @@ def start():
                                 server_port=kwargs.pop('port'))
 
     # run the associated function
-    func = kwargs.pop('func')
-    func(**kwargs)
+    if 'func' in kwargs:
+        func = kwargs.pop('func')
+        func(**kwargs)
+    else:
+        print('CMD is missing.\n')
+        parser.print_help(sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == '__main__':
