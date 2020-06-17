@@ -46,6 +46,7 @@ class ProjectCache:
 
     def load_model(self):
         '''Return project model.'''
+        sys.path.append(str(self.model_file.parent.absolute()))
         spec = importlib.util.spec_from_file_location(self.model_file.stem, self.model_file)
         model = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(model)
