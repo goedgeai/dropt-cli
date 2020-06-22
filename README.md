@@ -220,7 +220,7 @@ to illustrate the steps of preparing and running a DrOpt project.
 - In aforementioned example, simply run the following command
   under the project folder to start a new DrOpt project:
   ```console
-  $ droptctl -t [your token]
+  $ droptctl -t [your token] create
   ```
 
 ### Resume a DrOpt Project (will be available soon)
@@ -230,7 +230,7 @@ to illustrate the steps of preparing and running a DrOpt project.
 * To resume a project, run the following command under the project folder:
 
   ```console
-  $ droptctl resume -t [your token]
+  $ droptctl -t [your token] resume
   ```
 * After executing `droptctl resume`, if any project progress file is found under the project folder, there will be a prompt that provides a resumable project list.
 
