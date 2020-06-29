@@ -1,6 +1,5 @@
 # dropt-cli
-DrOpt is an ML model optimization service consisting of the following
-parts:
+DrOpt is an ML model optimization service consisting of
 - Hyper-parameter tuning tools
 - WebUI for result visualization & analysis
 
@@ -20,7 +19,7 @@ the ML model in Python.
 
 ### On Linux distro using APT
 If running linux distribution such as Ubuntu,
-one can perform the following commands to meet
+one can perform the following commands for
 the prerequisites.
 
 ```console
@@ -54,7 +53,7 @@ for `dropt-cli`.
 ### Download/Install the package
 #### from PyPI
 `dropt-cli` is hosted on [PyPI](https://pypi.org/project/dropt-cli/)
-and user can install it via `pip`:
+and can be installed via `pip`:
 
 ```console
 pip install dropt-cli
@@ -62,7 +61,7 @@ pip install dropt-cli
 
 #### from GitHub
 If (1) the source code and/or examples are needed,
-(2) wanting to try the development version,
+(2) wanting to try a development version,
 one can download the package from the [GitHub repository](https://github.com/NeuralScope/dropt-cli).
 
 - Download the source code
@@ -79,7 +78,7 @@ one can download the package from the [GitHub repository](https://github.com/Neu
 We also provide __wheel binary distribution__
 and __source code archive__ on
 <https://github.com/NeuralScope/dropt-cli/releases/latest>.
-Simply click links on the page to get the files.
+Simply click links on the page to download the files.
 
 The `.whl` file is sufficient for installation.
 The source code and examples are included in
@@ -97,30 +96,31 @@ the archive (`.zip` or `.tar.gz` files).
   ![DrOpt homepage](https://i.imgur.com/IZ7arvC.png?1)
 - Select __Continue__ to start the registration.
   ![DrOpt sign-in page](https://i.imgur.com/4ShuboJ.png?1)
-- Once the registration is approved, a email will be sent.
+- Once the registration is approved, an email will be sent.
 
 
 ### Get an Access Token
 - The link to the access token is found in __My Account__ page.
   ![token](https://i.imgur.com/QsUyxVH.png?1)
-- Copy the __api token__ (a string) for later usage.
+- Copy the __api token__ for later usage.
 
 
 
 ## Run a DrOpt Project
-A DrOpt project uses the DrOpt service to solve an optimization problem.
+An optimization problem runs on the DrOpt service is called
+a __project__.
 
-We will use __finding a best hyper-parameter combination for an ML model__
-to illustrate the steps of preparing and running a DrOpt project.
+We will use __an ML model tuning problem__
+to illustrate the steps of running a project.
 
 
 ### Preparation
-- Create a folder for your DrOpt project.
+- Create a folder for your project.
 - Two files are needed in the folder:
-  - `model.py`: the Python code of the model you want to optimize
+  - `model.py`: the Python code of the model you want to tune
   - `config.json`: the configuration of the project
   
-  You can choose different names for these two files.
+  The names these two files are customizable.
 - `model.py` should contain a function named `run()`:
   ```python
   def run(params):
@@ -128,11 +128,10 @@ to illustrate the steps of preparing and running a DrOpt project.
 
       return result
   ```
-  - `run()` recevies all required parameters of a model
-    as a __Python dictionary__, which includes the hyper-parameters to be tuned.
+  - `run()` recevies hyper-parameters of a model as a __dictionary__.
   - `result` should be a floating point number indicating the performance of
     the resulting model.
-- Here is an example of calling `run()`:
+- Here is an example:
   ```python
   params = {"max_depth": 10,
             "gamma": 0.25,
@@ -145,8 +144,8 @@ to illustrate the steps of preparing and running a DrOpt project.
   acc = 0.732
   """
   ```
-- `config.json` should include __metadata of your DrOpt project__,
-  the __default value of model parameters__ and
+- `config.json` should include __metadata of the project__,
+  the __default value of model hyper-parameters__ and
   the __search space of model hyper-parameters__.
 - Here is an example of `config.json` for an XGBoost classification model:
   ```
@@ -192,14 +191,14 @@ to illustrate the steps of preparing and running a DrOpt project.
   }
   ```
   - `config`: metadata of the project  
-    __Note that the value of field `model` here should coincide
-    with the filename of the Python model code.__
+    __Note that the value of `model` should coincide
+    with the filename of the model.__
   - `params`: default value of parameters
   - `search_space`: search space of hyper-parameters
 
 
 ### Create/Run a DrOpt Project
-- User can use script `droptctl` to create or resume a DrOpt project.
+- Use script `droptctl` to create or resume a DrOpt project.
 - Run the following command for the instruction of `droptctl`:
   ```console
   $ droptctl -h   
@@ -223,25 +222,25 @@ to illustrate the steps of preparing and running a DrOpt project.
 
   Run "droptctl CMD -h" to learn more about a specific command.
   ```
-- Since there are default values for DrOpt server address and project config file,
-  it suffices to pass the __user token__ to `droptctl` in most cases.
-- In aforementioned example, simply run the following command
-  under the project folder to start a new DrOpt project:
+- While there are default values for DrOpt server address and project config file,
+  it suffices to pass only the __user token__ to `droptctl` in most cases.
+- For example, simply run the following command to start a new DrOpt project:
   ```console
   $ droptctl -t [your token] create
   ```
 
 ### Resume a DrOpt Project (will be available soon)
 
-> The `resume` function will be available after the coming server maintenance. Please stay tuned to our announcement for updates!
+> The `resume` function will be available after the coming server maintenance.
+> Please stay tuned to our announcement for updates!
 
 * To resume a project, run the following command under the project folder:
 
   ```console
   $ droptctl -t [your token] resume
   ```
-* After executing `droptctl resume`, if any project progress file is found under the project folder, there will be a prompt that provides a resumable project list.
-
+* A prompt will list all project found in the local cache.
+  User then select one he wants to resume.
   ```console
   ? Which project would you like to resume?  (Use arrow keys)
     [project 120: dummy] progress: 2/100 (created at 2020-05-08T15:46:54.059234+00:00)
