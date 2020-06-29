@@ -199,25 +199,29 @@ to illustrate the steps of preparing and running a DrOpt project.
 
 
 ### Create/Run a DrOpt Project
-- User can use script `droptctl` to create and run a DrOpt project.
-- Run the following command for user instructions of `droptctl`:
+- User can use script `droptctl` to create or resume a DrOpt project.
+- Run the following command for the instruction of `droptctl`:
   ```console
   $ droptctl -h   
-  usage: droptctl [-h] -t TOKEN [-s SERVER] [-c CONFIG] [CMD]
+  usage: droptctl [-h] [-v] -t TOKEN [-s ADDRESS] [-p PORT] CMD ...
 
-  Create DrOpt projects.
-
-  positional arguments:
-    CMD                   the action that will be executed by droptctl
+  Use command to control DrOpt project.
 
   optional arguments:
     -h, --help            show this help message and exit
+    -v, --version         show program's version number and exit
     -t TOKEN, --token TOKEN
                           user token
-    -s SERVER, --server SERVER
-                          server address (default: dropt.neuralscope.org/)
-    -c CONFIG, --config CONFIG
-                          config file (default: ./config.json)
+    -s ADDRESS, --server ADDRESS
+                          server address (default: dropt.neuralscope.org)
+    -p PORT, --port PORT  port number
+
+  commands:
+    CMD
+      create              create new project
+      resume              resume an existing project
+
+  Run "droptctl CMD -h" to learn more about a specific command.
   ```
 - Since there are default values for DrOpt server address and project config file,
   it suffices to pass the __user token__ to `droptctl` in most cases.
@@ -240,22 +244,11 @@ to illustrate the steps of preparing and running a DrOpt project.
 
   ```console
   ? Which project would you like to resume?  (Use arrow keys)
-    [project 122] name: dummy, progress: 4, create_time: 2020-05-08 16:11:10
-  » [project 121] name: dummy, progress: 1, create_time: 2020-05-08 16:10:05
-    [project 120] name: dummy, progress: 2, create_time: 2020-05-08 15:46:54
-    [project 119] name: dummy, progress: 4, create_time: 2020-05-08 15:46:26
+    [project 120: dummy] progress: 2/100 (created at 2020-05-08T15:46:54.059234+00:00)
+    [project 119: dummy] progress: 4/100 (created at 2020-05-08T15:46:26.824813+00:00)
+  » [Project 75: func-eggholder] progress: 3/1000 (created at 2020-06-29T01:03:45.065417+00:00)
+    [Project 76: func-eggholder] progress: 2/1000 (created at 2020-06-29T01:03:55.605235+00:00)                         
   ```
-
-* If `droptctl` can't found any progress file, user can manually input the `project_id`.
-* The `project_id` can be found on the WebUI (project sidebar ➔ Properties).
-
-  ```console
-  ! The project history directory does not exist.
-
-  ? Would you like to specify a project_id?  Yes
-  ? The project_id you would like to resume: 123
-  ```
-
 
 
 ## Result Analysis
