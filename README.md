@@ -6,15 +6,14 @@ parts:
 
 A public DrOpt server is hosted on <https://dropt.neuralscope.org>.
 
-`dropt-cli` is the client application of DrOpt service encapsulated
-as a Python package; users need to either run their ML model in Python
-or to wrap their ML model in Python at least.
+`dropt-cli` is the client application of DrOpt encapsulated
+in a Python package.  To use it, users either run or wrap
+the ML model in Python.
 
 
 
 ## Installation
 ### Prerequisites
-We have tested `dropt-cli` in the following environments:
 - `Python>=3.6`
 - `pip>=20.0.0`
 
@@ -53,16 +52,22 @@ for `dropt-cli`.
 
 
 ### Download/Install the package
-A repository of `dropt-cli` is hosted on GitHub:
-<https://github.com/NeuralScope/dropt-cli>.
+#### from PyPI
+`dropt-cli` is hosted on [PyPI](https://pypi.org/project/dropt-cli/)
+and user can install it via `pip`:
 
-#### with Git
-One can download the source code from GitHub and
-install the package.
+```console
+pip install dropt-cli
+```
+
+#### from GitHub
+If (1) the source code and/or examples are needed,
+(2) wanting to try the development version,
+one can download the package from the [GitHub repository](https://github.com/NeuralScope/dropt-cli).
 
 - Download the source code
   ```console
-  $ git clone https://github.com/NeuralScope/dropt-cli
+  $ git clone https://github.com/NeuralScope/dropt-cli.git
   ```
 
 - Install the package
@@ -71,15 +76,14 @@ install the package.
   $ pip install .
   ```
 
-#### without Git
-Alternatively, we provide __wheel binary distribution__
+We also provide __wheel binary distribution__
 and __source code archive__ on
 <https://github.com/NeuralScope/dropt-cli/releases/latest>.
 Simply click links on the page to get the files.
 
-The `.whl` file is sufficient for installing `dropt-cli`.
-The source code and examples of `dropt-cli` are included in
-the source code archive (`.zip` or `.tar.gz` files).
+The `.whl` file is sufficient for installation.
+The source code and examples are included in
+the archive (`.zip` or `.tar.gz` files).
 
 - Install the package from wheel binary distribution
   ```
