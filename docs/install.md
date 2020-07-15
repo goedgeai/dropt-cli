@@ -47,7 +47,7 @@ for `dropt-cli`.
 
 ## Download/Install `dropt-cli`
 A repository of `dropt-cli` is hosted on
-[GitHub](https://github.com/NeuralScope/dropt-cli).
+[GitHub](https://github.com/GoEdge-ai/dropt-cli).
 
 ### with Git
 One can download the source code from GitHub with Git and
@@ -55,7 +55,7 @@ install the package.
 
 - Download the source code
   ```console
-  $ git clone https://github.com/NeuralScope/dropt-cli
+  $ git clone https://github.com/GoEdge-ai/dropt-cli
   ```
 
 - Install the package
@@ -67,7 +67,7 @@ install the package.
 ### without Git
 Alternatively, we provide __wheel binary distribution__
 and __source code archive__ for the
-[latest release of `dropt-cli`](https://github.com/NeuralScope/dropt-cli/releases/latest).
+[latest release of `dropt-cli`](https://github.com/GoEdge-ai/dropt-cli/releases/latest).
 Simply click links on the page to acquire these files.
 
 The `.whl` file is sufficient for installing `dropt-cli`.
