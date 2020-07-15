@@ -6,6 +6,7 @@
         "parentProject": "None",
         "model": "mnist",
         "updatePeriod": 60,
+        "mode": "min",
         "tuner": {
             "builtinTunerName": "TPE",
             "classArgs": {"optimize_mode": "minimize"}

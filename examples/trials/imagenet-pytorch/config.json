@@ -6,6 +6,7 @@
         "parentProject": "None",
         "model": "imagenet",
         "updatePeriod": 60,
+        "mode": "max",
         "tuner": {
             "builtinTunerName": "TPE",
             "classArgs": {"optimize_mode": "maximize"}
