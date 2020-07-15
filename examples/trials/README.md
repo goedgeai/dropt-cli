@@ -24,4 +24,4 @@ of different types of optimization problems:
   ```
 
 - Inspect the project result on DrOpt webpage
-  (The default one is <https://dropt.neuralscope.org>).
+  (The default one is <https://dropt.goedge.ai>).

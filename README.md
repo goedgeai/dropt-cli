@@ -1,11 +1,11 @@
 # dropt-cli
-DrOpt is an ML model optimization service consisting of
+Dr.Opt is an ML model optimization service consisting of
 - Hyper-parameter tuning tools
 - WebUI for result visualization & analysis
 
-A public DrOpt server is hosted on <https://dropt.neuralscope.org>.
+A public Dr.Opt server is hosted on <https://dropt.goedge.ai>.
 
-`dropt-cli` is the client application of DrOpt encapsulated
+`dropt-cli` is the client application of Dr.Opt encapsulated
 in a Python package.  To use it, users either run or wrap
 the ML model in Python.
 
@@ -62,11 +62,11 @@ pip install dropt-cli
 #### from GitHub
 If (1) the source code and/or examples are needed,
 (2) wanting to try a development version,
-one can download the package from the [GitHub repository](https://github.com/NeuralScope/dropt-cli).
+one can download the package from the [GitHub repository](https://github.com/GoEdge-ai/dropt-cli).
 
 - Download the source code
   ```console
-  $ git clone https://github.com/NeuralScope/dropt-cli.git
+  $ git clone https://github.com/GoEdge-ai/dropt-cli.git
   ```
 
 - Install the package
@@ -77,7 +77,7 @@ one can download the package from the [GitHub repository](https://github.com/Neu
 
 We also provide __wheel binary distribution__
 and __source code archive__ on
-<https://github.com/NeuralScope/dropt-cli/releases/latest>.
+<https://github.com/GoEdge-ai/dropt-cli/releases/latest>.
 Simply click links on the page to download the files.
 
 The `.whl` file is sufficient for installation.
@@ -92,7 +92,7 @@ the archive (`.zip` or `.tar.gz` files).
 
 ## DrOpt Server
 ### Registration
-- Open DrOpt server webpage (<https://dropt.neuralscope.org/>) and click __Sign in__.
+- Open Dr.Opt server webpage (<https://dropt.goedge.ai/>) and click __Sign in__.
   ![DrOpt homepage](https://i.imgur.com/IZ7arvC.png?1)
 - Select __Continue__ to start the registration.
   ![DrOpt sign-in page](https://i.imgur.com/4ShuboJ.png?1)
@@ -107,7 +107,7 @@ the archive (`.zip` or `.tar.gz` files).
 
 
 ## Run a DrOpt Project
-An optimization problem runs on the DrOpt service is called
+An optimization problem runs on the Dr.Opt service is called
 a __project__.
 
 We will use __an ML model tuning problem__
@@ -198,7 +198,7 @@ to illustrate the steps of running a project.
 
 
 ### Create/Run a DrOpt Project
-- Use script `droptctl` to create or resume a DrOpt project.
+- Use script `droptctl` to create or resume a Dr.Opt project.
 - Run the following command for the instruction of `droptctl`:
   ```console
   $ droptctl -h   
@@ -212,7 +212,7 @@ to illustrate the steps of running a project.
     -t TOKEN, --token TOKEN
                           user token
     -s ADDRESS, --server ADDRESS
-                          server address (default: dropt.neuralscope.org)
+                          server address (default: dropt.goedge.ai)
     -p PORT, --port PORT  port number
 
   commands:
@@ -222,7 +222,7 @@ to illustrate the steps of running a project.
 
   Run "droptctl CMD -h" to learn more about a specific command.
   ```
-- While there are default values for DrOpt server address and project config file,
+- While there are default values for Dr.Opt server address and project config file,
   it suffices to pass only the __user token__ to `droptctl` in most cases.
 - For example, simply run the following command to start a new DrOpt project:
   ```console
@@ -248,7 +248,7 @@ to illustrate the steps of running a project.
 
 
 ## Result Analysis
-Once a project is created, its result will be presented on the DrOpt webpage.
+Once a project is created, its result will be presented on the Dr.Opt webpage.
 ![](https://i.imgur.com/tZLKzMV.png)
 ![](https://i.imgur.com/u96FW8D.png)
 ![](https://i.imgur.com/I3cNOEe.png)
@@ -256,7 +256,7 @@ Once a project is created, its result will be presented on the DrOpt webpage.
 
 
 ## Examples
-One can find more examples about DrOpt project in folder `examples`.
+One can find more examples about Dr.Opt project in folder `examples`.
 
 ## About
 * The modules under [src/dropt/client](./src/dropt/client) (`endpoint.py`, `exception.py`, `interface.py`, `objects.py`, `requestor.py`, `resource.py`) are modified from [sigopt-python](https://github.com/sigopt/sigopt-python), which is under the MIT license:

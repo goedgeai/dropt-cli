@@ -29,7 +29,7 @@ def start():
     parser.add_argument('-v', '--version', action='version', version=get_distribution('dropt-cli').version)
     parser.add_argument('-t', '--token', help='user token', required=True)
     parser.add_argument('-s', '--server', metavar='ADDRESS',
-                        default='dropt.neuralscope.org',
+                        default='dropt.goedge.ai',
                         help='server address (default: %(default)s)')
     parser.add_argument('-p', '--port',
                         default='',
