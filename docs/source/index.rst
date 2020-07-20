@@ -1,15 +1,18 @@
-.. dropt-cli documentation master file, created by
-   sphinx-quickstart on Mon Jul 20 07:58:55 2020.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to dropt-cli's documentation!
-=====================================
+dropt-cli documentation
+=======================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   Quickstart <contents/quickstart>
+   Prepare A Project <contents/prepare_project>
+   droptcli <contents/droptctl>
+   Project Inspection <contents/inspection>
+   Advisors <contents/advisors>
+   Authors <authors>
+   License <license>
+   Changelog <changelog>
 
 
 Indices and tables
