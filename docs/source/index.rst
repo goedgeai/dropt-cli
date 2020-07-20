@@ -1,12 +1,18 @@
 DrOpt
 =====
 
-DrOpt is a hyper-parameter tuning service.
+Dr.Opt is an ML model optimization platform consisting of
+
+- Hyper-parameter optimization service
+- Client Python package for service connoction & project control
+- Project visualization & analysis via `WubUI <https://dropt.goedge.ai>`_
+
+We illustrate a simple example in our :ref:`Quickstart <quickstart>`.
 
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Contents
 
    Quickstart <contents/quickstart>
    Prepare A Project <contents/prepare_project>
@@ -15,7 +21,7 @@ DrOpt is a hyper-parameter tuning service.
    Advisors <contents/advisors>
    Authors <authors>
    License <license>
-   Changelog <changelog>
+   Changelog <changes>
 
 
 Indices and tables
