@@ -1,8 +1,11 @@
-dropt-cli documentation
-=======================
+DrOpt
+=====
+
+DrOpt is a hyper-parameter tuning service.
+
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    Quickstart <contents/quickstart>
