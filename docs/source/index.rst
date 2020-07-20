@@ -16,7 +16,7 @@ We illustrate a simple example in our :ref:`Quickstart <quickstart>`.
 
    Quickstart <contents/quickstart>
    Prepare A Project <contents/prepare_project>
-   droptcli <contents/droptctl>
+   droptctl <contents/droptctl>
    Project Inspection <contents/inspection>
    Advisors <contents/advisors>
    Authors <authors>
