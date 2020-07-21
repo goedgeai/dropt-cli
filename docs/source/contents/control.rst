@@ -20,6 +20,4 @@ Basic Syntax
 
 - ``CMD`` can be one of the following commands
   - `create`: create and run a new project
-  - `resume`: resume and run an existing project;
-    a prompt will let user select the project to resume
-
+  - `resume`: resume and run an existing project; a prompt will let user select the project to resume
