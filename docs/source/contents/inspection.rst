@@ -1,3 +1,5 @@
+.. _inspection:
+
 Project Inspection
 ==================
 
@@ -29,13 +31,16 @@ The summary page composes of three main parts:
 
 Project Card
 ^^^^^^^^^^^^^^^^^^
+
 Similar to the blocks of the project list, the project card indicates the name of the project and the best optimization result. The best value depends on the mode (minimize or maximize) set in the project config.
 
 Optimizing Progress Chart
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 .. image:: https://i.imgur.com/zVggULHl.png
    :alt: Dr.Opt Project Summary Table
    :align: center
+
 The chart in the upper-right corner plots the objective value of each trial. Users can evaluate the  optimization progress by the line chart (e.g. does it keep improving, does the objective values fall in a  stable range, etc.)
 
 Suggestions Table
@@ -73,6 +78,7 @@ Histograms illustrate the distribution of the suggested hyper-parameter values. 
 
 Parameter Analysis
 ^^^^^^^^^^^^^^^^^^
+
 The parameter analysis page illustrates a parallel coordinates plot. It is commonly used for visualizing & comparing many variables together.
 
 .. image:: https://i.imgur.com/f8rZ9wUl.png
