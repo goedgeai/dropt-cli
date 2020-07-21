@@ -7,7 +7,7 @@ Dr.Opt is an ML model optimization platform consisting of
 - Client Python package for service connoction & project control
 - Project visualization & analysis via `WubUI <https://dropt.goedge.ai>`_
 
-We illustrate a simple example in our :ref:`Quickstart <quickstart>`.
+Read :ref:`quickstart` to begin.
 
 
 .. toctree::
@@ -15,18 +15,10 @@ We illustrate a simple example in our :ref:`Quickstart <quickstart>`.
    :caption: Contents
 
    Quickstart <contents/quickstart>
-   Prepare A Project <contents/prepare_project>
-   Control <contents/control>
+   Prepare A Project <contents/prepare>
+   Project Control <contents/control>
    Project Inspection <contents/inspection>
    Advisors <contents/advisors>
    Authors <authors>
    License <license>
    Changelog <changes>
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

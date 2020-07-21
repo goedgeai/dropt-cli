@@ -3,14 +3,17 @@
 Quickstart
 ==========
 
-Installation
-------------
+Here we illustrate how to one can create and run a Dr.Opt project
+based on `our trial examples <https://github.com/GoEdge-ai/dropt-example>`_.
 
-One can easily install the client package with pip
 
-.. code:: shell
+Prerequisites
+-------------
 
-   pip install dropt-cli
+Before starting, make sure the following things are installed in your system:
+
+- Python 3.6 or newer
+- pip
 
 
 Registration/Get Access Token
@@ -21,7 +24,7 @@ Registration/Get Access Token
    :alt: Dr.Opt Homepage
    :align: center
 
-2. Click ``Continue`` to start the registration.
+2. Click ``Continue`` and finish the registration.
    User will be notified via email once the registration is approved.
 
 .. image:: https://i.imgur.com/4ShuboJ.png?1
@@ -34,7 +37,7 @@ Registration/Get Access Token
    :alt: Access token
    :align: center
 
-4. Copy the ``api token`` for later usage.
+4. Copy the ``api token`` for later use.
 
 
 Download and run the examples
@@ -44,7 +47,7 @@ Download and run the examples
 
 .. code:: shell
 
-   git clone https://github.com/GoEdge-ai/dropt-example
+   git clone https://github.com/GoEdge-ai/dropt-example.git
 
 2. Move to the directory of a trial example:
 
@@ -58,7 +61,7 @@ Download and run the examples
 
    pip install -r requirements.txt
 
-4. Create and run a new DrOpt project with our controller script,
+4. Create and run a new Dr.Opt project with our control script,
    in which ``TEKON`` is the access token of your account:
 
 .. code:: shell
@@ -66,7 +69,7 @@ Download and run the examples
    droptctl -t TOKEN create
 
 
-Review Project Result
----------------------
+Inspect Project Result
+----------------------
 
-Log in `Dr.Opt server <https://dropt.goedge.ai>`_ and review the result of your project.
+Inspect the result on the `Dr.Opt server webpage <https://dropt.goedge.ai>`_.
