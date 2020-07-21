@@ -12,8 +12,8 @@ Prerequisites
 
 Before starting, make sure the following things are installed in your system:
 
-- Python 3.6 or newer
-- pip
+* Python 3.6 or newer
+* pip
 
 
 Registration/Get Access Token
@@ -47,26 +47,26 @@ Download and run the examples
 
 .. code:: shell
 
-   git clone https://github.com/GoEdge-ai/dropt-example.git
+   $ git clone https://github.com/GoEdge-ai/dropt-example.git
 
 2. Move to the directory of a trial example:
 
 .. code:: shell
 
-   cd dropt-example/trials/func-eggholder
+   $ cd dropt-example/trials/func-eggholder
 
 3. Install required Python package:
 
 .. code:: shell
 
-   pip install -r requirements.txt
+   $ pip install -r requirements.txt
 
 4. Create and run a new Dr.Opt project with our control script,
    in which ``TEKON`` is the access token of your account:
 
 .. code:: shell
 
-   droptctl -t TOKEN create
+   $ droptctl -t TOKEN create
 
 
 Inspect Project Result
