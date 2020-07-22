@@ -6,7 +6,7 @@ Project Control
 User sends command to a project via control script ``droptctl``.
 To use it, one must install our Python client package first:
 
-.. code:: shell
+.. code-block:: shell
 
    $ pip install dropt-cli
 
@@ -16,7 +16,7 @@ Basic Syntax
 
 Here is the basic syntax of ``droptctl``:
 
-.. code:: shell
+.. code-block:: shell
 
    $ droptctl -s ADDRESS -p PORT -t TOKEN CMD
 
@@ -35,7 +35,7 @@ Here is the basic syntax of ``droptctl``:
 Create
 ------
 
-.. code:: shell
+.. code-block:: shell
 
    $ droptctl -t TOKEN create -c CONFIG_FILE
 
@@ -48,13 +48,13 @@ Resume
 
 Dr.Opt allows user to resume a project if interrupted.
 
-.. code:: shell
+.. code-block:: shell
 
    $ droptctl -t TOKEN resume
 
 A prompt will show all ongoing projects and user selects one to resume.
 
-.. code:: shell
+.. code-block:: shell
    
    ? Which project would you like to resume?  (Use arrow keys)
      [project 120: dummy] progress: 2/100 (created at 2020-05-08T15:46:54.059234+00:00)

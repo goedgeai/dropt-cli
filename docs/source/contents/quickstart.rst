@@ -45,26 +45,26 @@ Download and run the examples
 
 1. Download our examples from GitHub:
 
-.. code:: shell
+.. code-block:: shell
 
    $ git clone https://github.com/GoEdge-ai/dropt-example.git
 
 2. Move to the directory of a trial example:
 
-.. code:: shell
+.. code-block:: shell
 
    $ cd dropt-example/trials/func-eggholder
 
 3. Install required Python package:
 
-.. code:: shell
+.. code-block:: shell
 
    $ pip install -r requirements.txt
 
 4. Create and run a new Dr.Opt project with our control script,
    in which ``TEKON`` is the access token of your account:
 
-.. code:: shell
+.. code-block:: shell
 
    $ droptctl -t TOKEN create
 
