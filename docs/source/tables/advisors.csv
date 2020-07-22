@@ -1,0 +1,4 @@
+Advisor \ Description
+Anneal \ Annealing algorithm begins by sampling from the prior and tends over time to sample from points closer and closer to the best ones observed.
+Naïve Evolution \ Naïve Evolution randomly initializes a population-based on the search space, and chooses better ones and does some mutation on them to get the next generation. Naïve Evolution may require many trials to work (`ref <https://arxiv.org/pdf/1703.01041.pdf>`__).
+Gaussian Process \ Gaussian Process is a sequential model-based optimization (SMBO) approach that uses Gaussian Process as the surrogate (`ref <https://github.com/fmfn/BayesianOptimization>`__).
