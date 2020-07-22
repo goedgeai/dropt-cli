@@ -3,7 +3,7 @@
 Project Control
 ===============
 
-User can **create** or **resume** a project with control script ``droptctl``.
+User sends command to a project via control script ``droptctl``.
 To use it, one must install our Python client package first:
 
 .. code:: shell
@@ -52,7 +52,7 @@ Dr.Opt allows user to resume a project if interrupted.
 
    $ droptctl -t TOKEN resume
 
-A prompt of all ongoing projects will show and user selects one to resume.
+A prompt will show all ongoing projects and user selects one to resume.
 
 .. code:: shell
    

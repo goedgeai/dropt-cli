@@ -19,6 +19,7 @@ Read :ref:`quickstart` to begin.
    Project Control <contents/control>
    Project Inspection <contents/inspection>
    Advisors <contents/advisors>
+   Search Space <contents/search_space>
    Authors <authors>
    License <license>
    Changelog <changes>

@@ -1,4 +1,6 @@
-.. _advisor:
+.. _advisors:
 
 Advisors
 ========
+
+Dr.Opt supports the following advisors:
