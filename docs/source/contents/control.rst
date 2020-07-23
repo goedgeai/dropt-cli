@@ -3,8 +3,10 @@
 Project Control
 ===============
 
-User sends command to a project via control script ``droptctl``.
-To use it, one must install our Python client package first:
+Once a project folder is prepared, user can manage the project
+via the project control ``droptctl``,
+which is included in the Dr.Opt client package ``dropt-cli``.
+To install it, simply run
 
 .. code-block:: shell
 
@@ -26,10 +28,10 @@ Here is the basic syntax of ``droptctl``:
 * ``TOKEN`` is the unique identification of each user.
   It can be found on one's own **My account** page.
 
-* ``CMD`` is the control command.  Currently, ``droptctl`` supports two commands:
+* ``CMD`` is the command to be sent.  Currently, two commands are supported:
 
-  - **create**
-  - **resume**
+  - create
+  - resume
 
 
 Create
@@ -39,14 +41,14 @@ Create
 
    $ droptctl -t TOKEN create -c CONFIG_FILE
 
-Create and run a new project based on config file ``CONFIG_FILE``,
-which is assumed to be ``config.json`` if option ``-c`` is missing.
+Create and run a new project based on config file ``CONFIG_FILE``.
+The default config file is ``config.json``.
 
 
 Resume
 ------
 
-Dr.Opt allows user to resume a project if interrupted.
+User may resume a project if interrupted.
 
 .. code-block:: shell
 
