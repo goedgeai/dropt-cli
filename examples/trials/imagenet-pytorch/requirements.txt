@@ -1,4 +1,0 @@
-dropt-cli
-torch
-torchvision
-tqdm

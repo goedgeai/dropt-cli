@@ -1,0 +1,7 @@
+Advisor \ Description
+Anneal \ Begin with sampling from the prior and tends over time to sample from points closer and closer to the best ones observed.
+Evolution \ Randomly initialize a population based on the search space. It chooses better ones and does some mutation on them to get the next generation. Evolution may require many trials to work (`ref <https://arxiv.org/pdf/1703.01041.pdf>`__).
+Gaussian Process (coming soon) \ A sequential model-based optimization (SMBO) approach that uses Gaussian Process as the surrogate (`ref <https://github.com/fmfn/BayesianOptimization>`__).
+Grid Search \ Perform an exhaustive search in a specified subset of the parameter space.
+Random \ Randomly select hyper-parameter combinations in the search space. Researches show that it might be surprisingly effective (`ref <http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf>`__).
+TPE \ A sequential model-based optimization (SMBO) approach that uses Tree-structured Parzen Estimators as the surrogate (`ref <https://papers.nips.cc/paper/4443-algorithms-for-hyper-parameter-optimization.pdf>`__).
