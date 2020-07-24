@@ -100,7 +100,7 @@ Example
 Search Space
 ------------
 
-Each parameter to be search is assigned with certain space type.
+Each parameter to search is assigned with certain space type.
 Dr.Opt currently supports the following search space types:
 
 
@@ -130,7 +130,7 @@ randint
 Choose a random integer within an interval.
 
 Format
-    [lower_bound (inclusive), upper_bound (exclusive)]
+    [`lower_bound` (inclusive), `upper_bound` (exclusive)]
 
 Example
     .. code-block:: json
@@ -149,7 +149,7 @@ uniform
 Choose a number randomly from a uniform distribution on an interval.
 
 Format
-    [lower_bound (inclusive), upper_bound (exclusive)]
+    [`lower_bound` (inclusive), `upper_bound` (exclusive)]
 
 Example
     .. code-block:: json
@@ -168,7 +168,7 @@ quniform
 Choose a number randomly from an interval descretized by a fixed step size.
 
 Format
-    [lower_bound (inclusive), upper_bound (exclusive), step]
+    [`lower_bound` (inclusive), `upper_bound` (exclusive), `step`]
 
 Example
     .. code-block:: json
@@ -190,7 +190,7 @@ Choose a number randomly from a normal discribution with
 prescribed mean (:math:`\mu`) and standard deviation (:math:`\sigma`).
 
 Format
-    [:math:`\mu`, :math:`sigma`]
+    [:math:`\mu`, :math:`\sigma`]
 
 Example
     .. code-block:: json

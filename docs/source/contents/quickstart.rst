@@ -3,7 +3,7 @@
 Quickstart
 ==========
 
-Here we illustrate how to one can create and run a Dr.Opt project
+Here we illustrate how one can create and run a Dr.Opt project
 based on `our trial examples <https://github.com/GoEdge-ai/dropt-example>`_.
 
 
@@ -40,8 +40,8 @@ Registration/Get Access Token
 4. Copy the ``api token`` for later use.
 
 
-Download and run the examples
------------------------------
+Run our examples
+----------------
 
 1. Download our examples from GitHub:
 
@@ -68,8 +68,15 @@ Download and run the examples
 
    $ droptctl -t TOKEN create
 
+5. Inspect the result on the `Dr.Opt server webpage <https://dropt.goedge.ai>`_.
 
-Inspect Project Result
-----------------------
 
-Inspect the result on the `Dr.Opt server webpage <https://dropt.goedge.ai>`_.
+Your Turn!
+----------
+
+We just showed you how to run a our example project.
+To run your own project, please refer to the following sections:
+
+* :ref:`prepare`
+* :ref:`control`
+* :ref:`inspection`
