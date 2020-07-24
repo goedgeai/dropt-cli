@@ -142,7 +142,7 @@ this kind of visualization may be useful to find out the valid range of value.
 
 
 Properties
-^^^^^^^^^^
+----------
 
 The detailed configuration of a project can be found on the properties page,
 which can be accessed by the sidebar.
@@ -156,7 +156,7 @@ view the parameter search space, and delete the project.
 
 
 Suggestions
-^^^^^^^^^^^
+-----------
 
 The suggestions page lists the full suggestion history.
 It is similar to the table of the summary page,
