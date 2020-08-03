@@ -201,3 +201,13 @@ Example
                "_value": [0.5, 0.1]
            }
        }
+
+
+Support of Search Space Types/Tuners
+------------------------------------
+
+.. csv-table::
+   :header-rows: 1
+   :widths: 25, 15, 15, 15, 15, 15
+   :file: ../tables/advisor_and_searchspace.csv
+   :delim: \

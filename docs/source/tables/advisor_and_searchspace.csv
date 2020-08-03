@@ -1,0 +1,6 @@
+\ choice \ randint \ uniform \ quniform \ normal
+Anneal \ v \ v \ v \ v \ v
+Evolution \ v \ v \ v \ v \ v
+Grid Search \ v \ v \ \ v \
+Random \ v \ v \ v \ v \ v
+TPE \ v \ v \ v \ v \ v
