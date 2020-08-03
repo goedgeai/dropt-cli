@@ -3,7 +3,7 @@ License
 
 .. literalinclude:: ../../LICENSE
 
-The modules under src/dropt/client
+The modules in namespace ``dropt.client``
 (``endpoint.py``, ``exception.py``, ``interface.py``, ``objects.py``,
 ``requestor.py``, ``resource.py``) are modified from
 sigopt-python, which is under the MIT license:
