@@ -203,7 +203,7 @@ Example
        }
 
 
-Support of Search Space Types/Tuners
+Support of Tuners/Search Space Types
 ------------------------------------
 
 .. csv-table::
