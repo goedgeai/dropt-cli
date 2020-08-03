@@ -18,7 +18,7 @@ Please read :ref:`quickstart` to begin.
    Prepare A Project <contents/prepare>
    Project Control <contents/control>
    Project Inspection <contents/inspection>
-   Advisor & Serach Space <contents/advisor_and_searchspace>
+   Advisor & Search Space <contents/advisor_and_searchspace>
    Authors <authors>
    License <license>
    Changelog <changes>
